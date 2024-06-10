@@ -17,6 +17,13 @@ export const Header = styled.header`
   justify-content: space-between;
 `;
 
+export const LogoAndTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
 export const H1 = styled.h1`
   font-size: 1.25rem;
   margin: 0;
@@ -33,9 +40,11 @@ export const Main = styled.div`
   flex-direction: row;
   gap: 1rem;
   flex: 1;
+  overflow: scroll;
 
   & > :first-child {
-    width: 40%;
-    max-width: 25rem;
+    width: 30%;
+    // max-width: 25rem;
+    resize: horizontal;
   }
 `;

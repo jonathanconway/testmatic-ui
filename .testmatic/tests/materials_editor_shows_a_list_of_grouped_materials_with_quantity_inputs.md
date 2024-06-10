@@ -9,7 +9,7 @@
 
 ## Links
 
-- http://website.com
+- [http://website.com](http://website.com)
 
 ## Tags
 

@@ -5,6 +5,10 @@ import { Project, ProjectView } from "testmatic";
 async function postProject(project: Project) {
   await fetch("http://localhost:3100/project", {
     method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(project),
   });
 }

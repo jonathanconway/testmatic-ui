@@ -15,7 +15,11 @@ export interface StepFragmentTag extends StepFragmentBase {
 
 export type StepFragment = StepFragmentText | StepFragmentTag;
 
-export function stepFragments(step: Step): readonly StepFragment[] {
+export function stepFragments(step?: Step): readonly StepFragment[] {
+  if (!step) {
+    return [];
+  }
+
   const tagsByName = Object.fromEntries(
     step.tags.map((tag) => [tag.title.toLowerCase().trim(), tag])
   );

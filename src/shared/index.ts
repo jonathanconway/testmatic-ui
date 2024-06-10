@@ -6,3 +6,4 @@ export * from "./project-test-editor";
 export * from "./utils";
 export * from "./step";
 export * from "./run";
+export * from "./stack-order";

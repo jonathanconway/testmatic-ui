@@ -1,14 +1,32 @@
+import logo from "../../logo.svg";
 import { Button, ProjectExplorer, ProjectItemEditor } from "../../shared";
 import { useHomeScreen } from "./home-screen.hooks";
-import { Body, H1, Header, HeaderActions, Main } from "./home-screen.styles";
+import {
+  Body,
+  H1,
+  Header,
+  HeaderActions,
+  LogoAndTitle,
+  Main,
+} from "./home-screen.styles";
 
 export function HomeScreen() {
-  const { project, selectedItemId, selectedItem } = useHomeScreen();
+  const {
+    project,
+    selectedItemId,
+    selectedItem,
+    onClickTagAdd,
+    onClickTestAdd,
+    onCloseClick,
+  } = useHomeScreen();
 
   return (
     <Body>
       <Header>
-        <H1>Testmatic</H1>
+        <LogoAndTitle>
+          <img src={logo} alt="Testmatic logo" width={24} />
+          <H1>Testmatic</H1>
+        </LogoAndTitle>
 
         <HeaderActions>
           <Button>Import</Button>
@@ -17,9 +35,14 @@ export function HomeScreen() {
       </Header>
 
       <Main>
-        <ProjectExplorer project={project} selectedItemId={selectedItemId} />
+        <ProjectExplorer
+          project={project}
+          selectedItemId={selectedItemId}
+          onClickTagAdd={onClickTagAdd}
+          onClickTestAdd={onClickTestAdd}
+        />
 
-        <ProjectItemEditor item={selectedItem} />
+        <ProjectItemEditor item={selectedItem} onClose={onCloseClick} />
       </Main>
     </Body>
   );

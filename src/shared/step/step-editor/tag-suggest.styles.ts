@@ -4,6 +4,7 @@ export const Container = styled.div`
   border: solid 1px silver;
   background-color: white;
   border-radius: 0.5rem;
+  z-index: 1;
 `;
 
 export const Item = styled.div<{ readonly selected: boolean }>`

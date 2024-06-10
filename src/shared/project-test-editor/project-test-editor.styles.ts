@@ -1,9 +1,10 @@
+import { borderBox } from "../border-box";
 import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   height: 100%;
 `;
 
@@ -12,10 +13,15 @@ export const Header = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
 `;
 
 export const H2 = styled.h2`
+  display: flex;
+  width: 100%;
   margin: 0;
+  align-items: center;
+  height: 1.7rem;
   font-size: 1.1rem;
 `;
 
@@ -24,8 +30,17 @@ export const H3 = styled.h3`
   font-size: 0.9rem;
 `;
 
-export const StepsContainer = styled.div`
+export const TopContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   height: 50%;
+`;
+
+export const StepsContainer = styled.div`
+  ${borderBox}
+  overflow: scroll;
+  height: 100%;
 `;
 
 export const StepsActionContainer = styled.div`
@@ -63,7 +78,6 @@ export const StepTokenTag = styled.span`
   a {
     color: darkgreen;
     text-decoration: none;
-    margin: 0 0.25rem;
 
     &:active,
     &:focus,

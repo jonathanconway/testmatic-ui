@@ -1,15 +1,10 @@
-import { RequestHandler } from "express";
-import { projectMdRead, readProjectFile } from "testmatic/files";
+import express from "express";
+import { projectMdRead } from "testmatic/files";
 
-const handler: RequestHandler = (req, res) => {
-  const cwd = process.cwd();
+export function getProject(app: express.Express) {
+  app.get("/project", (req, res) => {
+    const project = projectMdRead();
 
-  const project = projectMdRead();
-
-  res.json(project);
-};
-
-export const getProject = {
-  route: "/project",
-  handler,
-};
+    res.json(project);
+  });
+}

@@ -1,30 +1,33 @@
-import { Button } from "../../button";
 import { useGetProject } from "../../project";
-import "../../utils";
 import {
-  ActionsContainer,
+  StepTokenTag,
+  StepTokenText,
+} from "../../project-test-editor/project-test-editor.styles";
+import "../../utils";
+import { querySelectorParent } from "../../utils";
+import { stepFragments } from "../step-fragments";
+import {
   Container,
-  FocusAbsorber,
   Measurement,
+  StepDisplay,
   TagSuggestContainer,
   TextArea,
+  TextAreaContainer,
 } from "./step-editor.styles";
 import { TagSuggest } from "./tag-suggest";
 import {
   ChangeEvent,
   KeyboardEvent,
-  MouseEvent,
+  FocusEvent,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { Link } from "react-router-dom";
 import { Step, Tag, createTestStepFromText } from "testmatic";
 
 export interface StepEditorProps {
-  readonly step?: Step;
-
-  readonly onSave: (step: Step) => void;
-  readonly onCancel: VoidFunction;
+  readonly step: Step;
 }
 
 export interface StepEditorState {
@@ -35,6 +38,7 @@ export interface StepEditorState {
     readonly selectionStart: number;
     readonly selectionEnd: number;
   };
+  readonly isEditing: boolean;
 }
 
 function getSelectedTag({
@@ -104,6 +108,7 @@ export function StepEditor(props: StepEditorProps) {
       selectionStart: 0,
       selectionEnd: 0,
     },
+    isEditing: false,
   });
 
   const handleKeyDownEscape = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -112,8 +117,6 @@ export function StepEditor(props: StepEditorProps) {
         ...state,
         showTagSuggest: false,
       });
-    } else {
-      props.onCancel();
     }
   };
 
@@ -126,26 +129,37 @@ export function StepEditor(props: StepEditorProps) {
 
   const handleKeyDownArrowUp = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
-    setState({
-      ...state,
-      selectedTag: state.selectedTag
-        ? project?.tags[project?.tags.indexOf(state.selectedTag) - 1] ??
-          project?.tags[0]
-        : project?.tags[0],
-    });
+    if (state.selectedTag) {
+      setState({
+        ...state,
+        selectedTag:
+          project?.tags[project?.tags.indexOf(state.selectedTag) - 1] ??
+          project?.tags[0],
+      });
+    } else {
+      querySelectorParent(textAreaRef?.current, "li")
+        ?.previousElementSibling?.querySelector("textarea")
+        ?.focus();
+    }
   };
 
   const handleKeyDownArrowDown = (
     event: KeyboardEvent<HTMLTextAreaElement>
   ) => {
     event.preventDefault();
-    setState({
-      ...state,
-      selectedTag: state.selectedTag
-        ? project?.tags[project?.tags.indexOf(state.selectedTag) + 1] ??
-          project?.tags[project?.tags.length - 1]
-        : project?.tags[0],
-    });
+    if (state.selectedTag) {
+      setState({
+        ...state,
+        selectedTag: state.selectedTag
+          ? project?.tags[project?.tags.indexOf(state.selectedTag) + 1] ??
+            project?.tags[project?.tags.length - 1]
+          : project?.tags[0],
+      });
+    } else {
+      querySelectorParent(textAreaRef?.current, "li")
+        ?.nextElementSibling?.querySelector("textarea")
+        ?.focus();
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -178,6 +192,10 @@ export function StepEditor(props: StepEditorProps) {
     });
 
     const showTagSuggest = Boolean(tagAtCursor);
+    //xxx
+    // if (!showTagSuggest) {
+    //   return;
+    // }
 
     setState((prevState) => ({
       ...prevState,
@@ -213,7 +231,7 @@ export function StepEditor(props: StepEditorProps) {
     });
   };
 
-  const handleClick = (event: MouseEvent<HTMLTextAreaElement>) => {
+  const handleClick = (event: FocusEvent<HTMLTextAreaElement>) => {
     setTimeout(() => {
       setStateTextAreaSelection(event.target as HTMLTextAreaElement);
     });
@@ -255,13 +273,9 @@ export function StepEditor(props: StepEditorProps) {
     }));
   };
 
-  const handleCancelClick = () => {
-    props.onCancel();
-  };
+  const handleCancelClick = () => {};
 
   const handleSaveClick = () => {
-    props.onSave(createTestStepFromText(state.value));
-
     setState((prevState) => ({
       ...prevState,
       value: "",
@@ -272,35 +286,73 @@ export function StepEditor(props: StepEditorProps) {
     }, 100);
   };
 
+  const handleEditClick = () => {
+    console.log("handleEditClick", props.step);
+
+    setTimeout(() => {
+      setState({
+        ...state,
+        value: props.step?.text ?? "",
+        isEditing: true,
+      });
+    });
+    // setTimeout(() => {
+    //   textAreaRef.current?.focus();
+    // });
+  };
+
+  const handleEditBlur = () => {
+    console.log("handleEditBlur", state.value);
+
+    setState((previousState) => ({
+      ...previousState,
+      isEditing: false,
+    }));
+  };
+
+  const fragments = useMemo(() => {
+    if (state.isEditing) {
+      return stepFragments(createTestStepFromText(state.value));
+    }
+    return stepFragments(props.step);
+  }, [props.step, state.isEditing, state.value]);
+
   return (
     <Container>
-      <TextArea
-        ref={textAreaRef}
-        value={state.value}
-        autoFocus
-        onInput={handleInput}
-        onKeyDown={handleKeyDown}
-        onSelect={handleSelect}
-        onClick={handleClick}
-      />
+      <TextAreaContainer style={{ opacity: state.isEditing ? "1" : "0" }}>
+        <TextArea
+          ref={textAreaRef}
+          value={state.value}
+          onInput={handleInput}
+          onKeyDown={handleKeyDown}
+          onSelect={handleSelect}
+          onFocus={handleEditClick}
+          onBlur={handleEditBlur}
+        />
 
-      <ActionsContainer>
-        <Button onClick={handleCancelClick}>Cancel</Button>
+        {/* <ActionsContainer>
+            <Button onClick={handleCancelClick}>Cancel</Button>
 
-        <Button disabled={state.value.trim() === ""} onClick={handleSaveClick}>
-          Save
-        </Button>
-      </ActionsContainer>
+            <Button
+              disabled={state.value.trim() === ""}
+              onClick={handleSaveClick}
+            >
+              Save
+            </Button>
+          </ActionsContainer> */}
 
-      <FocusAbsorber type="text" style={{ opacity: 0 }} />
+        {/* <FocusAbsorber type="text" style={{ opacity: 0 }} /> */}
 
-      <Measurement ref={measurementSpanRef}>
-        {state.value.substring(0, tagAtCursor?.openBracketIndex)}
-      </Measurement>
+        <Measurement ref={measurementSpanRef}>
+          {state.value.substring(0, tagAtCursor?.openBracketIndex)}
+        </Measurement>
+      </TextAreaContainer>
 
       {state.showTagSuggest && (
         <TagSuggestContainer
-          style={{ marginLeft: `${measurementSpanRef.current?.offsetWidth}px` }}
+          style={{
+            marginLeft: `${measurementSpanRef.current?.offsetWidth}px`,
+          }}
         >
           <TagSuggest
             selectedTag={state.selectedTag}
@@ -309,6 +361,27 @@ export function StepEditor(props: StepEditorProps) {
           />
         </TagSuggestContainer>
       )}
+
+      <StepDisplay>
+        {fragments.map((token, index) => {
+          switch (token.type) {
+            case "text":
+              return (
+                <StepTokenText key={`${token.value}_${index}`}>
+                  {token.value}
+                </StepTokenText>
+              );
+            case "tag":
+              return (
+                <StepTokenTag key={`${token.value}_${index}`}>
+                  <Link to={`/tag_${token.tag.name}`}>({token.value})</Link>
+                </StepTokenTag>
+              );
+            default:
+              return null;
+          }
+        })}
+      </StepDisplay>
     </Container>
   );
 }
