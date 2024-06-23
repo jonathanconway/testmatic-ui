@@ -1,6 +1,7 @@
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { HOME_ROUTE } from "./screens/home-screen/home-screen.route";
+import { HOME_ROUTE } from "./screens";
+import { NotificationProvider } from "./shared";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -17,6 +18,7 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <NotificationProvider />
     </QueryClientProvider>
   </React.StrictMode>
 );

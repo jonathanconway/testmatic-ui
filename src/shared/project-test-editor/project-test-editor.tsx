@@ -1,11 +1,14 @@
 import { Button } from "../button";
+import { Stack } from "../layout";
 import { useGetProject, usePostProject } from "../project";
 import { StepEditor } from "../step";
+import { StepAdder } from "../step/step-editor/step-adder";
+import { StepInputClassNames } from "../step/step-editor/step-editor-input/step-input";
 import { TitleEditor } from "../title-editor";
+import { Tooltip } from "../tooltip";
 import { LinksBox } from "./links-box";
 import {
   H2,
-  Container,
   StepsList,
   StepsListItem,
   Header,
@@ -14,15 +17,20 @@ import {
   Column,
   TagsContainer,
   LinksContainer,
-  StepsActionContainer,
   RunsContainer,
   H3,
-  TopContainer,
 } from "./project-test-editor.styles";
+import * as Styled from "./project-test-editor.styles";
 import { RunsBox } from "./runs-box";
 import { TagsBox } from "./tags-box";
-import { useMemo, useState } from "react";
-import { Step, Test, projectAddTest, projectUpdateTest } from "testmatic";
+import { ChangeEvent, useMemo, useRef, useState } from "react";
+import {
+  Step,
+  Test,
+  createTestStepFromText,
+  projectAddTest,
+  projectUpdateTest,
+} from "testmatic";
 
 interface ProjectTestEditorProps {
   readonly test: Test;
@@ -32,21 +40,15 @@ interface ProjectTestEditorProps {
 interface ProjectTestEditorState {
   readonly test?: Test;
   readonly editingStep?: Step;
-  readonly addingStep?: Step;
 }
 
-const STEP_NEW: Step = {
-  text: "New step",
-  tags: [],
-};
-
 export function ProjectTestEditor(props: ProjectTestEditorProps) {
+  const stepsContainerRef = useRef<HTMLDivElement>(null);
+
   const [state, setState] = useState<ProjectTestEditorState>({});
 
   const { data: project } = useGetProject();
   const { mutateAsync: postProject } = usePostProject();
-
-  const { editingStep, addingStep } = state;
 
   const isNewTest = props.test.name === "test_new";
   const isSaveButtonDisabled = useMemo(() => {
@@ -89,82 +91,126 @@ export function ProjectTestEditor(props: ProjectTestEditorProps) {
   };
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
+    setState((previousState) => ({
+      ...previousState,
       test: {
         ...test,
         title: event.target.value,
       },
-    });
-  };
-
-  const handleClickStep = (step: Step) => {
-    setState({
-      ...state,
-      addingStep: undefined,
-      editingStep: step,
-    });
-  };
-
-  const handleEditStepCancel = () => {
-    setState({
-      ...state,
-      editingStep: undefined,
-      addingStep: undefined,
-    });
-  };
-
-  const handleEditStepSave = (savedStep: Step) => {
-    console.log(
-      "handleEditStepSave",
-      { savedStep, editingStep },
-      editingStep ? test.steps.indexOf(editingStep) : undefined
-    );
-    setState({
-      ...state,
-      editingStep: undefined,
-      test: {
-        ...test,
-        steps: test.steps.map((existingStep) =>
-          existingStep === editingStep ? savedStep : existingStep
-        ),
-      },
-    });
+    }));
   };
 
   const handleClickAddStep = () => {
-    setState({
-      ...state,
-      editingStep: undefined,
-      addingStep: undefined,
-    });
-    setState({
-      ...state,
-      editingStep: undefined,
-      addingStep: { tags: [], text: "" },
-    });
+    addNewStep();
   };
 
-  const handleAddStepCancel = () => {
-    setState({
-      ...state,
-      editingStep: undefined,
-      addingStep: undefined,
-    });
+  const handleStepEditorClick = (step: Step) => () => {
+    setState((previousState) => ({
+      ...previousState,
+      editingStep: step,
+    }));
   };
 
-  const handleAddStepSave = (step: Step) => {
-    setState({
+  const handleStepEditorGoPrevious = (stepIndex: number) => () => {
+    if (stepIndex <= 0) {
+      return;
+    }
+
+    setState((previousState) => ({
+      ...previousState,
+      editingStep: test.steps[stepIndex - 1],
+    }));
+  };
+
+  const handleStepEditorGoNext = (stepIndex: number) => () => {
+    if (stepIndex === test.steps.length - 1) {
+      addNewStep();
+      return;
+    }
+
+    setState((previousState) => ({
+      ...previousState,
+      editingStep: test.steps[stepIndex + 1],
+    }));
+  };
+
+  const handleStepEditorCancel = (editingStepIndex: number) => () => {
+    setState((previousState) => ({
+      ...previousState,
       editingStep: undefined,
+    }));
+    // topContainerRef.current?.blur();
+  };
+
+  const handleStepEditorEditingStepChange =
+    (editingStepIndex: number) => (editingStep: Step) => {
+      const test = state.test ?? props.test;
+
+      const newState = {
+        test: {
+          ...test,
+          steps: test.steps.map((step, stepIndex) =>
+            stepIndex === editingStepIndex ? editingStep : step
+          ),
+        },
+      };
+
+      setState((previousState) => ({
+        ...previousState,
+        test: {
+          ...test,
+          steps: test.steps.map((step, stepIndex) =>
+            stepIndex === editingStepIndex ? editingStep : step
+          ),
+        },
+      }));
+    };
+
+  const addNewStep = (stepText = "") => {
+    const test = state.test ?? props.test;
+
+    const newStep = createTestStepFromText(stepText);
+
+    setState((previousState) => ({
+      ...previousState,
       test: {
         ...test,
-        steps: [...test.steps, step],
+        steps: [...test.steps, newStep],
       },
+      editingStep: newStep,
+    }));
+
+    setTimeout(() => {
+      const lastTextArea = Array.from(
+        stepsContainerRef?.current?.querySelectorAll(
+          `textarea.${StepInputClassNames.StepInputTextArea}`
+        ) ?? []
+      ).slice(-1)[0] as HTMLTextAreaElement;
+
+      lastTextArea.selectionStart = lastTextArea.value.length;
     });
+  };
+
+  const handleStepAdderInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    addNewStep(event.target.value);
+  };
+
+  const handleDeleteClick = (deleteStepIndex: number) => () => {
+    const test = state.test ?? props.test;
+
+    setState((previousState) => ({
+      ...previousState,
+      test: {
+        ...test,
+        steps: test.steps.filter(
+          (_, stepIndex) => stepIndex !== deleteStepIndex
+        ),
+      },
+    }));
   };
 
   return (
-    <Container>
+    <Stack spacing={1} height="100%">
       <Header>
         <H2>
           Test:{" "}
@@ -181,35 +227,42 @@ export function ProjectTestEditor(props: ProjectTestEditorProps) {
           </Button>
         </div>
         <div>
-          <Button onClick={props.onCloseClick}>✕</Button>
+          <Tooltip contents="Close">
+            <Button onClick={props.onCloseClick}>✕</Button>
+          </Tooltip>
         </div>
       </Header>
 
-      <TopContainer>
-        <H3>Steps</H3>
+      {/* todo: rename to StepsContainer or StepsSection */}
+      <Stack spacing={1} ref={stepsContainerRef}>
+        <Styled.StepsHeader>
+          <H3>Steps</H3>
+          <Button onClick={handleClickAddStep}>Add step</Button>
+        </Styled.StepsHeader>
 
         <StepsContainer>
           <StepsList>
-            {test.steps.map((step, index) => (
-              <StepsListItem key={`${step.text}_${index}`}>
-                <StepEditor step={step} />
+            {test.steps.map((step, stepIndex) => (
+              <StepsListItem key={`${step.text}_${stepIndex}`}>
+                <StepEditor
+                  isEditing={state.editingStep === step}
+                  step={step}
+                  onClick={handleStepEditorClick(step)}
+                  onChange={handleStepEditorEditingStepChange(stepIndex)}
+                  onGoPrevious={handleStepEditorGoPrevious(stepIndex)}
+                  onGoNext={handleStepEditorGoNext(stepIndex)}
+                  onCancel={handleStepEditorCancel(stepIndex)}
+                  onDeleteClick={handleDeleteClick(stepIndex)}
+                />
               </StepsListItem>
             ))}
 
-            {addingStep && (
-              <StepsListItem key="adding-step">
-                <StepEditor step={STEP_NEW} />
-              </StepsListItem>
-            )}
+            <StepsListItem key="adding-step">
+              <StepAdder onInput={handleStepAdderInput} />
+            </StepsListItem>
           </StepsList>
-
-          <StepsActionContainer>
-            {!addingStep && (
-              <Button onClick={handleClickAddStep}>Add step</Button>
-            )}
-          </StepsActionContainer>
         </StepsContainer>
-      </TopContainer>
+      </Stack>
 
       <OtherContainer>
         <Column>
@@ -230,6 +283,6 @@ export function ProjectTestEditor(props: ProjectTestEditorProps) {
           </RunsContainer>
         </Column>
       </OtherContainer>
-    </Container>
+    </Stack>
   );
 }

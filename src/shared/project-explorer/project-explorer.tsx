@@ -1,5 +1,7 @@
 import { Button } from "../button";
+import { IconButton } from "../icon-button";
 import { runResultEmoji } from "../run";
+import { Tooltip } from "../tooltip";
 import { itemId } from "../utils";
 import {
   ProjectExplorerItem,
@@ -55,14 +57,16 @@ export function ProjectExplorer({
             >
               <ProjectExplorerItemMain>
                 <span>🧪 </span>
-                <Link to={`/${itemId(test)}`}>{test.title}</Link>
+                <Tooltip contents={test.title}>
+                  <Link to={`/${itemId(test)}`}>{test.title}</Link>
+                </Tooltip>
               </ProjectExplorerItemMain>
               <ProjectExplorerItemActions>
                 {runResultEmoji(projectGetTestRunLatest(test)?.result)}
 
-                <Button title="Delete" size="small">
-                  🗑️
-                </Button>
+                <Tooltip contents="Delete test">
+                  <IconButton size="small" icon="delete" />
+                </Tooltip>
               </ProjectExplorerItemActions>
             </ProjectExplorerItem>
           ))}

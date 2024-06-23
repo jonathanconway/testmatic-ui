@@ -1,7 +1,7 @@
 export function querySelectorParent(
   element: HTMLElement | null | undefined,
   selector: string
-) {
+): HTMLElement | null {
   if (!element) {
     return null;
   }
@@ -10,5 +10,5 @@ export function querySelectorParent(
     return element;
   }
 
-  return null;
+  return querySelectorParent(element.parentElement, selector);
 }

@@ -1,4 +1,4 @@
-import { Container } from "./list-box.styles";
+import * as Styled from "./list-box.styles";
 import { ReactNode } from "react";
 
 export interface ListBoxProps {
@@ -6,5 +6,5 @@ export interface ListBoxProps {
 }
 
 export function ListBox(props: ListBoxProps) {
-  return <Container>{props.children}</Container>;
+  return <Styled.Container>{props.children}</Styled.Container>;
 }

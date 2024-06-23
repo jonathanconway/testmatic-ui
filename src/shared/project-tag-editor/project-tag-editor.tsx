@@ -16,7 +16,7 @@ interface ProjectTagEditorProps {
 
 export function ProjectTagEditor({ tag }: ProjectTagEditorProps) {
   const { data: project } = useGetProject();
-  console.log({ project });
+
   return (
     <ProjectTagEditorContainer>
       <H2>Tag: {tag.title}</H2>
@@ -26,7 +26,7 @@ export function ProjectTagEditor({ tag }: ProjectTagEditorProps) {
       {project && (
         <TestsList>
           {getTestsReferencingTag(project.tests, tag).map((test) => (
-            <TestsListItem>
+            <TestsListItem key={test.name}>
               <div>
                 🧪&nbsp;
                 <Link to={`/${itemId(test)}`}>{test.title}</Link>

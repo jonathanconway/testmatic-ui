@@ -1,7 +1,11 @@
 import { BorderBox } from "../border-box";
+import { controlBase, controlSingleLineHeightRem } from "../control";
 import styled from "styled-components";
 
 export const Container = styled(BorderBox)`
-  font-size: 0.85rem;
+  ${controlBase}
+
   height: 100%;
+  min-height: ${controlSingleLineHeightRem}rem;
+  overflow: scroll;
 `;

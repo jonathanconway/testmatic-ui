@@ -1,3 +1,5 @@
+import { showNotification } from "../notification";
+import { useGetProject } from "./use-get-project.hook";
 import { useMutation } from "@tanstack/react-query";
 import { pick } from "lodash";
 import { Project, ProjectView } from "testmatic";
@@ -21,7 +23,18 @@ export function usePostProject() {
   const mutationFn = (projectOrProjectView: Project | ProjectView) =>
     postProject(pickProject(projectOrProjectView));
 
+  const { refetch } = useGetProject();
+
+  const onSuccess = () => {
+    refetch();
+    showNotification({
+      message: "Project saved.",
+      type: "success",
+    });
+  };
+
   return useMutation({
     mutationFn,
+    onSuccess,
   });
 }
