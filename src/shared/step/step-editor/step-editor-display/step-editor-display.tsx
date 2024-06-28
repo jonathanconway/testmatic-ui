@@ -9,7 +9,7 @@ import { Step } from "testmatic";
 interface StepEditorDisplayProps {
   readonly step?: Step;
 
-  readonly onClick: VoidFunction;
+  readonly onClick?: VoidFunction;
 }
 
 export function StepEditorDisplay(props: StepEditorDisplayProps) {

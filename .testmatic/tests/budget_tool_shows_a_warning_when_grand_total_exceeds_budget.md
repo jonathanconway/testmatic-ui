@@ -10,8 +10,11 @@
 - Observe that (budget total) shows (over-budget warning)
 - Enter values into (material quantity inputs) so that grand total is < 500. E.g. reduce "Carpeting" back to 0, Grand total - 500
 - Observe that (grand total) does not show any warning
+- Observe that (aaaaa) does (abcde)
 
 ## Links
+
+- [Google](http://google.com)
 
 ## Tags
 

@@ -44,7 +44,7 @@ export const Main = styled.div`
 
   & > :first-child {
     width: 30%;
-    // max-width: 25rem;
+    max-width: 25rem;
     resize: horizontal;
   }
 `;

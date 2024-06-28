@@ -1,9 +1,7 @@
-import { HTMLProps } from "../utils";
-import { Input } from "./title-editor.styles";
-import { InputHTMLAttributes, useEffect, useRef } from "react";
+import * as Styled from "./title-editor.styles";
+import { HTMLProps, useEffect, useRef } from "react";
 
-export interface TitleEditorProps
-  extends HTMLProps<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>> {
+export interface TitleEditorProps extends HTMLProps<HTMLInputElement> {
   readonly autoSelect?: boolean;
 }
 
@@ -13,12 +11,16 @@ export function TitleEditor({ autoSelect, ...restProps }: TitleEditorProps) {
   useEffect(() => {
     if (autoSelect) {
       setTimeout(() => {
-        console.log("auto");
         inputRef.current?.focus();
         inputRef.current?.select();
       });
     }
   }, [autoSelect]);
 
-  return <Input type="text" ref={inputRef} {...restProps} />;
+  return (
+    <Styled.Container>
+      <Styled.Input type="text" ref={inputRef} {...restProps} />
+      <Styled.Display>{restProps.value}</Styled.Display>
+    </Styled.Container>
+  );
 }

@@ -21,7 +21,7 @@ export const ProjectExplorerSubheading = styled.div`
   padding: 0.5rem 0;
 `;
 
-export const ProjectExplorerItem = styled.div<{ selected: boolean }>`
+export const ProjectExplorerItem = styled.div<{ $selected: boolean }>`
   display: flex;
   flex: 1;
   padding: 0.125rem 0.25rem;
@@ -39,7 +39,7 @@ export const ProjectExplorerItem = styled.div<{ selected: boolean }>`
     }
   }
 
-  ${({ selected }) =>
+  ${({ $selected: selected }) =>
     selected
       ? `
 background-color: #efefef;
@@ -59,6 +59,18 @@ a {
   color: blue;
 }
       `}
+`;
+
+export const ProjectExplorerItemNested = styled(ProjectExplorerItem)<{
+  $selected: boolean;
+}>`
+  padding-left: 2rem;
+`;
+
+export const ProjectExplorerItemIcon = styled.span`
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.3rem;
 `;
 
 export const ProjectExplorerItemActions = styled.div`

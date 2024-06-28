@@ -1,8 +1,9 @@
 import { Button } from "../button";
 import { IconButton } from "../icon-button";
-import { runResultEmoji } from "../run";
+import { TAG_NEW_NAME, tagEditorRoute } from "../tag-editor";
+import { TEST_NEW_NAME } from "../test-editor";
 import { Tooltip } from "../tooltip";
-import { itemId } from "../utils";
+import { ProjectExplorerTestItem } from "./project-explorer-test-item";
 import {
   ProjectExplorerItem,
   ProjectExplorerItemActions,
@@ -11,8 +12,9 @@ import {
   ProjectExplorerSection,
   ProjectExplorerSubheading,
 } from "./project-explorer.styles";
+import { useProjectExplorer } from "./use-project-explorer.hook";
 import { Link } from "react-router-dom";
-import { Project, projectGetTestRunLatest } from "testmatic";
+import { Project } from "testmatic";
 
 interface ProjectExplorerProps {
   readonly project?: Project;
@@ -28,47 +30,38 @@ export function ProjectExplorer({
   onClickTestAdd,
   onClickTagAdd,
 }: ProjectExplorerProps) {
+  const { selected, handleCancelNewTestClick, handleDeleteTagClick } =
+    useProjectExplorer();
+
   return (
     <ProjectExplorerListBox>
       <ProjectExplorerSection>
         <ProjectExplorerSubheading>
           Tests <Button onClick={onClickTestAdd}>Add</Button>
         </ProjectExplorerSubheading>
+
         <div>
-          {selectedItemId === "test_new" && (
-            <ProjectExplorerItem key={"test_new"} selected title="New test">
+          {selectedItemId === TEST_NEW_NAME && (
+            <ProjectExplorerItem key={TEST_NEW_NAME} $selected title="New test">
               <ProjectExplorerItemMain>
                 <span>✨ </span>
                 <span>New test</span>
               </ProjectExplorerItemMain>
+
               <ProjectExplorerItemActions>
-                <Button title="Delete" size="small">
-                  🗑️
-                </Button>
+                <Tooltip contents="Cancel new test">
+                  <IconButton
+                    size="small"
+                    icon="delete"
+                    onClick={handleCancelNewTestClick}
+                  />
+                </Tooltip>
               </ProjectExplorerItemActions>
             </ProjectExplorerItem>
           )}
 
           {project?.tests.map((test) => (
-            <ProjectExplorerItem
-              key={test.name}
-              selected={itemId(test) === selectedItemId}
-              title={test.title}
-            >
-              <ProjectExplorerItemMain>
-                <span>🧪 </span>
-                <Tooltip contents={test.title}>
-                  <Link to={`/${itemId(test)}`}>{test.title}</Link>
-                </Tooltip>
-              </ProjectExplorerItemMain>
-              <ProjectExplorerItemActions>
-                {runResultEmoji(projectGetTestRunLatest(test)?.result)}
-
-                <Tooltip contents="Delete test">
-                  <IconButton size="small" icon="delete" />
-                </Tooltip>
-              </ProjectExplorerItemActions>
-            </ProjectExplorerItem>
+            <ProjectExplorerTestItem test={test} />
           ))}
         </div>
       </ProjectExplorerSection>
@@ -79,8 +72,8 @@ export function ProjectExplorer({
           <Button onClick={onClickTagAdd}>Add</Button>
         </ProjectExplorerSubheading>
         <div>
-          {selectedItemId === "tag_new" && (
-            <ProjectExplorerItem key={"tag_new"} selected title="New tag">
+          {selectedItemId === TAG_NEW_NAME && (
+            <ProjectExplorerItem key={TAG_NEW_NAME} $selected title="New tag">
               <ProjectExplorerItemMain>
                 <span>✨ </span>
                 <span>New tag</span>
@@ -91,13 +84,22 @@ export function ProjectExplorer({
           {project?.tags.map((tag) => (
             <ProjectExplorerItem
               key={tag.name}
-              selected={itemId(tag) === selectedItemId}
-              title={tag.title}
+              $selected={tag.name === selected.tagName}
             >
               <ProjectExplorerItemMain>
                 <span>🏷️ </span>
-                <Link to={`/${itemId(tag)}`}>{tag.title}</Link>
+                <Link to={tagEditorRoute(tag.name)}>{tag.title}</Link>
               </ProjectExplorerItemMain>
+
+              <ProjectExplorerItemActions>
+                <Tooltip contents="Delete tag">
+                  <IconButton
+                    size="small"
+                    icon="delete"
+                    onClick={handleDeleteTagClick(tag)}
+                  />
+                </Tooltip>
+              </ProjectExplorerItemActions>
             </ProjectExplorerItem>
           ))}
         </div>

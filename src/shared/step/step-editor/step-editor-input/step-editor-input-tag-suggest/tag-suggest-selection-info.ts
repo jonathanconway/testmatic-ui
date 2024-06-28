@@ -62,13 +62,6 @@ export function getInputTagSelectionInfo({
     selectionStart
   );
 
-  // console.log("getSelectionInfo", {
-  //   openBracketIndex,
-  //   closeBracketIndex,
-  //   valueBetweenBrackets,
-  //   valueBetweenBracketsBeforeCursor,
-  // });
-
   return {
     openBracketIndex,
     closeBracketIndex,

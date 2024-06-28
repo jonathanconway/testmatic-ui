@@ -1,11 +1,9 @@
 import { buttonBase } from "../button";
+import { iconButtonSizes } from "./icon-button.mixins";
 import styled from "styled-components";
 
-export const Button = styled.button`
+export const Button = styled.button<{ readonly $size?: "small" | "normal" }>`
   ${buttonBase}
 
-  padding: 0.125rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  line-height: 0.9rem;
+  ${({ $size }) => iconButtonSizes[$size ?? "normal"]}
 `;

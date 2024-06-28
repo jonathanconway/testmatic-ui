@@ -1,15 +1,14 @@
 import "./index.css";
+import { queryClient } from "./query-client";
 import reportWebVitals from "./reportWebVitals";
 import { HOME_ROUTE } from "./screens";
 import { NotificationProvider } from "./shared";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([HOME_ROUTE]);
-
-const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -27,7 +27,7 @@ export function TagSuggest(props: TagSuggestProps) {
     event.stopPropagation();
   };
 
-  const isFiltering = !!props.filterText; //!props.selectedTag;
+  const isFiltering = !!props.filterText;
 
   const filteredTags = isFiltering
     ? filterTags(project?.tags, props.filterText)
@@ -36,8 +36,6 @@ export function TagSuggest(props: TagSuggestProps) {
   const highlightedTag = isFiltering
     ? filteredTags?.[0] ?? props.selectedTag
     : props.selectedTag ?? project?.tags?.[0];
-
-  // console.log("TagSuggest", props.filterText, { isFiltering, filteredTags });
 
   return (
     <Styled.PopupContainer onClick={handleClick}>

@@ -1,6 +1,10 @@
-import { IconNames } from "./icon-names";
+import { IconName, IconNames } from "./icon-names";
 
-export const ICON_SYMBOLS = {
+export const ICON_SYMBOLS: Partial<Record<IconName, string>> = {
+  [IconNames.Close]: "✕",
   [IconNames.Edit]: "✎",
   [IconNames.Delete]: "✕",
+  [IconNames.Error]: "⚠",
+  [IconNames.Expand]: "+",
+  [IconNames.Collapse]: "-",
 };

@@ -1,14 +1,14 @@
 import {
   Tooltip as MUITooltip,
-  TooltipProps,
-  tooltipClasses,
+  TooltipProps as MUITooltipProps,
+  tooltipClasses as muiTooltipClasses,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-export const Tooltip = styled(({ className, ...props }: TooltipProps) => (
+export const Tooltip = styled(({ className, ...props }: MUITooltipProps) => (
   <MUITooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
+  [`& .${muiTooltipClasses.tooltip}`]: {
     backgroundColor: theme.palette.common.white,
     color: "rgba(0, 0, 0, 0.87)",
     border: "solid 1px silver",

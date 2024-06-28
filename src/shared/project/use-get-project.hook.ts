@@ -8,7 +8,7 @@ async function getProject() {
   return project;
 }
 
-const USE_GET_PROJECT_QUERY_KEY = "project";
+export const USE_GET_PROJECT_QUERY_KEY = "project";
 
 export function useGetProject() {
   return useQuery({

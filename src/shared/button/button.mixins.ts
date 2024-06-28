@@ -6,7 +6,10 @@ export const buttonBase = css`
   border: solid 1px #d0d0d0;
 
   &:not(:disabled) {
-    cursor: pointer;
+    &,
+    & {
+      cursor: pointer;
+    }
 
     &:hover,
     &:focus,

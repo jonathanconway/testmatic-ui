@@ -12,6 +12,7 @@ export function useTagSuggestController(props: {
   readonly input: {
     readonly value: string;
     readonly onChange: (newValue: string) => void;
+    readonly ref: React.MutableRefObject<HTMLTextAreaElement | null>;
   };
 }) {
   const [inputTagSelectionInfo, setInputTagSelectionInfo] =
@@ -132,8 +133,6 @@ export function useTagSuggestController(props: {
       return;
     }
 
-    // setHighlightedTag(newInputTagSelectionInfo.valueBetweenBrackets)
-
     const tagNameOrTitle = newInputTagSelectionInfo.valueBetweenBrackets;
 
     const selectedTag = projectGetTagByNameOrTitle({
@@ -141,36 +140,17 @@ export function useTagSuggestController(props: {
       tagNameOrTitle,
     });
     const isSelectedTag = isTag(selectedTag);
-    // const selectedTagOrUndefined = isTag(selectedTag) ? selectedTag : undefined;
 
     setTagSuggestIsOpen(true);
-    // console.log("onInputSelect", { isSelectedTag, newInputTagSelectionInfo });
 
     if (isSelectedTag) {
       setTagSuggestHighlightedTag(selectedTag);
     }
-    // setTimeout(() => {
-    //   // s.log(
-    //   //   "handleInputSelect setTagSuggestFilterText",
-    //   //   newInputTagSelectionInfo
-    //   // );
-    //   setTagSuggestFilterText(
-    //     newInputTagSelectionInfo.valueBetweenBracketsBeforeCursor
-    //   );
-    // });
-    // console.log(
-    //   "handleInputSelect",
-    //   inputTagSelectionInfo?.valueBetweenBrackets
-    // );
-
-    // setStateTextAreaSelection(newInputTagSelectionInfo);
-    // });
   };
 
   const handleInputInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
     inputLastEvent.current = "input";
 
-    // setTimeout(() => {
     const newInputTagSelectionInfo = getInputTagSelectionInfo(event.target);
 
     const newFilterText =
@@ -188,12 +168,9 @@ export function useTagSuggestController(props: {
 
     setTagSuggestFilterText(newFilterText);
     setTagSuggestHighlightedTag(highlightedTag);
-    // }, 100);
   };
 
-  const handleTagSuggestClose = () => {
-    // console.log("handleClose");
-  };
+  const handleTagSuggestClose = () => {};
 
   const handleTagSuggestSelectTag = (tag?: Tag) => {
     if (!inputTagSelectionInfo || !tag) {
@@ -214,6 +191,14 @@ export function useTagSuggestController(props: {
     props.input.onChange(newValue);
 
     setTagSuggestIsOpen(false);
+
+    setTimeout(() => {
+      if (props.input.ref.current) {
+        props.input.ref.current.selectionStart =
+          props.input.ref.current.selectionEnd =
+            beforeInsertion.length + insertion.length;
+      }
+    });
   };
 
   const tagSuggestSelectionMeasurerValue = props.input.value

@@ -1,19 +1,18 @@
 import { IconButton } from "../../icon-button";
 import { Tooltip } from "../../tooltip";
 import "../../utils";
-import { HTMLProps, timeout } from "../../utils";
+import { timeout } from "../../utils";
 import {
   StepEditorDisplay,
   focusStepEditorDisplayLastLink,
-} from "./step-editor-display/step-editor-display";
-import { StepInput } from "./step-editor-input/step-input";
+} from "./step-editor-display";
+import { StepEditorInput } from "./step-editor-input";
 import * as Styled from "./step-editor.styles";
-import { omit } from "lodash";
-import { KeyboardEvent, useRef } from "react";
+import { HTMLProps, KeyboardEvent, useRef } from "react";
 import { Step } from "testmatic";
 
 export interface StepEditorProps
-  extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
+  extends Omit<HTMLProps<HTMLDivElement>, "onChange" | "step"> {
   readonly step: Step;
   readonly isEditing: boolean;
 
@@ -26,19 +25,19 @@ export interface StepEditorProps
 }
 
 export const StepEditor = function (props: StepEditorProps) {
-  const restProps = omit(
-    props,
+  const {
+    step,
+    isEditing,
 
-    "step",
-    "isEditing",
+    onClick,
+    onChange,
+    onCancel,
+    onGoPrevious,
+    onGoNext,
+    onDeleteClick,
 
-    "onClick",
-    "onChange",
-    "onCancel",
-    "onGoPrevious",
-    "onGoNext",
-    "onDeleteClick"
-  );
+    ...restProps
+  } = props;
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +61,7 @@ export const StepEditor = function (props: StepEditorProps) {
           <StepEditorDisplay step={props.step} onClick={props.onClick} />
         )}
 
-        <StepInput
+        <StepEditorInput
           step={props.step}
           isVisible={props.isEditing}
           onKeyDown={handleStepInputKeyDown}

@@ -1,5 +1,5 @@
 import logo from "../../logo.svg";
-import { Button, ProjectExplorer, ProjectItemEditor } from "../../shared";
+import { Button, ProjectExplorer } from "../../shared";
 import { useHomeScreen } from "./home-screen.hooks";
 import {
   Body,
@@ -9,16 +9,11 @@ import {
   LogoAndTitle,
   Main,
 } from "./home-screen.styles";
+import { Outlet } from "react-router-dom";
 
 export function HomeScreen() {
-  const {
-    project,
-    selectedItemId,
-    selectedItem,
-    onClickTagAdd,
-    onClickTestAdd,
-    onCloseClick,
-  } = useHomeScreen();
+  const { project, selectedItemId, onClickTagAdd, onClickTestAdd } =
+    useHomeScreen();
 
   return (
     <Body>
@@ -42,7 +37,7 @@ export function HomeScreen() {
           onClickTestAdd={onClickTestAdd}
         />
 
-        <ProjectItemEditor item={selectedItem} onClose={onCloseClick} />
+        <Outlet />
       </Main>
     </Body>
   );
