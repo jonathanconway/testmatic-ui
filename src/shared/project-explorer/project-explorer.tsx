@@ -1,8 +1,12 @@
+import { Link } from "react-router-dom";
+import { Project } from "testmatic";
+
 import { Button } from "../button";
 import { IconButton } from "../icon-button";
 import { TAG_NEW_NAME, tagEditorRoute } from "../tag-editor";
 import { TEST_NEW_NAME } from "../test-editor";
 import { Tooltip } from "../tooltip";
+
 import { ProjectExplorerTestItem } from "./project-explorer-test-item";
 import {
   ProjectExplorerItem,
@@ -13,8 +17,6 @@ import {
   ProjectExplorerSubheading,
 } from "./project-explorer.styles";
 import { useProjectExplorer } from "./use-project-explorer.hook";
-import { Link } from "react-router-dom";
-import { Project } from "testmatic";
 
 interface ProjectExplorerProps {
   readonly project?: Project;
@@ -61,7 +63,7 @@ export function ProjectExplorer({
           )}
 
           {project?.tests.map((test) => (
-            <ProjectExplorerTestItem test={test} />
+            <ProjectExplorerTestItem key={test.name} test={test} />
           ))}
         </div>
       </ProjectExplorerSection>

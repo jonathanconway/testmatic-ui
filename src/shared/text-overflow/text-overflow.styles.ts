@@ -1,8 +1,9 @@
 import styled from "styled-components";
+
 import { Text } from "../text";
 
+import { textOverflow } from "./text-overflow.mixins";
+
 export const TextOverflow = styled(Text)`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  ${textOverflow}
 `;

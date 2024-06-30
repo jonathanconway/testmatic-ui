@@ -1,16 +1,19 @@
+import { formatDateTimeString } from "testmatic";
+
 import { BorderBox } from "../../border-box";
+import { Box } from "../../box";
 import { Button } from "../../button";
 import { Heading } from "../../heading";
 import { Header, Stack } from "../../layout";
+import { TextOverflow } from "../../text-overflow";
 import { TitleEditor } from "../../title-editor";
 import { Tooltip } from "../../tooltip";
-import { useRunEditor } from "./use-run-editor.hook";
-import { formatDateTimeString } from "testmatic";
-import { RunEditorSteps } from "./run-editor-steps";
-import { TextOverflow } from "../../text-overflow";
-import { RunEditorResult } from "./run-editor-result";
+
 import { RunEditorFolder } from "./run-editor-folder";
 import { RunEditorRecordings } from "./run-editor-recordings/run-editor-recordings";
+import { RunEditorResult } from "./run-editor-result";
+import { RunEditorSteps } from "./run-editor-steps";
+import { useRunEditor } from "./use-run-editor.hook";
 
 export function RunEditor() {
   const { test, run, runDateTime, handleChangeRunDateTime, handleCloseClick } =
@@ -59,10 +62,12 @@ export function RunEditor() {
         />
 
         <Stack direction="row" spacing={4}>
-          <RunEditorSteps test={test} />
+          <Box width="60%">
+            <RunEditorSteps test={test} />
+          </Box>
 
-          <Stack direction="column" spacing={2}>
-            <RunEditorResult runResult={run?.result} />
+          <Stack direction="column" spacing={4} width="40%">
+            <RunEditorResult />
 
             <RunEditorFolder test={test} run={run} />
 

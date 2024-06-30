@@ -1,5 +1,5 @@
-import { BASE_URL } from "./base";
+import { SERVER_BASE_URL } from "./base";
 
 export function projectGet() {
-  return fetch(`${BASE_URL}/project`);
+  return fetch(`${SERVER_BASE_URL}/project`);
 }

@@ -1,8 +1,9 @@
-import { useGetProject } from "../../project";
 import deepEqual from "deep-equal";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Run } from "testmatic";
+
+import { useGetProject } from "../../project";
 
 interface RunEditorRunState {
   readonly run?: Run;
@@ -11,7 +12,7 @@ interface RunEditorRunState {
 export function useEditingRun() {
   const [state, setState] = useState<RunEditorRunState>({});
 
-  const { data: project } = useGetProject();
+  const { data: project, refetch: refetchProject } = useGetProject();
 
   const { testName = undefined, runDateTime = undefined } = useParams();
 
@@ -44,7 +45,7 @@ export function useEditingRun() {
         }));
       }
     },
-    [originalRun, setState]
+    [originalRun, setState],
   );
 
   return {
@@ -54,5 +55,6 @@ export function useEditingRun() {
     runDateTime,
     isDirty,
     setEditingRun,
+    refetchProject,
   };
 }

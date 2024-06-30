@@ -1,12 +1,14 @@
 import { Run, Test, getRunFilepath } from "testmatic";
-import { Heading } from "../../../heading";
-import { Stack } from "../../../layout";
+
 import { Box } from "../../../box";
 import { testRunFolderOpen } from "../../../client";
-import { IconButton } from "../../../icon-button";
+import { Heading } from "../../../heading";
 import { IconNames } from "../../../icon";
-import { Tooltip } from "../../../tooltip";
+import { IconButton } from "../../../icon-button";
+import { Stack } from "../../../layout";
+import { Link } from "../../../link";
 import { TextOverflow } from "../../../text-overflow";
+import { Tooltip } from "../../../tooltip";
 
 interface RunEditorFolderProps {
   readonly test: Test;
@@ -28,19 +30,9 @@ export function RunEditorFolder(props: RunEditorFolderProps) {
       <Box width="100%">
         <Stack direction="row" alignItems="center" spacing={1} flex={1}>
           <TextOverflow>
-            <Tooltip contents={runFilepath}>
-              <a
-                style={{
-                  maxWidth: "14rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  display: "inline-block",
-                }}
-                href={runFilepathUrl}
-              >
-                {runFilepath}
-              </a>
-            </Tooltip>
+            <Link to={runFilepathUrl}>
+              <Tooltip contents={runFilepath}>{runFilepath}</Tooltip>
+            </Link>
           </TextOverflow>
 
           <Tooltip contents="Open folder">

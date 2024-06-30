@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { useProjectExplorer } from "./use-project-explorer.hook";
-import { Test } from "testmatic";
 import { useParams } from "react-router-dom";
+import { Test } from "testmatic";
+
 import { RunEditorRouteParams } from "../run";
+
+import { useProjectExplorer } from "./use-project-explorer.hook";
 
 interface UseProjectExplorerTestItemProps {
   readonly test: Test;
@@ -13,7 +15,7 @@ interface UseProjectExplorerTestItem {
 }
 
 export function useProjectExplorerTestItem(
-  props: UseProjectExplorerTestItemProps
+  props: UseProjectExplorerTestItemProps,
 ) {
   const { selected } = useProjectExplorer();
 
@@ -26,6 +28,7 @@ export function useProjectExplorerTestItem(
     isExpanded: false,
   });
 
+  // Auto-expand when test run is opened
   useEffect(() => {
     if (props.test.name === testName && runDateTime && !state.isExpanded) {
       setState({
@@ -33,7 +36,7 @@ export function useProjectExplorerTestItem(
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [testName, runDateTime]);
 
   const toggleExpanded = () => {
     setState((previousState) => ({
@@ -42,10 +45,7 @@ export function useProjectExplorerTestItem(
     }));
   };
 
-  // const isTestRunSelected =
-  //   props.test.name === selected.testName && Boolean(selected.runDateTime);
-
-  const isExpanded = state.isExpanded; // || isTestRunSelected;
+  const isExpanded = state.isExpanded;
 
   return {
     isExpanded,

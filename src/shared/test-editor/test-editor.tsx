@@ -5,16 +5,10 @@ import { Heading } from "../heading";
 import { Header, Stack } from "../layout";
 import { TitleEditor } from "../title-editor";
 import { Tooltip } from "../tooltip";
-import { RunsBox } from "./runs-box";
-import { TestLinks } from "./test-editor-links";
+import { TestEditorLinks } from "./test-editor-links";
+import { TestEditorRuns } from "./test-editor-runs";
 import { TestEditorSteps } from "./test-editor-steps";
 import { TestEditorTags } from "./test-editor-tags";
-import {
-  OtherContainer,
-  Column,
-  RunsContainer,
-  H3,
-} from "./test-editor.styles";
 import { useTestEditor } from "./use-test-editor.hook";
 
 export function TestEditor() {
@@ -33,8 +27,8 @@ export function TestEditor() {
   console.log(test.runs);
 
   return (
-    <BorderBox flex={1}>
-      <Stack spacing={1} height="100%">
+    <BorderBox flex={1} overflow="scroll">
+      <Stack spacing={2} height="100%">
         <Header
           headingSlot={
             <Heading level={2}>
@@ -64,21 +58,19 @@ export function TestEditor() {
           }
         />
 
-        <TestEditorSteps test={test} onChange={handleChangeTest} />
+        <Stack direction="row" spacing={4}>
+          <Box width="60%">
+            <TestEditorSteps test={test} onChange={handleChangeTest} />
+          </Box>
 
-        <OtherContainer>
-          <Column>
+          <Stack direction="column" spacing={4} width="40%">
             <TestEditorTags test={test} />
 
-            <TestLinks test={test} />
-          </Column>
-          <Column>
-            <RunsContainer>
-              <H3>Runs</H3>
-              <RunsBox test={test} />
-            </RunsContainer>
-          </Column>
-        </OtherContainer>
+            <TestEditorLinks test={test} />
+
+            <TestEditorRuns test={test} />
+          </Stack>
+        </Stack>
       </Stack>
     </BorderBox>
   );

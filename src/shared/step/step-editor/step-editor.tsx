@@ -72,15 +72,10 @@ export const StepEditor = function (props: StepEditorProps) {
           onGoNext={props.onGoNext}
         />
       </Styled.MainContainer>
-      <Styled.ActionsContainer>
-        <Tooltip contents="Delete step">
-          <IconButton
-            icon="delete"
-            size="small"
-            onClick={props.onDeleteClick}
-          />
-        </Tooltip>
-      </Styled.ActionsContainer>
+
+      <Tooltip contents="Delete step">
+        <IconButton icon="delete" size="small" onClick={props.onDeleteClick} />
+      </Tooltip>
     </Styled.Container>
   );
 };

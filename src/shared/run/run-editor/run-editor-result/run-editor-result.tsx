@@ -1,28 +1,35 @@
-import { RunResult, RunResults } from "testmatic";
+import { RunResults } from "testmatic";
+
 import { Heading } from "../../../heading";
+import { Icon } from "../../../icon";
 import { Stack } from "../../../layout";
 import { ToggleButton, ToggleButtons } from "../../../toggle-buttons";
-import { Icon, IconNames } from "../../../icon";
+import { sentenceCase } from "../../../utils";
 
-interface RunEditorResultProps {
-  readonly runResult?: RunResult;
-}
+import { useRunEditorResult } from "./use-run-editor-result.hook";
 
-export function RunEditorResult(props: RunEditorResultProps) {
+export function RunEditorResult() {
+  const runResults = [RunResults.Passed, RunResults.Failed, RunResults.Mixed];
+
+  const { runResult: currentRunResult, handleRunResultClick } =
+    useRunEditorResult();
+
   return (
     <Stack spacing={1}>
       <Heading level={3}>Result</Heading>
 
-      <ToggleButtons value={props.runResult}>
-        <ToggleButton value={RunResults.Passed}>
-          <Icon icon={IconNames.Passed} /> <span>Passed</span>
-        </ToggleButton>
-        <ToggleButton value={RunResults.Failed}>
-          <Icon icon={IconNames.Failed} /> Failed
-        </ToggleButton>
-        <ToggleButton value={RunResults.Mixed}>
-          <Icon icon={IconNames.Mixed} /> Mixed
-        </ToggleButton>
+      <ToggleButtons>
+        {runResults.map((runResult) => (
+          <ToggleButton
+            key={runResult}
+            value={runResult}
+            isSelected={currentRunResult === runResult}
+            onClick={handleRunResultClick(runResult)}
+          >
+            <span>{sentenceCase(runResult)}</span>
+            <Icon icon={runResult} />
+          </ToggleButton>
+        ))}
       </ToggleButtons>
     </Stack>
   );

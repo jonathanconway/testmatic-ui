@@ -1,8 +1,8 @@
+import { Box } from "../../box";
 import { ICON_SYMBOLS } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Stack } from "../../layout";
 import { Tooltip } from "../../tooltip";
-import { Box as MUIBox } from "@mui/material";
 import { HTMLProps } from "react";
 
 export interface ListBoxItemProps extends HTMLProps<HTMLDivElement> {
@@ -15,7 +15,9 @@ export interface ListBoxItemProps extends HTMLProps<HTMLDivElement> {
 export function ListBoxItem(props: ListBoxItemProps) {
   return (
     <Stack direction="row" padding="0.125rem">
-      <MUIBox flex={1}>{props.children}</MUIBox>
+      <Box flex={1} alignContent="center">
+        {props.children}
+      </Box>
 
       <Stack direction="row" spacing="0.25rem">
         <Tooltip contents="Edit">

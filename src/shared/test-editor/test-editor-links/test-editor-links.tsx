@@ -7,17 +7,15 @@ import { LinksBoxAddLink } from "./test-editor-links-add-link";
 import { useTestLinks } from "./use-test-editor-links.hook";
 import { Test } from "testmatic";
 
-export interface TestLinksProps {
+export interface TestEditorLinksProps {
   readonly test: Test;
 }
 
-export function TestLinks(props: TestLinksProps) {
+export function TestEditorLinks(props: TestEditorLinksProps) {
   const { handleDeleteClick } = useTestLinks(props);
 
   return (
     <Stack spacing={1}>
-      <Heading level={3}>Tags</Heading>
-
       <AddRemoveListBox
         headerContent={<Heading level={3}>Links</Heading>}
         renderAddItemPopupContent={({ close }) => (

@@ -27,7 +27,8 @@ export const ProjectExplorerItem = styled.div<{ $selected: boolean }>`
   padding: 0.125rem 0.25rem;
   justify-content: space-between;
   gap: 0.25rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
+  width: 100%;
 
   & > a {
     flex: 1;
@@ -67,11 +68,11 @@ export const ProjectExplorerItemNested = styled(ProjectExplorerItem)<{
   padding-left: 2rem;
 `;
 
-export const ProjectExplorerItemIcon = styled.span`
-  display: inline-flex;
-  width: 1.5rem;
-  height: 1.3rem;
-`;
+// export const ProjectExplorerItemIcon = styled.span`
+//   display: inline-flex;
+//   width: 1.5rem;
+//   height: 1.3rem;
+// `;
 
 export const ProjectExplorerItemActions = styled.div`
   display: flex;
@@ -80,8 +81,11 @@ export const ProjectExplorerItemActions = styled.div`
 `;
 
 export const ProjectExplorerItemMain = styled.div`
+  display: inline-flex;
+  gap: 0.5rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 0.9rem;
+  align-items: center;
 `;

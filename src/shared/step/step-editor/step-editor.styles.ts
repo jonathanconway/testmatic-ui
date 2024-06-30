@@ -14,6 +14,4 @@ export const MainContainer = styled.div`
   width: 100%;
 `;
 
-export const ActionsContainer = styled.div`
-  width: 2rem;
-`;
+export const ActionsContainer = styled.div``;

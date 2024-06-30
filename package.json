@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/cors": "^2.8.17",
     "@types/jest": "^27.5.2",
     "@types/lodash": "^4.17.4",
@@ -28,18 +29,21 @@
     "hygen": "^6.2.11",
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.11",
     "styled-system": "^5.1.5",
+    "thumbsupply": "^0.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start-server": "ts-node server/index",
+    "start-server": "nodemon --watch 'server/*.ts' --ignore 'server/**/*.test.*' --exec 'ts-node' server/server",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -65,6 +69,7 @@
   },
   "proxy": "http://localhost:3100",
   "devDependencies": {
-    "@types/deep-equal": "^1.0.4"
+    "@types/deep-equal": "^1.0.4",
+    "@types/thumbsupply": "^0.4.2"
   }
 }

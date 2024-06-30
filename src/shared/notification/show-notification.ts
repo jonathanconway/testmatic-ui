@@ -1,8 +1,10 @@
 import { ReactNode } from "react";
 
+import { NotificationType } from "./notification";
+
 export interface ShowNotificationParams {
   readonly message?: ReactNode | string;
-  readonly type?: "success" | "error" | "info";
+  readonly type?: NotificationType;
 }
 
 export class ShowNotificationEvent extends Event {

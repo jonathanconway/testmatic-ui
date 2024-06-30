@@ -1,9 +1,11 @@
+import { HTMLProps, useEffect, useRef } from "react";
+
 import { Heading } from "../heading";
 import { IconButton } from "../icon-button";
 import { Stack } from "../layout";
 import { Tooltip } from "../tooltip";
+
 import * as Styled from "./popover-window.styles";
-import { HTMLProps, useEffect, useRef } from "react";
 
 interface PopoverWindowProps extends HTMLProps<HTMLDivElement> {
   readonly title?: string;
@@ -43,7 +45,7 @@ export function PopoverWindow({
     return () => {
       window.removeEventListener("mousedown", listener);
     };
-  }, []);
+  }, [onClose]);
 
   // todo: capture tab
 

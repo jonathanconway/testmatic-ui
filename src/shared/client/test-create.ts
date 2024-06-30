@@ -1,8 +1,9 @@
 import { CreateTestParams } from "testmatic";
-import { BASE_URL } from "./base";
+
+import { SERVER_BASE_URL } from "./base";
 
 export function testCreate(createTestParams: CreateTestParams) {
-  return fetch(`${BASE_URL}/tests`, {
+  return fetch(`${SERVER_BASE_URL}/tests`, {
     method: "POST",
     headers: {
       Accept: "application/json",

@@ -6,7 +6,7 @@ export const ICON_EMOJIS: Partial<Record<IconName, string>> = {
   [IconNames.Run]: "▶️",
   [IconNames.Passed]: "✅",
   [IconNames.Failed]: "❌",
-  [IconNames.Mixed]: "⚠️",
+  [IconNames.Mixed]: "🟠",
   [IconNames.NotRun]: "⚪️",
   [IconNames.FolderOpen]: "📂",
 };

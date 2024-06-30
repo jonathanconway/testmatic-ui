@@ -1,15 +1,19 @@
 import { Test, projectGetTestRunLatest } from "testmatic";
-import * as Styled from "./project-explorer.styles";
 
-import { IconButton } from "../icon-button";
-import { Tooltip } from "../tooltip";
-import { Link } from "react-router-dom";
-import { testEditorRoute } from "../test-editor";
-import { useProjectExplorer } from "./use-project-explorer.hook";
-import { sentenceCase } from "../utils";
+import { Box } from "../box";
 import { Icon, IconNames } from "../icon";
-import { useProjectExplorerTestItem } from "./use-project-explorer-test-item.hook";
+import { IconButton } from "../icon-button";
+import { Stack } from "../layout";
+import { Link } from "../link";
+import { testEditorRoute } from "../test-editor";
+import { TextOverflow } from "../text-overflow";
+import { Tooltip } from "../tooltip";
+import { sentenceCase } from "../utils";
+
 import { ProjectExplorerTestRunItem } from "./project-explorer-test-run-item";
+import * as Styled from "./project-explorer.styles";
+import { useProjectExplorerTestItem } from "./use-project-explorer-test-item.hook";
+import { useProjectExplorer } from "./use-project-explorer.hook";
 
 interface ProjectExplorerTestItemProps {
   readonly test: Test;
@@ -26,27 +30,35 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
   return (
     <>
       <Styled.ProjectExplorerItem key={props.test.name} $selected={isSelected}>
-        <Styled.ProjectExplorerItemMain>
-          <Styled.ProjectExplorerItemIcon>
-            {testRunLatest ? (
-              <IconButton
-                icon={isExpanded ? "collapse" : "expand"}
-                size="small"
-                onClick={toggleExpanded}
-              />
-            ) : (
-              <Icon icon="test" size="small" />
-            )}
-          </Styled.ProjectExplorerItemIcon>
+        <Stack
+          direction="row"
+          alignItems="center"
+          flex={1}
+          gap={0.5}
+          width="100%"
+        >
+          {testRunLatest ? (
+            <IconButton
+              icon={isExpanded ? "collapse" : "expand"}
+              size="small"
+              onClick={toggleExpanded}
+            />
+          ) : (
+            <Box width="1rem"></Box>
+          )}
 
-          <Tooltip contents={props.test.title}>
-            <Link to={testEditorRoute(props.test.name)}>
-              {props.test.title}
-            </Link>
-          </Tooltip>
-        </Styled.ProjectExplorerItemMain>
+          <Icon icon="test" size="small" />
 
-        <Styled.ProjectExplorerItemActions>
+          <Box flex={1} overflow="hidden">
+            <TextOverflow>
+              <Link to={testEditorRoute(props.test.name)} style={{ flex: 1 }}>
+                <Tooltip contents={props.test.title}>
+                  {props.test.title}
+                </Tooltip>
+              </Link>
+            </TextOverflow>
+          </Box>
+
           <Tooltip contents={sentenceCase(testRunLatest?.result ?? "not-run")}>
             <Icon icon={testRunLatest?.result ?? IconNames.NotRun} />
           </Tooltip>
@@ -58,7 +70,7 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
               onClick={handleDeleteTestClick(props.test)}
             />
           </Tooltip>
-        </Styled.ProjectExplorerItemActions>
+        </Stack>
       </Styled.ProjectExplorerItem>
 
       {isExpanded &&

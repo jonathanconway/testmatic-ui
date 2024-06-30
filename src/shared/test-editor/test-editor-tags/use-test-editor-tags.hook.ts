@@ -1,15 +1,16 @@
-import { isError } from "lodash";
-import { showNotification } from "../../notification";
-import { useGetProject } from "../../project/use-get-project.hook";
-import { usePostProject } from "../../project/use-post-project.hook";
 import {
   Tag,
   Test,
   isAlreadyExistsError,
+  isError,
   projectAddTestTag,
   projectDeleteTestTag,
   projectGetOrCreateTagByName,
 } from "testmatic";
+
+import { showNotification } from "../../notification";
+import { useGetProject } from "../../project/use-get-project.hook";
+import { usePostProject } from "../../project/use-post-project.hook";
 
 interface UseTestEditorTagsProps {
   readonly test: Test;

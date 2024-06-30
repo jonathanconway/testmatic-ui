@@ -1,9 +1,14 @@
 import express from "express";
-import { cliRunOpen } from "testmatic/cli";
+import { runOpen } from "testmatic/files";
 
 export function putTestRunFolderOpen(app: express.Express) {
-  app.put("/tests/:testName/runs/:dateTime", (req, res) => {
-    cliRunOpen(req.params.testName, req.params.dateTime);
+  app.put("/tests/:testName/runs/:runDateTime", (req, res) => {
+    const { testName: testNameOrTitle, runDateTime } = req.params;
+
+    runOpen({
+      testNameOrTitle,
+      runDateTime,
+    });
 
     res.sendStatus(200);
   });

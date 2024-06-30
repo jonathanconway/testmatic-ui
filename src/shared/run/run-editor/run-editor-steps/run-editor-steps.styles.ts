@@ -38,16 +38,15 @@ export const StepsListItemLabel = styled.label`
 `;
 
 export const StepsListItem = styled.li<{ readonly $checked: boolean }>`
-  margin: 0.25rem 0;
-  font-size: 0.85rem;
-  display: block;
   display: inline-flex;
+  padding: 0.25rem 0;
   align-items: center;
+  font-size: 0.85rem;
+  border-radius: 0.25rem;
 
   &:hover,
   &:focus {
     background-color: #efefef;
-    border-radius: 0.25rem;
   }
 
   &,

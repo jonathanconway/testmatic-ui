@@ -1,8 +1,10 @@
+import { LegacyRef, forwardRef } from "react";
+
 import { ButtonProps } from "../button";
-import { Icon, IconName } from "../icon";
+import { ICON_SYMBOLS, IconName } from "../icon";
+import { ICON_EMOJIS } from "../icon/icon-emojis";
 
 import * as Styled from "./icon-button.styles";
-import { LegacyRef, forwardRef } from "react";
 
 interface IconButtonProps extends ButtonProps {
   readonly icon: IconName;
@@ -14,8 +16,8 @@ export const IconButton = forwardRef(
 
     return (
       <Styled.Button $size={props.size} {...restProps} type="button" ref={ref}>
-        <Icon icon={props.icon} />
+        {ICON_SYMBOLS[props.icon] ?? ICON_EMOJIS[props.icon]}
       </Styled.Button>
     );
-  }
+  },
 );
