@@ -22,11 +22,9 @@ function isDescendentOf(element: HTMLElement, parent: HTMLElement) {
   return false;
 }
 
-export function PopoverWindow({
-  children,
-  onClose,
-  ...restProps
-}: PopoverWindowProps) {
+export function PopoverWindow(props: PopoverWindowProps) {
+  const { title, children, onClose, ...restProps } = props;
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,7 +52,7 @@ export function PopoverWindow({
       <Stack spacing={2}>
         <Stack direction="row" spacing={1} alignItems="center">
           <Stack direction="row" style={{ flex: 1 }}>
-            <Heading level={3}>{restProps.title}</Heading>
+            <Heading level={3}>{props.title}</Heading>
           </Stack>
           <Tooltip contents="Close">
             <IconButton icon="close" onClick={onClose} />

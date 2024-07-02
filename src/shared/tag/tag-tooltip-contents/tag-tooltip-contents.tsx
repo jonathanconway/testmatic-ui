@@ -1,13 +1,15 @@
-import { useGetProject } from "../../project";
-import * as Styled from "./tag-tooltip-contents.styles";
 import { Tag, getTestsReferencingTag } from "testmatic";
+
+import { useProject } from "../../project";
+
+import * as Styled from "./tag-tooltip-contents.styles";
 
 interface TagTooltipContentsProps {
   readonly tag: Tag;
 }
 
 export function TagTooltipContents(props: TagTooltipContentsProps) {
-  const { data: project } = useGetProject();
+  const { project } = useProject();
 
   const tests = project?.tests ?? [];
   const tag = props.tag;

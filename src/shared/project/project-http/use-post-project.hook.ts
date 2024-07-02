@@ -1,8 +1,10 @@
-import { showNotification } from "../notification";
-import { useGetProject } from "./use-get-project.hook";
 import { useMutation } from "@tanstack/react-query";
 import { pick } from "lodash";
 import { Project, ProjectView } from "testmatic";
+
+import { showNotification } from "../../notification";
+
+import { useGetProject } from "./use-get-project.hook";
 
 async function postProject(project: Project) {
   await fetch("http://localhost:3100/project", {
@@ -23,7 +25,7 @@ export function usePostProject() {
   const mutationFn = (projectOrProjectView: Project | ProjectView) =>
     postProject(pickProject(projectOrProjectView));
 
-  const { refetch } = useGetProject();
+  const { refetch } = useGetProject({ enabled: true });
 
   const onSuccess = () => {
     refetch();

@@ -9,16 +9,14 @@ import {
 } from "testmatic";
 
 import { showNotification } from "../../notification";
-import { useGetProject } from "../../project/use-get-project.hook";
-import { usePostProject } from "../../project/use-post-project.hook";
+import { useProject } from "../../project";
 
 interface UseTestEditorTagsProps {
   readonly test: Test;
 }
 
 export function useTestEditorTags(props: UseTestEditorTagsProps) {
-  const { data: project } = useGetProject();
-  const { mutate: postProject } = usePostProject();
+  const { project, saveProject } = useProject();
 
   const handleAddItem = (newItem: string) => {
     if (!project) {
@@ -43,7 +41,7 @@ export function useTestEditorTags(props: UseTestEditorTagsProps) {
       return;
     }
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
   };
 
   const handleItemDeleteClick = (tag: Tag) => () => {
@@ -69,7 +67,7 @@ export function useTestEditorTags(props: UseTestEditorTagsProps) {
 
     const updatedProject = projectDeleteTestTagResult;
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
   };
 
   return {

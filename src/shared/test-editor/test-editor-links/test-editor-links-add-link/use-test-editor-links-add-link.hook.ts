@@ -1,7 +1,3 @@
-import { AddRemoveListBoxAddItemPopupContentProps } from "../../../add-remove-list-box";
-import { useGetProject } from "../../../project/use-get-project.hook";
-import { usePostProject } from "../../../project/use-post-project.hook";
-import { isNotNil } from "../../../utils";
 import { ChangeEvent, useMemo, useState } from "react";
 import {
   Test,
@@ -9,6 +5,10 @@ import {
   isAlreadyExistsError,
   projectAddTestLink,
 } from "testmatic";
+
+import { AddRemoveListBoxAddItemPopupContentProps } from "../../../add-remove-list-box";
+import { useProject } from "../../../project";
+import { isNotNil } from "../../../utils";
 
 type UseTestEditorLinksAddLinkProps =
   AddRemoveListBoxAddItemPopupContentProps & {
@@ -31,7 +31,7 @@ interface UseTestEditorLinksAddLink {
 }
 
 export function useTestEditorLinksAddLink(
-  props: UseTestEditorLinksAddLinkProps
+  props: UseTestEditorLinksAddLinkProps,
 ) {
   const [state, setState] = useState<UseTestEditorLinksAddLink>({
     values: {
@@ -79,15 +79,9 @@ export function useTestEditorLinksAddLink(
     }));
   }
 
-  const { data: project } = useGetProject();
-
-  const { mutate: postProject } = usePostProject();
+  const { project, saveProject } = useProject();
 
   function handleSubmitClick() {
-    if (!project) {
-      return;
-    }
-
     setState((previousState) => ({
       ...previousState,
       form: {
@@ -116,7 +110,7 @@ export function useTestEditorLinksAddLink(
       return;
     }
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
 
     props.close();
   }
@@ -144,11 +138,11 @@ function isUrl(input: string) {
 
 function getHrefError(state: UseTestEditorLinksAddLink) {
   if (state.values.href.trim() === "") {
-    return "Href is required.";
+    return "URL is required.";
   }
 
   if (!isUrl(state.values.href)) {
-    return "Href must be a URL.";
+    return "URL must be formatted correctly.";
   }
 
   return undefined;

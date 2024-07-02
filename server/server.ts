@@ -23,5 +23,5 @@ getTestRunRecordings(app);
 putTestRunFolderOpen(app);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Testmatic server listening on port ${port}`);
 });

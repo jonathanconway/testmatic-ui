@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { DefinedInitialDataOptions, useQuery } from "@tanstack/react-query";
 import { Project, createProjectView } from "testmatic";
 
 async function getProject() {
@@ -10,8 +10,11 @@ async function getProject() {
 
 export const USE_GET_PROJECT_QUERY_KEY = "project";
 
-export function useGetProject() {
+export function useGetProject(
+  options: Partial<DefinedInitialDataOptions<unknown, unknown, unknown>>,
+) {
   return useQuery({
+    ...options,
     queryKey: [USE_GET_PROJECT_QUERY_KEY],
     queryFn: getProject,
   });

@@ -1,12 +1,11 @@
-import { homeRoute } from "../../screens";
-import { useGetProject } from "../project/use-get-project.hook";
-import { usePostProject } from "../project/use-post-project.hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { Tag, Test, projectDeleteTag, projectDeleteTest } from "testmatic";
 
+import { homeRoute } from "../../screens";
+import { useProject } from "../project/use-project.hook";
+
 export function useProjectExplorer() {
-  const { data: project } = useGetProject();
-  const { mutate: postProject } = usePostProject();
+  const { project, saveProject } = useProject();
 
   const navigate = useNavigate();
 
@@ -32,7 +31,7 @@ export function useProjectExplorer() {
       testToDelete,
     });
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
 
     navigate(homeRoute());
   };
@@ -47,13 +46,18 @@ export function useProjectExplorer() {
       tagToDelete,
     });
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
 
     navigate(homeRoute());
   };
 
+  const shouldRenderExpand = Boolean(
+    project.tests.find((test) => test.runs.length > 0),
+  );
+
   return {
     selected,
+    shouldRenderExpand,
     handleCancelNewTestClick,
     handleDeleteTestClick,
     handleDeleteTagClick,

@@ -1,8 +1,10 @@
-import { useGetProject } from "../../../../project";
-import { filterTags } from "./tag-suggest-filter-tags";
-import * as Styled from "./tag-suggest.styles";
 import { MouseEvent, useEffect } from "react";
 import { Tag } from "testmatic";
+
+import { useProject } from "../../../../project";
+
+import { filterTags } from "./tag-suggest-filter-tags";
+import * as Styled from "./tag-suggest.styles";
 
 interface TagSuggestProps {
   readonly selectedTag?: Tag;
@@ -13,7 +15,7 @@ interface TagSuggestProps {
 }
 
 export function TagSuggest(props: TagSuggestProps) {
-  const { data: project } = useGetProject();
+  const { project } = useProject();
 
   useEffect(() => {
     window.addEventListener("click", () => {

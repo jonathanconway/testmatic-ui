@@ -22,7 +22,7 @@ interface ProjectExplorerTestItemProps {
 export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
   const { handleDeleteTestClick } = useProjectExplorer();
 
-  const { isExpanded, isSelected, toggleExpanded } =
+  const { isExpanded, isSelected, toggleExpanded, shouldRenderExpand } =
     useProjectExplorerTestItem(props);
 
   const testRunLatest = projectGetTestRunLatest(props.test);
@@ -37,14 +37,18 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
           gap={0.5}
           width="100%"
         >
-          {testRunLatest ? (
-            <IconButton
-              icon={isExpanded ? "collapse" : "expand"}
-              size="small"
-              onClick={toggleExpanded}
-            />
-          ) : (
-            <Box width="1rem"></Box>
+          {shouldRenderExpand && (
+            <>
+              {testRunLatest ? (
+                <IconButton
+                  icon={isExpanded ? "collapse" : "expand"}
+                  size="small"
+                  onClick={toggleExpanded}
+                />
+              ) : (
+                <Box width="1rem"></Box>
+              )}
+            </>
           )}
 
           <Icon icon="test" size="small" />

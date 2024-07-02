@@ -1,12 +1,14 @@
-import { useGetProject } from "../../../../project";
+import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
+import { Tag, isTag, projectGetTagByNameOrTitle } from "testmatic";
+
+import { useProject } from "../../../../project";
 import { Maybe } from "../../../../utils";
+
 import { filterTags } from "./tag-suggest-filter-tags";
 import {
   InputTagSelectionInfo,
   getInputTagSelectionInfo,
 } from "./tag-suggest-selection-info";
-import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
-import { Tag, isTag, projectGetTagByNameOrTitle } from "testmatic";
 
 export function useTagSuggestController(props: {
   readonly input: {
@@ -23,7 +25,7 @@ export function useTagSuggestController(props: {
 
   const [tagSuggestIsOpen, setTagSuggestIsOpen] = useState(false);
 
-  const { data: project } = useGetProject();
+  const { project } = useProject();
 
   /************** keyboard  **************/
 
@@ -62,7 +64,7 @@ export function useTagSuggestController(props: {
   };
 
   const handleKeyDownTabOrEnter = (
-    event: KeyboardEvent<HTMLTextAreaElement>
+    event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (tagSuggestIsOpen) {
       event.preventDefault();
@@ -87,7 +89,7 @@ export function useTagSuggestController(props: {
   };
 
   const handleKeyDownArrowDown = (
-    event: KeyboardEvent<HTMLTextAreaElement>
+    event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (!project) {
       return;
@@ -180,10 +182,10 @@ export function useTagSuggestController(props: {
     const insertion = `(${tag.title.toLowerCase()})`;
     const beforeInsertion = props.input.value.substring(
       0,
-      inputTagSelectionInfo.openBracketIndex - 1
+      inputTagSelectionInfo.openBracketIndex - 1,
     );
     const afterInsertion = props.input.value.substring(
-      inputTagSelectionInfo.closeBracketIndex + 1
+      inputTagSelectionInfo.closeBracketIndex + 1,
     );
 
     const newValue = `${beforeInsertion}${insertion}${afterInsertion}`;

@@ -1,15 +1,13 @@
-import { useGetProject } from "../../project/use-get-project.hook";
-import { usePostProject } from "../../project/use-post-project.hook";
 import { Link, Test, projectDeleteTestLink } from "testmatic";
+
+import { useProject } from "../../project";
 
 interface UseTestLinksProps {
   readonly test: Test;
 }
 
 export function useTestLinks(props: UseTestLinksProps) {
-  const { data: project } = useGetProject();
-
-  const { mutate: postProject } = usePostProject();
+  const { project, saveProject } = useProject();
 
   function handleDeleteClick(linkToDelete: Link) {
     if (!project) {
@@ -24,7 +22,7 @@ export function useTestLinks(props: UseTestLinksProps) {
       linkToDelete,
     });
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
   }
   return {
     handleDeleteClick,

@@ -17,7 +17,7 @@ interface UseProjectExplorerTestItem {
 export function useProjectExplorerTestItem(
   props: UseProjectExplorerTestItemProps,
 ) {
-  const { selected } = useProjectExplorer();
+  const { selected, shouldRenderExpand } = useProjectExplorer();
 
   const { testName, runDateTime } = useParams<RunEditorRouteParams>();
 
@@ -50,6 +50,7 @@ export function useProjectExplorerTestItem(
   return {
     isExpanded,
     isSelected,
+    shouldRenderExpand,
     toggleExpanded,
   };
 }

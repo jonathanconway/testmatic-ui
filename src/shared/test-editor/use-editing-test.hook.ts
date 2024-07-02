@@ -1,9 +1,11 @@
-import { useGetProject } from "../project";
-import { TEST_NEW_NAME } from "./test-editor.routes";
 import deepEqual from "deep-equal";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Test } from "testmatic";
+
+import { useProject } from "../project";
+
+import { TEST_NEW_NAME } from "./test-editor.routes";
 
 interface TestEditorTestState {
   readonly test?: Test;
@@ -12,7 +14,7 @@ interface TestEditorTestState {
 export function useEditingTest() {
   const [state, setState] = useState<TestEditorTestState>({});
 
-  const { data: project } = useGetProject();
+  const { project } = useProject();
 
   const { testName = undefined } = useParams();
 
@@ -41,7 +43,7 @@ export function useEditingTest() {
         }));
       }
     },
-    [originalTest, setState]
+    [originalTest, setState],
   );
 
   return {

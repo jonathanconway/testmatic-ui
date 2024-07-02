@@ -1,16 +1,18 @@
+import { useNavigate, useParams } from "react-router-dom";
+
 import {
   tagEditorNewTagRoute,
   testEditorNewTestRoute,
-  useGetProject,
+  useProject,
 } from "../../shared";
+
 import { homeRoute } from "./home-screen.route";
-import { useNavigate, useParams } from "react-router-dom";
 
 export function useHomeScreen() {
   const { itemId: selectedItemId = undefined } = useParams();
   const navigate = useNavigate();
 
-  const { data: project } = useGetProject();
+  const { project } = useProject();
 
   const onClickTestAdd = () => {
     navigate(testEditorNewTestRoute());

@@ -2,19 +2,24 @@
   "name": "testmatic-ui",
   "version": "0.1.0",
   "bin": {
-    "testmatic-ui": "./build-cli/cli-exec.js"
+    "testmatic-ui": "./build-js/cli/cli-exec.js"
   },
   "exports": {
-    "./cli": "./build-cli/cli-exec.js"
+    "./cli": "./build-js/cli/cli-exec.js"
   },
   "scripts": {
-    "start-server": "nodemon --watch 'server/*.ts' --ignore 'server/**/*.test.*' --exec 'ts-node' server/server",
+    "start:server": "nodemon --watch 'server/*.ts' --ignore 'server/**/*.test.*' --exec 'ts-node' server/server",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "npx serve -s build",
-    "deploy": "surge build testmatic.surge.sh"
+    "serve:server": "ts-node server/server",
+    "build-js": "tsc",
+    "redeploy-cli": "npm uninstall -g && npm run build-js && npm i -g",
+    "serve:static": "npx serve --single --no-request-logging build",
+    "start:surge": "REACT_APP_SURGE=true react-scripts start",
+    "build:surge": "REACT_APP_SURGE=true react-scripts build",
+    "deploy:surge": "surge build testmatic.surge.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

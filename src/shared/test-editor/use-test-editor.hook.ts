@@ -1,8 +1,3 @@
-import { homeRoute } from "../../screens";
-import { showNotification } from "../notification";
-import { useGetProject, usePostProject } from "../project";
-import { testEditorRoute } from "./test-editor.routes";
-import { useEditingTest } from "./use-editing-test.hook";
 import { snakeCase } from "lodash";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,12 +7,18 @@ import {
   projectUpdateTest,
 } from "testmatic";
 
+import { homeRoute } from "../../screens";
+import { showNotification } from "../notification";
+import { useProject } from "../project";
+
+import { testEditorRoute } from "./test-editor.routes";
+import { useEditingTest } from "./use-editing-test.hook";
+
 export function useTestEditor() {
   const { editingTest, test, testName, isNewTest, isDirty, setEditingTest } =
     useEditingTest();
 
-  const { data: project } = useGetProject();
-  const { mutate: postProject } = usePostProject();
+  const { project, saveProject } = useProject();
 
   const isSaveButtonDisabled = !isDirty;
 
@@ -48,7 +49,7 @@ export function useTestEditor() {
       return;
     }
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
 
     setEditingTest(undefined);
 
@@ -68,7 +69,7 @@ export function useTestEditor() {
       updatedTest: editingTest,
     });
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
   };
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {

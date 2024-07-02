@@ -1,10 +1,12 @@
-import { useGetProject } from "../../../project";
+import { Link } from "react-router-dom";
+import { Step } from "testmatic";
+
+import { useProject } from "../../../project";
 import { TagTooltipContents } from "../../../tag";
 import { Tooltip } from "../../../tooltip";
 import { stepFragments } from "../../step-fragments";
+
 import * as Styled from "./step-editor-display.styles";
-import { Link } from "react-router-dom";
-import { Step } from "testmatic";
 
 interface StepEditorDisplayProps {
   readonly step?: Step;
@@ -13,7 +15,7 @@ interface StepEditorDisplayProps {
 }
 
 export function StepEditorDisplay(props: StepEditorDisplayProps) {
-  const { data: project } = useGetProject();
+  const { project } = useProject();
   // todo: fix full tag lookup issue
 
   return (

@@ -1,7 +1,3 @@
-import { homeRoute } from "../../screens";
-import { showNotification } from "../notification";
-import { useGetProject, usePostProject } from "../project";
-import { TAG_NEW, TAG_NEW_NAME, tagEditorRoute } from "./tag-editor.routes";
 import { snakeCase } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,14 +10,18 @@ import {
   projectAddTag,
 } from "testmatic";
 
+import { homeRoute } from "../../screens";
+import { showNotification } from "../notification";
+import { useProject } from "../project";
+
+import { TAG_NEW, TAG_NEW_NAME, tagEditorRoute } from "./tag-editor.routes";
+
 interface UseTagEditorState {
   readonly tag?: Tag;
 }
 
 export function useTagEditor() {
-  const { data: project } = useGetProject();
-
-  const { mutate: postProject } = usePostProject();
+  const { project, saveProject } = useProject();
 
   const { tagName = undefined } = useParams();
 
@@ -104,7 +104,7 @@ export function useTagEditor() {
       return;
     }
 
-    postProject(updatedProject);
+    saveProject(updatedProject);
 
     setTimeout(() => {
       navigate(tagEditorRoute(newTag.name));

@@ -13,9 +13,8 @@
     "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
-    "outDir": "./build-cli"
+    "outDir": "./build-js"
   },
   "include": ["src/**/*", "server/**/*", "cli/**/*"]
 }

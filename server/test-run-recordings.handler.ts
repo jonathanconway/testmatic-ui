@@ -9,6 +9,8 @@ import {
 import { projectMdRead } from "testmatic/files";
 import thumbsupply from "thumbsupply";
 
+import { getProjectPathCwd } from "./get-project-path-cwd";
+
 interface RecordingPreview {
   readonly thumbnailFilename: string;
   readonly thumbnailPathFilename: string;
@@ -17,7 +19,7 @@ interface RecordingPreview {
 
 export function getTestRunRecordings(app: express.Express) {
   app.get("/tests/:testName/runs/:runDateTime/recordings", async (req, res) => {
-    const project = projectMdRead();
+    const project = projectMdRead(getProjectPathCwd());
 
     const { testName: testNameOrTitle, runDateTime } = req.params;
 
@@ -41,7 +43,9 @@ export function getTestRunRecordings(app: express.Express) {
       return;
     }
 
-    const runFilepath = getRunFilepath(test, run);
+    const projectPath = getProjectPathCwd();
+
+    const runFilepath = getRunFilepath(test, run, projectPath);
 
     const filenames = run.recordings.map(
       (filename) => `${runFilepath}/${filename}`,
