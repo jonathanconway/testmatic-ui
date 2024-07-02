@@ -5,6 +5,7 @@ import { Heading } from "../heading";
 import { Header, Stack } from "../layout";
 import { TitleEditor } from "../title-editor";
 import { Tooltip } from "../tooltip";
+
 import { TestEditorLinks } from "./test-editor-links";
 import { TestEditorRuns } from "./test-editor-runs";
 import { TestEditorSteps } from "./test-editor-steps";
@@ -21,10 +22,10 @@ export function TestEditor() {
     handleChangeTest,
     handleCloseClick,
   } = useTestEditor();
+
   if (!test) {
     return null;
   }
-  console.log(test.runs);
 
   return (
     <BorderBox flex={1} overflow="scroll">

@@ -54,6 +54,7 @@ export function useTestEditor() {
     setEditingTest(undefined);
 
     setTimeout(() => {
+      console.log("newTest.name", newTest.name);
       navigateTo(testEditorRoute(newTest.name));
     });
   };

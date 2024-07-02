@@ -83,9 +83,9 @@ export function ProjectExplorer({
             </ProjectExplorerItem>
           )}
 
-          {project?.tags.map((tag) => (
+          {project?.tags.map((tag, index) => (
             <ProjectExplorerItem
-              key={tag.name}
+              key={tag.name + index}
               $selected={tag.name === selected.tagName}
             >
               <ProjectExplorerItemMain>

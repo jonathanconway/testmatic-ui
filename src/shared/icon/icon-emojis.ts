@@ -9,4 +9,5 @@ export const ICON_EMOJIS: Partial<Record<IconName, string>> = {
   [IconNames.Mixed]: "🟠",
   [IconNames.NotRun]: "⚪️",
   [IconNames.FolderOpen]: "📂",
+  [IconNames.Link]: "🔗",
 };

@@ -15,6 +15,7 @@ export const IconNames = {
   Passed: "passed",
   NotRun: "not-run",
   FolderOpen: "folder-open",
+  Link: "link",
 } as const;
 
 export type IconName = TypeOfConst<typeof IconNames>;

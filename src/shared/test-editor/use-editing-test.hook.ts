@@ -1,11 +1,11 @@
 import deepEqual from "deep-equal";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Test } from "testmatic";
 
 import { useProject } from "../project";
 
-import { TEST_NEW_NAME } from "./test-editor.routes";
+import { TEST_NEW, TEST_NEW_NAME } from "./test-editor.routes";
 
 interface TestEditorTestState {
   readonly test?: Test;
@@ -22,11 +22,20 @@ export function useEditingTest() {
 
   const originalTest = testName ? project?.testsByName[testName] : undefined;
 
-  const editingTest = state?.test || originalTest;
+  const editingTest = state?.test;
 
   const test = editingTest ?? originalTest;
 
   const isDirty = state?.test;
+
+  useEffect(() => {
+    if (testName === TEST_NEW_NAME && !state.test) {
+      setState({
+        test: TEST_NEW,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [testName]);
 
   const setEditingTest = useCallback(
     (newEditingTest?: Test) => {
