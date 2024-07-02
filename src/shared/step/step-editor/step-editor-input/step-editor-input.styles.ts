@@ -6,6 +6,7 @@ export const Container = styled.div<{ $isVisible: boolean }>`
   ${({ $isVisible }) => `
     opacity: ${$isVisible ? 1 : 0};
     position: ${$isVisible ? "relative" : "absolute"};
+    top: ${$isVisible ? "unset" : "-100rem"};
   `}
 `;
 

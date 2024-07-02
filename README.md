@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Testmatic UI
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+For full documentation please go to: [http://github.com/jonathanconway/testmatic](http://github.com/jonathanconway/testmatic).
 
 ## Available Scripts
 

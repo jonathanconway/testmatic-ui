@@ -18,6 +18,7 @@ export const StepsHeader = styled.div`
 export const StepsMain = styled.div`
   overflow: scroll;
   height: 100%;
+  padding-top: 0.25rem;
 `;
 
 export const StepsActionContainer = styled.div`
@@ -33,11 +34,9 @@ export const StepsList = styled.ol`
 `;
 
 export const StepsListItem = styled.li`
-  margin: 0.25rem 0;
-  font-size: 0.85rem;
-  display: block;
-  margin-left: 0.25rem;
   display: inline-flex;
+  margin: 0.25rem;
+  font-size: 0.85rem;
   align-items: center;
 
   &:before {

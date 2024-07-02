@@ -1,8 +1,9 @@
-import { homeRoute } from "../../../screens";
-import { StepInputClassNames } from "../../step";
 import { ChangeEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Step, Test, createTestStepFromText } from "testmatic";
+
+import { homeRoute } from "../../../screens";
+import { StepInputClassNames } from "../../step";
 
 interface UseTestEditorStepsProps {
   readonly test?: Test;
@@ -73,7 +74,7 @@ export function useTestEditorSteps(props: UseTestEditorStepsProps) {
       props.onChange({
         ...test,
         steps: test.steps.map((step, stepIndex) =>
-          stepIndex === editingStepIndex ? editingStep : step
+          stepIndex === editingStepIndex ? editingStep : step,
         ),
       });
     };
@@ -105,8 +106,8 @@ export function useTestEditorSteps(props: UseTestEditorStepsProps) {
   const focusLastStepInput = () => {
     const lastTextArea = Array.from(
       stepsContainerRef?.current?.querySelectorAll(
-        `textarea.${StepInputClassNames.StepInputTextArea}`
-      ) ?? []
+        `textarea.${StepInputClassNames.StepInputTextArea}`,
+      ) ?? [],
     ).slice(-1)[0] as HTMLTextAreaElement;
 
     lastTextArea.selectionStart = lastTextArea.value.length;
