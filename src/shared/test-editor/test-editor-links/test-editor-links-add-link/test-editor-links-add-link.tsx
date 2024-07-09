@@ -1,12 +1,14 @@
+import { Test } from "testmatic";
+
 import { AddRemoveListBoxAddItemPopupContentProps } from "../../../add-remove-list-box";
 import { Button } from "../../../button";
 import { Stack } from "../../../layout";
-import { PopoverWindow } from "../../../popover-window";
+import { PopoverWindow } from "../../../popover";
 import { Label } from "../../../text";
 import { TextBox } from "../../../text-box";
 import { RequiredChip, ValidationError } from "../../../validation";
+
 import { useTestEditorLinksAddLink } from "./use-test-editor-links-add-link.hook";
-import { Test } from "testmatic";
 
 type LinksBoxAddLinkProps = AddRemoveListBoxAddItemPopupContentProps & {
   readonly test: Test;

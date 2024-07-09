@@ -1,3 +1,3 @@
-import { MOCK_PROJECT, createProjectView } from "testmatic";
+import { EMPTY_PROJECT, createProjectView } from "testmatic";
 
-export const emptyProjectView = createProjectView(MOCK_PROJECT);
+export const emptyProjectView = createProjectView(EMPTY_PROJECT);

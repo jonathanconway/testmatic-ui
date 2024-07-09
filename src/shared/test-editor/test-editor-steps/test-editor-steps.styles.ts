@@ -35,7 +35,7 @@ export const StepsList = styled.ol`
 
 export const StepsListItem = styled.li`
   display: inline-flex;
-  margin: 0.25rem;
+  // margin: 0.25rem;
   font-size: 0.85rem;
   align-items: center;
 

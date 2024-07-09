@@ -1,10 +1,11 @@
-import { AddRemoveListBoxAddItemPopupContentProps } from "./add-remove-list-box.types";
 import { ChangeEvent, ReactNode, useRef, useState } from "react";
 
-interface UseAddRemoveListBoxProps {
-  readonly renderAddItemPopupContent?: (
-    params: AddRemoveListBoxAddItemPopupContentProps
-  ) => ReactNode;
+interface UseAddRemoveListBoxParams {
+  readonly headerContent?: ReactNode;
+
+  readonly renderAddItemPopupContent?: (params: {
+    readonly close: VoidFunction;
+  }) => ReactNode;
 
   readonly onAddItem?: (value: string) => void;
 }
@@ -14,7 +15,7 @@ interface UseAddRemoveListBoxState {
   readonly isAddItemPopupOpen: boolean;
 }
 
-export function useAddRemoveListBox(props: UseAddRemoveListBoxProps) {
+export function useAddRemoveListBox(params: UseAddRemoveListBoxParams) {
   const [state, setState] = useState<UseAddRemoveListBoxState>({
     addInputValue: "",
     isAddItemPopupOpen: false,
@@ -22,7 +23,9 @@ export function useAddRemoveListBox(props: UseAddRemoveListBoxProps) {
 
   const addButtonRef = useRef<HTMLButtonElement>(null);
 
-  const isInlineAddInputRendered = !props.renderAddItemPopupContent;
+  const isInlineAddInputRendered = Boolean(
+    !params.headerContent && !params.renderAddItemPopupContent,
+  );
 
   const isAddButtonEnabled = isInlineAddInputRendered
     ? state.addInputValue.trim() !== ""
@@ -38,12 +41,12 @@ export function useAddRemoveListBox(props: UseAddRemoveListBoxProps) {
   }
 
   function handleAddButtonClick() {
-    if (props.renderAddItemPopupContent) {
+    if (params.renderAddItemPopupContent) {
       openAddItemPopup();
       return;
     }
 
-    props.onAddItem?.(state.addInputValue);
+    params.onAddItem?.(state.addInputValue);
 
     setState((previousState) => ({
       ...previousState,

@@ -2,6 +2,8 @@ import { css } from "styled-components";
 
 import { controlSingleLineHeightRem } from "../control";
 
+import { ButtonProps } from "./button.types";
+
 export const buttonBase = css`
   border-radius: 0.25rem;
   border: solid 1px #d0d0d0;
@@ -36,3 +38,7 @@ export const buttonSizes = {
   small: buttonSizeSmall,
   normal: buttonSizeNormal,
 };
+
+export const buttonDefault = (props: ButtonProps) => `
+  font-weight: ${props.default ? "bold" : "default"};
+`;

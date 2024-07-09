@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { ZIndexes } from "../z-indexes";
+
 export const Container = styled.div`
   position: relative;
   height: 100%;
@@ -9,7 +11,7 @@ export const Container = styled.div`
 
 export const Input = styled.input`
   position: absolute;
-  z-index: 1;
+  z-index: ${ZIndexes.TitleEditorInput};
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
@@ -17,7 +19,6 @@ export const Input = styled.input`
   width: 100%;
   border: none;
   margin: 0;
-  // padding: 0.375rem 0;
   flex: 1;
   opacity: 0;
 

@@ -2,6 +2,7 @@ import { BorderBox } from "../border-box";
 import { Box } from "../box";
 import { Button } from "../button";
 import { Heading } from "../heading";
+import { InlineExpandingTextBox } from "../inline-expanding-text-box";
 import { Header, Stack } from "../layout";
 import { TitleEditor } from "../title-editor";
 import { Tooltip } from "../tooltip";
@@ -19,7 +20,7 @@ export function TestEditor() {
     isNewTest,
     handleClickSave,
     handleChangeTitle,
-    handleChangeTest,
+    handleChangeDescription,
     handleCloseClick,
   } = useTestEditor();
 
@@ -48,9 +49,14 @@ export function TestEditor() {
           }
           actionsSlot={
             <Stack direction="row" spacing={1}>
-              <Button disabled={isSaveButtonDisabled} onClick={handleClickSave}>
-                {isNewTest ? "Create" : "Save"}
-              </Button>
+              {isNewTest && (
+                <Button
+                  disabled={isSaveButtonDisabled}
+                  onClick={handleClickSave}
+                >
+                  Create
+                </Button>
+              )}
 
               <Tooltip contents="Close">
                 <Button onClick={handleCloseClick}>✕</Button>
@@ -59,9 +65,15 @@ export function TestEditor() {
           }
         />
 
+        <InlineExpandingTextBox
+          value={test.description}
+          onChange={handleChangeDescription}
+          placeholder="Description (optional)"
+        />
+
         <Stack direction="row" spacing={4}>
           <Box width="60%">
-            <TestEditorSteps test={test} onChange={handleChangeTest} />
+            <TestEditorSteps />
           </Box>
 
           <Stack direction="column" spacing={4} width="40%">

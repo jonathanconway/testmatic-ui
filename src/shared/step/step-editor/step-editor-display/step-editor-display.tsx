@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { Step } from "testmatic";
+import { Step, Tag, createTagFromName } from "testmatic";
 
 import { useProject } from "../../../project";
 import { TagTooltipContents } from "../../../tag";
+import { tagEditorRoute } from "../../../tag-editor";
 import { Tooltip } from "../../../tooltip";
 import { stepFragments } from "../../step-fragments";
 
@@ -10,6 +11,7 @@ import * as Styled from "./step-editor-display.styles";
 
 interface StepEditorDisplayProps {
   readonly step?: Step;
+  readonly isVisible?: boolean;
 
   readonly onClick?: VoidFunction;
 }
@@ -19,7 +21,10 @@ export function StepEditorDisplay(props: StepEditorDisplayProps) {
   // todo: fix full tag lookup issue
 
   return (
-    <Styled.StepDisplay className="display" onClick={props.onClick}>
+    <Styled.StepDisplay
+      $isVisible={props.isVisible ?? true}
+      onClick={props.onClick}
+    >
       {stepFragments(props.step).map((token, index) => {
         switch (token.type) {
           case "text":
@@ -29,16 +34,14 @@ export function StepEditorDisplay(props: StepEditorDisplayProps) {
               </Styled.StepTokenText>
             );
           case "tag":
+            const tag = token.tag?.name
+              ? project?.tagsByName[token.tag.name] ?? token.tag
+              : (createTagFromName(token.value) as Tag);
+
             return (
               <Styled.StepTokenTag key={`${token.value}_${index}`}>
-                <Tooltip
-                  contents={
-                    <TagTooltipContents
-                      tag={project?.tagsByName[token.tag.name] ?? token.tag}
-                    />
-                  }
-                >
-                  <Link to={`/tag_${token.tag.name}`}>({token.value})</Link>
+                <Tooltip contents={<TagTooltipContents tag={tag} />}>
+                  <Link to={tagEditorRoute(tag.name)}>({token.value})</Link>
                 </Tooltip>
               </Styled.StepTokenTag>
             );

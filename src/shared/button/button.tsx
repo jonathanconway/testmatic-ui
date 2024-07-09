@@ -1,12 +1,10 @@
-import * as Styled from "./button.styles";
-import { HTMLProps, LegacyRef, forwardRef } from "react";
+import { LegacyRef, forwardRef } from "react";
 
-export type ButtonProps = Omit<HTMLProps<HTMLButtonElement>, "size"> & {
-  readonly size?: "small" | "normal";
-};
+import * as Styled from "./button.styles";
+import { ButtonProps } from "./button.types";
 
 export const Button = forwardRef(
-  ({ ...restProps }: ButtonProps, ref: LegacyRef<HTMLButtonElement>) => {
-    return <Styled.Button {...restProps} type="button" ref={ref} />;
-  }
+  (props: ButtonProps, ref: LegacyRef<HTMLButtonElement>) => {
+    return <Styled.Button {...props} type="button" ref={ref} />;
+  },
 );

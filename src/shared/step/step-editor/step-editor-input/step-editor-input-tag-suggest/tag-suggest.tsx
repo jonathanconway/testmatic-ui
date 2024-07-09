@@ -41,9 +41,9 @@ export function TagSuggest(props: TagSuggestProps) {
 
   return (
     <Styled.PopupContainer onClick={handleClick}>
-      {filteredTags?.map((tag) => (
+      {filteredTags?.map((tag, index) => (
         <Styled.Item
-          key={tag.name}
+          key={`${tag.name}_${index}`}
           $highlighted={tag.name === highlightedTag?.name}
           onClick={() => props.onSelectTag(tag)}
         >

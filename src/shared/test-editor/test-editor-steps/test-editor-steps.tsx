@@ -2,16 +2,11 @@ import { Button } from "../../button";
 import { Heading } from "../../heading";
 import { Stack } from "../../layout";
 import { StepAdder, StepEditor } from "../../step";
+
 import * as Styled from "./test-editor-steps.styles";
 import { useTestEditorSteps } from "./use-test-editor-steps.hook";
-import { Test } from "testmatic";
 
-interface TestEditorStepsProps {
-  readonly test?: Test;
-  readonly onChange: (updatedTest: Test) => void;
-}
-
-export function TestEditorSteps(props: TestEditorStepsProps) {
+export function TestEditorSteps() {
   const {
     stepsContainerRef,
     stepAdderRef,
@@ -26,7 +21,7 @@ export function TestEditorSteps(props: TestEditorStepsProps) {
     handleStepEditorGoNext,
     handleStepEditorCancel,
     handleDeleteClick,
-  } = useTestEditorSteps(props);
+  } = useTestEditorSteps();
 
   return (
     <Styled.Container>

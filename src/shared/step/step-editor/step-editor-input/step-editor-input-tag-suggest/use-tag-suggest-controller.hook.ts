@@ -10,13 +10,15 @@ import {
   getInputTagSelectionInfo,
 } from "./tag-suggest-selection-info";
 
-export function useTagSuggestController(props: {
+interface UseTagSuggestControllerParams {
   readonly input: {
     readonly value: string;
     readonly onChange: (newValue: string) => void;
     readonly ref: React.MutableRefObject<HTMLTextAreaElement | null>;
   };
-}) {
+}
+
+export function useTagSuggestController(params: UseTagSuggestControllerParams) {
   const [inputTagSelectionInfo, setInputTagSelectionInfo] =
     useState<Maybe<InputTagSelectionInfo>>();
 
@@ -135,11 +137,11 @@ export function useTagSuggestController(props: {
       return;
     }
 
-    const tagNameOrTitle = newInputTagSelectionInfo.valueBetweenBrackets;
+    const lookupTagNameOrTitle = newInputTagSelectionInfo.valueBetweenBrackets;
 
     const selectedTag = projectGetTagByNameOrTitle({
       project,
-      tagNameOrTitle,
+      lookupTagNameOrTitle,
     });
     const isSelectedTag = isTag(selectedTag);
 
@@ -172,6 +174,10 @@ export function useTagSuggestController(props: {
     setTagSuggestHighlightedTag(highlightedTag);
   };
 
+  const handleInputBlur = () => {
+    setTagSuggestIsOpen(false);
+  };
+
   const handleTagSuggestClose = () => {};
 
   const handleTagSuggestSelectTag = (tag?: Tag) => {
@@ -180,30 +186,30 @@ export function useTagSuggestController(props: {
     }
 
     const insertion = `(${tag.title.toLowerCase()})`;
-    const beforeInsertion = props.input.value.substring(
+    const beforeInsertion = params.input.value.substring(
       0,
       inputTagSelectionInfo.openBracketIndex - 1,
     );
-    const afterInsertion = props.input.value.substring(
+    const afterInsertion = params.input.value.substring(
       inputTagSelectionInfo.closeBracketIndex + 1,
     );
 
     const newValue = `${beforeInsertion}${insertion}${afterInsertion}`;
 
-    props.input.onChange(newValue);
+    params.input.onChange(newValue);
 
     setTagSuggestIsOpen(false);
 
     setTimeout(() => {
-      if (props.input.ref.current) {
-        props.input.ref.current.selectionStart =
-          props.input.ref.current.selectionEnd =
+      if (params.input.ref.current) {
+        params.input.ref.current.selectionStart =
+          params.input.ref.current.selectionEnd =
             beforeInsertion.length + insertion.length;
       }
     });
   };
 
-  const tagSuggestSelectionMeasurerValue = props.input.value
+  const tagSuggestSelectionMeasurerValue = params.input.value
     ?.toString()
     .substring(0, inputTagSelectionInfo?.openBracketIndex);
 
@@ -220,6 +226,7 @@ export function useTagSuggestController(props: {
       handleKeyDown: handleInputKeyDown,
       handleSelect: handleInputSelect,
       handleInput: handleInputInput,
+      handleBlur: handleInputBlur,
     },
   };
 }

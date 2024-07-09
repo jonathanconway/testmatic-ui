@@ -1,24 +1,24 @@
+import { isError } from "lodash";
 import { ChangeEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Step, Test, createTestStepFromText } from "testmatic";
+import { Step, createTestStepFromText } from "testmatic";
 
+import { useTest, useTestStep } from "../../../hooks";
 import { homeRoute } from "../../../screens";
+import { showErrorNotification } from "../../notification";
 import { StepInputClassNames } from "../../step";
-
-interface UseTestEditorStepsProps {
-  readonly test?: Test;
-  readonly onChange: (updatedTest: Test) => void;
-}
 
 interface UseTestEditorStepsState {
   readonly editingStep?: Step;
 }
 
-export function useTestEditorSteps(props: UseTestEditorStepsProps) {
+export function useTestEditorSteps() {
   const stepsContainerRef = useRef<HTMLDivElement>(null);
   const stepAdderRef = useRef<HTMLTextAreaElement>(null);
 
-  const test = props.test;
+  const { test } = useTest();
+
+  const { updateStep, deleteStep } = useTestStep();
 
   const [state, setState] = useState<UseTestEditorStepsState>({});
 
@@ -49,6 +49,7 @@ export function useTestEditorSteps(props: UseTestEditorStepsProps) {
   };
 
   const handleStepEditorGoNext = (stepIndex: number) => () => {
+    console.log("handleStepEditorGoNext", { stepIndex });
     if (!test) {
       return;
     }
@@ -62,6 +63,7 @@ export function useTestEditorSteps(props: UseTestEditorStepsProps) {
   };
 
   const handleStepEditorCancel = (editingStepIndex: number) => () => {
+    console.log("handleStepEditorCancel");
     setEditingStep(undefined);
   };
 
@@ -71,12 +73,7 @@ export function useTestEditorSteps(props: UseTestEditorStepsProps) {
         return;
       }
 
-      props.onChange({
-        ...test,
-        steps: test.steps.map((step, stepIndex) =>
-          stepIndex === editingStepIndex ? editingStep : step,
-        ),
-      });
+      updateStep(editingStepIndex, editingStep.text);
     };
 
   const setEditingStep = (editingStep?: Step) => {
@@ -95,10 +92,7 @@ export function useTestEditorSteps(props: UseTestEditorStepsProps) {
 
     setEditingStep(newStep);
 
-    props.onChange({
-      ...test,
-      steps: [...test.steps, newStep],
-    });
+    addNewStep(newStep.text);
 
     setTimeout(focusLastStepInput);
   };
@@ -126,10 +120,11 @@ export function useTestEditorSteps(props: UseTestEditorStepsProps) {
       return;
     }
 
-    props.onChange({
-      ...test,
-      steps: test.steps.filter((_, stepIndex) => stepIndex !== deleteStepIndex),
-    });
+    const deleteStepResult = deleteStep(deleteStepIndex);
+
+    if (isError(deleteStepResult)) {
+      showErrorNotification(deleteStepResult);
+    }
   };
 
   const handleCloseClick = () => {

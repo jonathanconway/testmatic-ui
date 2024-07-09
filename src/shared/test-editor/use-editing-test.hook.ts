@@ -1,4 +1,5 @@
 import deepEqual from "deep-equal";
+import { orderBy } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Test } from "testmatic";
@@ -27,6 +28,8 @@ export function useEditingTest() {
   const test = editingTest ?? originalTest;
 
   const isDirty = state?.test;
+
+  const runs = orderBy(test?.runs, "dateTime", "desc");
 
   useEffect(() => {
     if (testName === TEST_NEW_NAME && !state.test) {
@@ -58,6 +61,7 @@ export function useEditingTest() {
   return {
     editingTest,
     test,
+    runs,
     isNewTest,
     testName,
     isDirty,

@@ -1,14 +1,10 @@
-import { snakeCase } from "lodash";
+import { isError, snakeCase } from "lodash";
 import { useNavigate } from "react-router-dom";
-import {
-  Test,
-  isAlreadyExistsError,
-  projectAddTest,
-  projectUpdateTest,
-} from "testmatic";
+import { Test, parseTags, projectAddTest, projectUpdateTest } from "testmatic";
 
+import { getStorageFns } from "../../hooks";
 import { homeRoute } from "../../screens";
-import { showNotification } from "../notification";
+import { showErrorNotification } from "../notification";
 import { useProject } from "../project";
 
 import { testEditorRoute } from "./test-editor.routes";
@@ -23,6 +19,8 @@ export function useTestEditor() {
   const isSaveButtonDisabled = !isDirty;
 
   const navigateTo = useNavigate();
+
+  const storageFns = getStorageFns();
 
   const handleClickSave = () => {
     if (isNewTest) {
@@ -41,11 +39,8 @@ export function useTestEditor() {
 
     const updatedProject = projectAddTest({ project, newTest });
 
-    if (isAlreadyExistsError(updatedProject)) {
-      showNotification({
-        message: updatedProject.message,
-        type: "error",
-      });
+    if (isError(updatedProject)) {
+      showErrorNotification(updatedProject);
       return;
     }
 
@@ -54,7 +49,6 @@ export function useTestEditor() {
     setEditingTest(undefined);
 
     setTimeout(() => {
-      console.log("newTest.name", newTest.name);
       navigateTo(testEditorRoute(newTest.name));
     });
   };
@@ -69,6 +63,12 @@ export function useTestEditor() {
       testName,
       updatedTest: editingTest,
     });
+    console.log("saveTest", {
+      project,
+      editingTest,
+      testName,
+      updatedProject,
+    });
 
     saveProject(updatedProject);
   };
@@ -80,15 +80,46 @@ export function useTestEditor() {
 
     const title = event.target.value;
 
-    setEditingTest({
-      ...test, // todo: change to test-create-name-from-title
+    const updateTestTitleResult = storageFns.updateTestTitle(test.name, title);
+
+    if (isError(updateTestTitleResult)) {
+      showErrorNotification(updateTestTitleResult);
+      return;
+    }
+  };
+
+  const handleChangeDescription = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    if (!test) {
+      return;
+    }
+
+    const title = event.target.value;
+
+    const updateTestDescriptionResult = storageFns.updateTestDescription(
+      test.name,
       title,
-      name: snakeCase(title),
-    });
+    );
+
+    if (isError(updateTestDescriptionResult)) {
+      showErrorNotification(updateTestDescriptionResult);
+      return;
+    }
   };
 
   const handleChangeTest = (updatedTest: Test) => {
-    setEditingTest(updatedTest);
+    // setEditingTest(updatedTest);
+
+    const updatedTestWithParsedTags = {
+      ...updatedTest,
+      steps: updatedTest.steps.map((step) => ({
+        ...step,
+        tags: parseTags(step.text),
+      })),
+    };
+
+    setEditingTest(updatedTestWithParsedTags);
   };
 
   const handleCloseClick = () => {
@@ -101,6 +132,7 @@ export function useTestEditor() {
     isSaveButtonDisabled,
     handleClickSave,
     handleChangeTitle,
+    handleChangeDescription,
     handleChangeTest,
     handleCloseClick,
   };

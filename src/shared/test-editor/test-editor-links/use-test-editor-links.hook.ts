@@ -2,11 +2,11 @@ import { Link, Test, projectDeleteTestLink } from "testmatic";
 
 import { useProject } from "../../project";
 
-interface UseTestLinksProps {
+interface UseTestLinksParams {
   readonly test: Test;
 }
 
-export function useTestLinks(props: UseTestLinksProps) {
+export function useTestLinks(params: UseTestLinksParams) {
   const { project, saveProject } = useProject();
 
   function handleDeleteClick(linkToDelete: Link) {
@@ -14,7 +14,7 @@ export function useTestLinks(props: UseTestLinksProps) {
       return;
     }
 
-    const { test } = props;
+    const { test } = params;
 
     const updatedProject = projectDeleteTestLink({
       project,

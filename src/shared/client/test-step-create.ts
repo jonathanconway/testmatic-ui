@@ -1,7 +1,7 @@
 import { SERVER_BASE_URL } from "./base";
 
-export function testStepCreate(testId: string, stepText: string) {
-  return fetch(`${SERVER_BASE_URL}/tests/${testId}/step`, {
+export function testStepCreate(testName: string, stepText: string) {
+  return fetch(`${SERVER_BASE_URL}/tests/${testName}/step`, {
     method: "POST",
     headers: {
       Accept: "application/json",

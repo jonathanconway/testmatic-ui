@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Test } from "testmatic";
 
-interface UseRunEditorStepsProps {
+interface UseRunEditorStepsParams {
   readonly test?: Test;
 }
 
@@ -9,7 +9,7 @@ interface UseRunEditorStepsState {
   readonly completed: Record<number, boolean>;
 }
 
-export function useRunEditorSteps(props: UseRunEditorStepsProps) {
+export function useRunEditorSteps(params: UseRunEditorStepsParams) {
   const [state, setState] = useState<UseRunEditorStepsState>({
     completed: {},
   });
@@ -24,7 +24,7 @@ export function useRunEditorSteps(props: UseRunEditorStepsProps) {
     }));
   };
 
-  const steps = props.test?.steps ?? [];
+  const steps = params.test?.steps ?? [];
 
   const completed = state.completed;
 

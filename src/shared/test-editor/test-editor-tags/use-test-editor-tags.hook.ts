@@ -1,21 +1,21 @@
+import { isError } from "lodash";
 import {
   Tag,
   Test,
   isAlreadyExistsError,
-  isError,
   projectAddTestTag,
   projectDeleteTestTag,
   projectGetOrCreateTagByName,
 } from "testmatic";
 
-import { showNotification } from "../../notification";
+import { showErrorNotification } from "../../notification";
 import { useProject } from "../../project";
 
-interface UseTestEditorTagsProps {
+interface UseTestEditorTagsParams {
   readonly test: Test;
 }
 
-export function useTestEditorTags(props: UseTestEditorTagsProps) {
+export function useTestEditorTags(params: UseTestEditorTagsParams) {
   const { project, saveProject } = useProject();
 
   const handleAddItem = (newItem: string) => {
@@ -23,21 +23,18 @@ export function useTestEditorTags(props: UseTestEditorTagsProps) {
       return;
     }
 
-    const { test } = props;
+    const { test } = params;
 
     const tag = projectGetOrCreateTagByName(project?.tagsByName ?? {})(newItem);
 
     const updatedProject = projectAddTestTag({
       project,
       tag,
-      test,
+      lookupTestNameOrTitle: test.name,
     });
 
     if (isAlreadyExistsError(updatedProject)) {
-      showNotification({
-        type: "error",
-        message: updatedProject.message,
-      });
+      showErrorNotification(updatedProject);
       return;
     }
 
@@ -49,7 +46,7 @@ export function useTestEditorTags(props: UseTestEditorTagsProps) {
       return;
     }
 
-    const { test } = props;
+    const { test } = params;
 
     const projectDeleteTestTagResult = projectDeleteTestTag({
       project,
@@ -58,10 +55,7 @@ export function useTestEditorTags(props: UseTestEditorTagsProps) {
     });
 
     if (isError(projectDeleteTestTagResult)) {
-      showNotification({
-        type: "error",
-        message: projectDeleteTestTagResult.message,
-      });
+      showErrorNotification(projectDeleteTestTagResult);
       return;
     }
 

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { ZIndexes } from "../z-indexes";
+
 export const ToggleButton = styled.label<{ readonly $isSelected?: boolean }>`
   display: inline-flex;
   padding: 0.125rem 0.5rem;
@@ -52,7 +54,7 @@ export const ToggleButton = styled.label<{ readonly $isSelected?: boolean }>`
           ? `
       background-color: #efefef;
       border: solid 1px blue;
-      z-index: 1;
+      z-index: ${ZIndexes.ToggleButtonSelected};
     `
           : ""
       }`}

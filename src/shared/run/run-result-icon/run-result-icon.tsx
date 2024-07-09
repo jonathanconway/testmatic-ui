@@ -1,10 +1,16 @@
-import { runResultEmoji } from "./run-result-icon.utils";
-import { RunResult } from "testmatic";
+import { RunResult, sentenceCase } from "testmatic";
+
+import { Icon, IconNames } from "../../icon";
+import { Tooltip } from "../../tooltip";
 
 export interface RunResultProps {
-  readonly runStatus: RunResult;
+  readonly runResult?: RunResult;
 }
 
 export function RunResultIcon(props: RunResultProps) {
-  return <>{runResultEmoji(props.runStatus)}</>;
+  return (
+    <Tooltip contents={sentenceCase(props.runResult ?? "not run")}>
+      <Icon icon={props.runResult ?? IconNames.NotRun} cursor="default" />
+    </Tooltip>
+  );
 }

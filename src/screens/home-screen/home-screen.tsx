@@ -1,6 +1,8 @@
+import { Outlet } from "react-router-dom";
+
 import logo from "../../logo.svg";
-import { Button, ProjectExplorer } from "../../shared";
-import { useHomeScreen } from "./home-screen.hooks";
+import { ExportButton, ImportButton, ProjectExplorer } from "../../shared";
+
 import {
   Body,
   H1,
@@ -9,12 +11,8 @@ import {
   LogoAndTitle,
   Main,
 } from "./home-screen.styles";
-import { Outlet } from "react-router-dom";
 
 export function HomeScreen() {
-  const { project, selectedItemId, onClickTagAdd, onClickTestAdd } =
-    useHomeScreen();
-
   return (
     <Body>
       <Header>
@@ -24,18 +22,13 @@ export function HomeScreen() {
         </LogoAndTitle>
 
         <HeaderActions>
-          <Button>Import</Button>
-          <Button>Export</Button>
+          <ImportButton />
+          <ExportButton />
         </HeaderActions>
       </Header>
 
       <Main>
-        <ProjectExplorer
-          project={project}
-          selectedItemId={selectedItemId}
-          onClickTagAdd={onClickTagAdd}
-          onClickTestAdd={onClickTestAdd}
-        />
+        <ProjectExplorer />
 
         <Outlet />
       </Main>

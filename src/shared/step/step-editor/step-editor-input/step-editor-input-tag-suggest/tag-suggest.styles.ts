@@ -4,13 +4,14 @@ export const PopupContainer = styled.div`
   border: solid 1px silver;
   background-color: white;
   border-radius: 0.5rem;
-  z-index: 1;
+  margin-top: 5px;
 `;
 
 export const Item = styled.div<{ readonly $highlighted: boolean }>`
   padding: 0.25rem 0.5rem;
   font-size: 0.85rem;
   cursor: pointer;
+  white-space: nowrap;
 
   &:first-child {
     border-top-left-radius: 0.5rem;

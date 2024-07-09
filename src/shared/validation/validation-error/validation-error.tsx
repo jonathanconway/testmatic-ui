@@ -8,7 +8,7 @@ interface ValidationErrorProps {
 
 export function ValidationError(props: ValidationErrorProps) {
   return props.message ? (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" alignItems="start" spacing={1}>
       <Icon icon="error" color="red" />
       <Error>{props.message}</Error>
     </Stack>

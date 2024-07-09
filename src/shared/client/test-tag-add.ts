@@ -1,7 +1,7 @@
 import { SERVER_BASE_URL } from "./base";
 
-export function testTagAdd(testId: string, tagName: string) {
-  return fetch(`${SERVER_BASE_URL}/tests/${testId}/tags/${tagName}`, {
+export function testTagAdd(testName: string, tagName: string) {
+  return fetch(`${SERVER_BASE_URL}/tests/${testName}/tags/${tagName}`, {
     method: "POST",
     headers: {
       Accept: "application/json",

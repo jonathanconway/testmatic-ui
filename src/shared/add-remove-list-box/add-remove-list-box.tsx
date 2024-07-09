@@ -1,12 +1,17 @@
+import { ReactNode } from "react";
+
 import { Button } from "../button";
 import { Stack, StackProps } from "../layout";
 import { ListBox, ListBoxItem } from "../list-box";
 import { Popover } from "../popover";
 import { TextBox } from "../text-box";
+
 import * as Styled from "./add-remove-list-box.styles";
-import { AddRemoveListBoxAddItemPopupContentProps } from "./add-remove-list-box.types";
 import { useAddRemoveListBox } from "./use-add-remove-list-box.hooks";
-import { ReactNode } from "react";
+
+export interface AddRemoveListBoxAddItemPopupContentProps {
+  readonly close: VoidFunction;
+}
 
 export interface AddRemoveListBoxProps extends StackProps {
   readonly items?: readonly string[];
@@ -14,7 +19,7 @@ export interface AddRemoveListBoxProps extends StackProps {
   readonly headerContent?: ReactNode;
 
   readonly renderAddItemPopupContent?: (
-    params: AddRemoveListBoxAddItemPopupContentProps
+    params: AddRemoveListBoxAddItemPopupContentProps,
   ) => ReactNode;
 
   readonly onAddItem?: (value: string) => void;

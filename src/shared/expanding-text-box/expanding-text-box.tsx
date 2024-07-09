@@ -1,5 +1,6 @@
-import * as Styled from "./expanding-text-box.styles";
 import { ChangeEvent, FormEvent, HTMLProps, forwardRef, useState } from "react";
+
+import * as Styled from "./expanding-text-box.styles";
 
 interface ExpandingTextBoxProps extends HTMLProps<HTMLTextAreaElement> {}
 
@@ -13,24 +14,21 @@ export const ExpandingTextBox = forwardRef(
       value: props.value,
     });
 
-    const handleChange = (event: FormEvent<HTMLTextAreaElement>) => {
+    const handleInput = (event: FormEvent<HTMLTextAreaElement>) => {
       const { value } = (event as ChangeEvent<HTMLTextAreaElement>).target;
       setState({ value });
-      props.onChange?.(event);
+      props.onInput?.(event);
     };
 
     return (
-      <>
-        <Styled.TextAreaContainer>
-          <Styled.TextArea
-            onChange={handleChange}
-            ref={ref as React.LegacyRef<HTMLTextAreaElement>}
-            {...props}
-          />
-        </Styled.TextAreaContainer>
-
-        <Styled.Sizer>{state.value}&nbsp;</Styled.Sizer>
-      </>
+      <Styled.TextAreaContainer>
+        <Styled.TextArea
+          ref={ref as React.LegacyRef<HTMLTextAreaElement>}
+          {...props}
+          onInput={handleInput}
+        />
+        <Styled.Sizer>{state.value || <>&nbsp;</>}</Styled.Sizer>
+      </Styled.TextAreaContainer>
     );
-  }
+  },
 );

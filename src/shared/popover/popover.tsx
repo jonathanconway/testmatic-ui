@@ -1,5 +1,6 @@
-import * as Styled from "./popover.styles";
 import { HTMLProps, ReactNode } from "react";
+
+import * as Styled from "./popover.styles";
 
 export interface PopoverProps extends HTMLProps<HTMLDivElement> {
   readonly anchorElement: HTMLElement | null;

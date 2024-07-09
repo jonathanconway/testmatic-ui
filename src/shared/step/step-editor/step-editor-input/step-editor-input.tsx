@@ -1,21 +1,23 @@
-import { ExpandingTextBox } from "../../../expanding-text-box";
-import { Popover } from "../../../popover";
-import "../../../utils";
-import { TagSuggest } from "./step-editor-input-tag-suggest/tag-suggest";
-import { useTagSuggestController } from "./step-editor-input-tag-suggest/use-tag-suggest-controller.hook";
-import * as Styled from "./step-editor-input.styles";
 import {
   ChangeEvent,
   FocusEvent,
   KeyboardEvent,
+  KeyboardEventHandler,
+  LegacyRef,
+  useCallback,
+  useEffect,
   useRef,
   useState,
-  LegacyRef,
-  useEffect,
-  KeyboardEventHandler,
-  useCallback,
 } from "react";
 import { Step, Tag, createTestStepFromText } from "testmatic";
+
+import { ExpandingTextBox } from "../../../expanding-text-box";
+import { Popover } from "../../../popover";
+import "../../../utils";
+
+import { TagSuggest } from "./step-editor-input-tag-suggest/tag-suggest";
+import { useTagSuggestController } from "./step-editor-input-tag-suggest/use-tag-suggest-controller.hook";
+import * as Styled from "./step-editor-input.styles";
 
 interface StepEditorInputProps {
   readonly step: Step;
@@ -140,7 +142,7 @@ export function StepEditorInput(props: StepEditorInputProps) {
   };
 
   const handleKeyDownArrowDown = (
-    event: KeyboardEvent<HTMLTextAreaElement>
+    event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (tagSuggestController.tagSuggest.isOpen) {
       return;
@@ -196,6 +198,8 @@ export function StepEditorInput(props: StepEditorInputProps) {
   }, [props, state.isDirty, state.value]);
 
   const handleBlur = useCallback(() => {
+    tagSuggestController.input.handleBlur();
+
     const didUserSelectFromTagSuggest = tagSuggestController.tagSuggest.isOpen;
     if (didUserSelectFromTagSuggest) {
       return;
@@ -207,10 +211,11 @@ export function StepEditorInput(props: StepEditorInputProps) {
       props.onCancel();
     }
   }, [
-    props,
+    tagSuggestController.input,
+    tagSuggestController.tagSuggest.isOpen,
     state.isDirty,
     state.value,
-    tagSuggestController.tagSuggest.isOpen,
+    props,
   ]);
 
   const selectionMeasurerAnchorRef = useRef<HTMLSpanElement>(null);

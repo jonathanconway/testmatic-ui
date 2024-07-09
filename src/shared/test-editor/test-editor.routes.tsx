@@ -1,6 +1,7 @@
-import { TestEditor } from "./test-editor";
 import { RouteObject } from "react-router-dom";
 import { Test, createTest } from "testmatic";
+
+import { TestEditor } from "./test-editor";
 
 export const TEST_EDITOR_ROUTE: RouteObject = {
   path: "/test/:testName?",
@@ -20,4 +21,8 @@ export const TEST_NEW = createTest({
 
 export function testEditorNewTestRoute() {
   return testEditorRoute(TEST_NEW_NAME);
+}
+
+export interface TestEditorRouteParams extends Record<string, string> {
+  readonly testName: string;
 }

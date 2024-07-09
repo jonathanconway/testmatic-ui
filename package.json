@@ -19,7 +19,7 @@
     "serve:static": "npx serve --single --no-request-logging build",
     "start:surge": "REACT_APP_SURGE=true react-scripts start",
     "build:surge": "REACT_APP_SURGE=true react-scripts build",
-    "deploy:surge": "surge build testmatic.surge.sh"
+    "deploy:surge": "surge ./build testmatic.surge.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

@@ -1,11 +1,11 @@
 import { SERVER_BASE_URL } from "./base";
 
 export function testStepUpdate(
-  testId: string,
+  testName: string,
   stepIndex: number,
   stepText: string,
 ) {
-  return fetch(`${SERVER_BASE_URL}/tests/${testId}/step/${stepIndex}`, {
+  return fetch(`${SERVER_BASE_URL}/tests/${testName}/step/${stepIndex}`, {
     method: "PUT",
     headers: {
       Accept: "application/json",

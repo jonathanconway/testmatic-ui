@@ -7,7 +7,7 @@ import { UseProjectResult } from "./use-project.types";
 export function useProject(): UseProjectResult {
   const projectLocalStorage = useProjectLocalStorage({ enabled: isSurge });
 
-  const projectHttp = useProjectHttp({ enabled: isSurge });
+  const projectHttp = useProjectHttp({ enabled: !isSurge });
 
   return isSurge ? projectLocalStorage : projectHttp;
 }

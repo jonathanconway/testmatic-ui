@@ -10,8 +10,9 @@ import {
   projectAddTag,
 } from "testmatic";
 
+import { useTag } from "../../hooks";
 import { homeRoute } from "../../screens";
-import { showNotification } from "../notification";
+import { showErrorNotification } from "../notification";
 import { useProject } from "../project";
 
 import { TAG_NEW, TAG_NEW_NAME, tagEditorRoute } from "./tag-editor.routes";
@@ -24,6 +25,8 @@ export function useTagEditor() {
   const { project, saveProject } = useProject();
 
   const { tagName = undefined } = useParams();
+
+  const { updateDescription } = useTag();
 
   const [state, setState] = useState<UseTagEditorState>({});
 
@@ -71,6 +74,13 @@ export function useTagEditor() {
     }));
   };
 
+  const handleChangeDescription = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const description = event.target.value;
+    updateDescription(description);
+  };
+
   const handleCloseClick = () => {
     navigate(homeRoute());
   };
@@ -97,10 +107,7 @@ export function useTagEditor() {
     const updatedProject = projectAddTag({ project, newTag });
 
     if (isAlreadyExistsError(updatedProject)) {
-      showNotification({
-        message: updatedProject.message,
-        type: "error",
-      });
+      showErrorNotification(updatedProject);
       return;
     }
 
@@ -117,6 +124,7 @@ export function useTagEditor() {
     isNewTag,
     isSaveButtonDisabled,
     handleChangeTitle,
+    handleChangeDescription,
     handleCloseClick,
     handleClickSave,
   };

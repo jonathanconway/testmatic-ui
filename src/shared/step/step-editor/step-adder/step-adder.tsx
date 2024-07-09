@@ -1,5 +1,9 @@
+import { HTMLProps, KeyboardEvent, forwardRef } from "react";
+
+import { Box } from "../../../box";
+import { Stack } from "../../../layout";
+
 import * as Styled from "./step-adder.styles";
-import { HTMLProps, forwardRef, KeyboardEvent } from "react";
 
 export interface StepAdderProps extends HTMLProps<HTMLTextAreaElement> {
   readonly onGoPrevious: VoidFunction;
@@ -22,13 +26,16 @@ export const StepAdder = forwardRef(
     };
 
     return (
-      <Styled.TextArea
-        placeholder="Add new step"
-        value=""
-        ref={ref}
-        onKeyDown={handleKeyDown}
-        {...restProps}
-      />
+      <Stack direction="row" width="100%" gap="0.5rem">
+        <Styled.TextArea
+          placeholder="Add new step"
+          value=""
+          ref={ref}
+          onKeyDown={handleKeyDown}
+          {...restProps}
+        />
+        <Box width="1rem"></Box>
+      </Stack>
     );
-  }
+  },
 );

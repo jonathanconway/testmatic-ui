@@ -1,15 +1,19 @@
+import { HTMLProps, KeyboardEvent, useRef } from "react";
+import { Step } from "testmatic";
+
+import { Box } from "../../box";
 import { IconButton } from "../../icon-button";
+import { Stack } from "../../layout";
 import { Tooltip } from "../../tooltip";
 import "../../utils";
 import { timeout } from "../../utils";
+
 import {
   StepEditorDisplay,
   focusStepEditorDisplayLastLink,
 } from "./step-editor-display";
 import { StepEditorInput } from "./step-editor-input";
 import * as Styled from "./step-editor.styles";
-import { HTMLProps, KeyboardEvent, useRef } from "react";
-import { Step } from "testmatic";
 
 export interface StepEditorProps
   extends Omit<HTMLProps<HTMLDivElement>, "onChange" | "step"> {
@@ -42,7 +46,7 @@ export const StepEditor = function (props: StepEditorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleStepInputKeyDown = async (
-    event: KeyboardEvent<HTMLTextAreaElement>
+    event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (event.key === "Tab" && event.shiftKey) {
       props.onCancel();
@@ -57,9 +61,11 @@ export const StepEditor = function (props: StepEditorProps) {
   return (
     <Styled.Container {...restProps} ref={containerRef}>
       <Styled.MainContainer>
-        {!props.isEditing && (
-          <StepEditorDisplay step={props.step} onClick={props.onClick} />
-        )}
+        <StepEditorDisplay
+          step={props.step}
+          isVisible={!props.isEditing}
+          onClick={props.onClick}
+        />
 
         <StepEditorInput
           step={props.step}
@@ -73,9 +79,15 @@ export const StepEditor = function (props: StepEditorProps) {
         />
       </Styled.MainContainer>
 
-      <Tooltip contents="Delete step">
-        <IconButton icon="delete" size="small" onClick={props.onDeleteClick} />
-      </Tooltip>
+      <Box width="1rem">
+        <Tooltip contents="Delete step">
+          <IconButton
+            icon="delete"
+            size="small"
+            onClick={props.onDeleteClick}
+          />
+        </Tooltip>
+      </Box>
     </Styled.Container>
   );
 };

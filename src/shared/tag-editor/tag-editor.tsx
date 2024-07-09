@@ -1,15 +1,18 @@
+import { Link } from "react-router-dom";
+
 import { BorderBox } from "../border-box";
 import { Box } from "../box";
 import { Button } from "../button";
 import { Heading } from "../heading";
 import { IconButton } from "../icon-button";
+import { InlineExpandingTextBox } from "../inline-expanding-text-box";
 import { Header, Stack } from "../layout";
 import { testEditorRoute } from "../test-editor";
 import { TitleEditor } from "../title-editor";
 import { Tooltip } from "../tooltip";
+
 import * as Styled from "./tag-editor.styles";
 import { useTagEditor } from "./use-tag-editor.hook";
-import { Link } from "react-router-dom";
 
 export function TagEditor() {
   const {
@@ -19,6 +22,7 @@ export function TagEditor() {
     isSaveButtonDisabled,
     handleCloseClick,
     handleChangeTitle,
+    handleChangeDescription,
     handleClickSave,
   } = useTagEditor();
 
@@ -63,21 +67,29 @@ export function TagEditor() {
           }
         ></Header>
 
-        {tagReferencedTests.length > 0 && (
-          <Stack spacing={1} height="100%">
-            <Heading level={3}>Tests</Heading>
-            <Styled.TestsList>
-              {tagReferencedTests.map((test) => (
-                <Styled.TestsListItem key={test.name}>
-                  <div>
-                    🧪&nbsp;
-                    <Link to={testEditorRoute(test.name)}>{test.title}</Link>
-                  </div>
-                </Styled.TestsListItem>
-              ))}
-            </Styled.TestsList>
-          </Stack>
-        )}
+        <Stack spacing={2} height="100%">
+          <InlineExpandingTextBox
+            value={tag.description}
+            onChange={handleChangeDescription}
+            placeholder="Description (optional)"
+          />
+
+          {tagReferencedTests.length > 0 && (
+            <Stack spacing={1}>
+              <Heading level={3}>Tests</Heading>
+              <Styled.TestsList>
+                {tagReferencedTests.map((test) => (
+                  <Styled.TestsListItem key={test.name}>
+                    <div>
+                      🧪&nbsp;
+                      <Link to={testEditorRoute(test.name)}>{test.title}</Link>
+                    </div>
+                  </Styled.TestsListItem>
+                ))}
+              </Styled.TestsList>
+            </Stack>
+          )}
+        </Stack>
       </Stack>
     </BorderBox>
   );

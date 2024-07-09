@@ -1,12 +1,12 @@
 import { noop } from "lodash";
 import { useEffect, useState } from "react";
-import {
-  ProjectView,
-  convertProjectJSONToProject,
-  convertProjectToProjectJSON,
-} from "testmatic";
+import { ProjectView } from "testmatic";
 
 import { emptyProjectView } from "../empty-project";
+
+import { getProjectFromLocalStorage } from "./get-project-local-storage";
+import { RefreshProjectLocalStorageEvent } from "./refresh-project-local-storage-event";
+import { saveProjectLocalStorage } from "./save-project-local-storage";
 
 interface UseProjectLocalStorageParams {
   readonly enabled: boolean;
@@ -14,27 +14,6 @@ interface UseProjectLocalStorageParams {
 
 interface UseProjectLocalStorageState {
   readonly project?: ProjectView;
-}
-
-const LOCAL_STORAGE_KEY = "testmatic_project";
-
-class RefreshProjectLocalStorageEvent extends Event {
-  static type = "refreshprojectlocalstorage";
-  constructor() {
-    super(RefreshProjectLocalStorageEvent.type);
-  }
-}
-
-function getProjectFromLocalStorage() {
-  const projectLocalStorageValue =
-    localStorage.getItem(LOCAL_STORAGE_KEY)?.toString() ??
-    JSON.stringify(convertProjectToProjectJSON(emptyProjectView));
-
-  const projectLocalStorageJSON = JSON.parse(projectLocalStorageValue);
-
-  const project = convertProjectJSONToProject(projectLocalStorageJSON);
-
-  return project;
 }
 
 export function useProjectLocalStorage(params: UseProjectLocalStorageParams) {
@@ -81,12 +60,7 @@ export function useProjectLocalStorage(params: UseProjectLocalStorageParams) {
   function saveProject(project: ProjectView) {
     setState({ project });
 
-    const projectJSON = convertProjectToProjectJSON(project);
-    const projectJSONValue = JSON.stringify(projectJSON);
-
-    localStorage.setItem(LOCAL_STORAGE_KEY, projectJSONValue);
-
-    window.dispatchEvent(new RefreshProjectLocalStorageEvent());
+    saveProjectLocalStorage(project);
   }
 
   const refetch = noop;

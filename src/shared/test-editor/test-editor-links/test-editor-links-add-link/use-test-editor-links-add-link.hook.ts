@@ -6,14 +6,13 @@ import {
   projectAddTestLink,
 } from "testmatic";
 
-import { AddRemoveListBoxAddItemPopupContentProps } from "../../../add-remove-list-box";
 import { useProject } from "../../../project";
 import { isNotNil } from "../../../utils";
 
-type UseTestEditorLinksAddLinkProps =
-  AddRemoveListBoxAddItemPopupContentProps & {
-    readonly test: Test;
-  };
+interface UseTestEditorLinksAddLinkParams {
+  readonly close: VoidFunction;
+  readonly test: Test;
+}
 
 interface UseTestEditorLinksAddLink {
   readonly values: {
@@ -31,7 +30,7 @@ interface UseTestEditorLinksAddLink {
 }
 
 export function useTestEditorLinksAddLink(
-  props: UseTestEditorLinksAddLinkProps,
+  params: UseTestEditorLinksAddLinkParams,
 ) {
   const [state, setState] = useState<UseTestEditorLinksAddLink>({
     values: {
@@ -98,12 +97,12 @@ export function useTestEditorLinksAddLink(
       title: state.values.title,
     });
 
-    const { test } = props;
+    const { test } = params;
 
     const updatedProject = projectAddTestLink({
       project,
       newLink,
-      test,
+      lookupTestNameOrTitle: test.name,
     });
 
     if (isAlreadyExistsError(updatedProject)) {
@@ -112,7 +111,7 @@ export function useTestEditorLinksAddLink(
 
     saveProject(updatedProject);
 
-    props.close();
+    params.close();
   }
 
   return {
