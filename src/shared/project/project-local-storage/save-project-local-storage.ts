@@ -3,7 +3,7 @@ import { ProjectView, convertProjectToProjectJSON } from "testmatic";
 import { LOCAL_STORAGE_KEY } from "./local-storage-key";
 import { RefreshProjectLocalStorageEvent } from "./refresh-project-local-storage-event";
 
-export function saveProjectLocalStorage(project: ProjectView) {
+export function saveProjectToLocalStorage(project: ProjectView) {
   const projectJSON = convertProjectToProjectJSON(project);
   const projectJSONValue = JSON.stringify(projectJSON);
 

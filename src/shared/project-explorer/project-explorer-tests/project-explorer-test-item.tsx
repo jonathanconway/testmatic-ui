@@ -1,4 +1,4 @@
-import { Test, projectGetTestRunLatest } from "testmatic";
+import { Test } from "testmatic";
 
 import { Box } from "../../box";
 import { Icon, IconNames } from "../../icon";
@@ -24,11 +24,10 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
     isSelected,
     shouldRenderExpand,
     runs,
+    testRunLatest,
     toggleExpanded,
     handleTestDeleteClick,
   } = useProjectExplorerTestItem(props);
-
-  const testRunLatest = projectGetTestRunLatest(props.test);
 
   return (
     <>
@@ -67,7 +66,10 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
           </Box>
 
           <Tooltip contents={sentenceCase(testRunLatest?.result ?? "not run")}>
-            <Icon icon={testRunLatest?.result ?? IconNames.NotRun} />
+            <Icon
+              icon={testRunLatest?.result ?? IconNames.NotRun}
+              cursor="default"
+            />
           </Tooltip>
 
           <Tooltip contents="Delete test">

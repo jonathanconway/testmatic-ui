@@ -5,6 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   margin: 0.25rem;
+  width: 10rem;
 `;
 
 export const UnorderedList = styled.ul`

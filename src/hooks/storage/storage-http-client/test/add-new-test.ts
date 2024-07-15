@@ -1,6 +1,6 @@
 import { Test } from "testmatic";
 
-import { resultError, resultOk } from "../../../result";
+import { responseToResult } from "../../../response";
 import { AddNewTestFn } from "../../../test";
 
 import { testPost } from "./test-post.http";
@@ -11,9 +11,5 @@ export const addNewTest: AddNewTestFn = async (newTest: Test) => {
     stepTexts: newTest.steps.map((s) => s.text),
   });
 
-  if (response.ok) {
-    return resultOk();
-  } else {
-    return resultError(await response.json());
-  }
+  return responseToResult(response);
 };

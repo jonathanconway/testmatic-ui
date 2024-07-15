@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const PopupContainer = styled.div`
   border: solid 1px silver;
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   margin-top: 5px;
 `;
 

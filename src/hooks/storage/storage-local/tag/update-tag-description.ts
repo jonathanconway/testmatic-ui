@@ -3,7 +3,7 @@ import { projectUpdateTag } from "testmatic";
 
 import {
   getProjectFromLocalStorage,
-  saveProjectLocalStorage,
+  saveProjectToLocalStorage,
 } from "../../../../shared";
 import { resultError, resultOk } from "../../../result";
 import { UpdateTagDescriptionFn } from "../../../tag";
@@ -37,7 +37,7 @@ export const updateTagDescription: UpdateTagDescriptionFn = async (
     return resultError(updatedProject);
   }
 
-  saveProjectLocalStorage(updatedProject);
+  saveProjectToLocalStorage(updatedProject);
 
   return resultOk();
 };

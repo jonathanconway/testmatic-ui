@@ -1,20 +1,19 @@
-import { Link, Test, projectDeleteTestLink } from "testmatic";
+import { Link, projectDeleteTestLink } from "testmatic";
 
 import { useProject } from "../../project";
+import { useEditingTest } from "../use-editing-test.hook";
 
-interface UseTestLinksParams {
-  readonly test: Test;
-}
-
-export function useTestLinks(params: UseTestLinksParams) {
+export function useTestLinks() {
   const { project, saveProject } = useProject();
 
+  const { test } = useEditingTest();
+
+  const links = test?.links ?? [];
+
   function handleDeleteClick(linkToDelete: Link) {
-    if (!project) {
+    if (!project || !test) {
       return;
     }
-
-    const { test } = params;
 
     const updatedProject = projectDeleteTestLink({
       project,
@@ -25,6 +24,8 @@ export function useTestLinks(params: UseTestLinksParams) {
     saveProject(updatedProject);
   }
   return {
+    links,
+
     handleDeleteClick,
   };
 }

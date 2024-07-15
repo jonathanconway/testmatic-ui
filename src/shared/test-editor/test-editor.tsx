@@ -1,25 +1,24 @@
-import { BorderBox } from "../border-box";
 import { Box } from "../box";
 import { Button } from "../button";
 import { Heading } from "../heading";
-import { InlineExpandingTextBox } from "../inline-expanding-text-box";
 import { Header, Stack } from "../layout";
-import { TitleEditor } from "../title-editor";
+import { Text } from "../text";
+import { InlineExpandingTextBox } from "../text-box/inline-expanding-text-box";
 import { Tooltip } from "../tooltip";
 
 import { TestEditorLinks } from "./test-editor-links";
 import { TestEditorRuns } from "./test-editor-runs";
 import { TestEditorSteps } from "./test-editor-steps";
 import { TestEditorTags } from "./test-editor-tags";
+import { TestEditorTitle } from "./test-editor-title";
 import { useTestEditor } from "./use-test-editor.hook";
 
 export function TestEditor() {
   const {
     test,
-    isSaveButtonDisabled,
+    isCreateButtonDisabled,
     isNewTest,
-    handleClickSave,
-    handleChangeTitle,
+    handleClickCreate,
     handleChangeDescription,
     handleCloseClick,
   } = useTestEditor();
@@ -29,20 +28,15 @@ export function TestEditor() {
   }
 
   return (
-    <BorderBox flex={1} overflow="scroll">
+    <Box flex={1} overflow="scroll" padding="0.5rem">
       <Stack spacing={2} height="100%">
         <Header
           headingSlot={
             <Heading level={2}>
-              <Stack direction="row" spacing={1} alignContent="center">
+              <Stack direction="row" spacing={1} alignItems="center">
                 <span>Test:</span>
                 <Box flex={1}>
-                  <TitleEditor
-                    value={test.title}
-                    autoFocus={isNewTest}
-                    autoSelect={isNewTest}
-                    onChange={handleChangeTitle}
-                  />
+                  <TestEditorTitle />
                 </Box>
               </Stack>
             </Heading>
@@ -51,8 +45,8 @@ export function TestEditor() {
             <Stack direction="row" spacing={1}>
               {isNewTest && (
                 <Button
-                  disabled={isSaveButtonDisabled}
-                  onClick={handleClickSave}
+                  disabled={isCreateButtonDisabled}
+                  onClick={handleClickCreate}
                 >
                   Create
                 </Button>
@@ -65,26 +59,33 @@ export function TestEditor() {
           }
         />
 
-        <InlineExpandingTextBox
-          value={test.description}
-          onChange={handleChangeDescription}
-          placeholder="Description (optional)"
-        />
+        <Text>
+          <InlineExpandingTextBox
+            value={test.description}
+            onChange={handleChangeDescription}
+            placeholder="Description (optional)"
+          />
+        </Text>
 
-        <Stack direction="row" spacing={4}>
+        <Stack direction="row" spacing={4} flex={1}>
           <Box width="60%">
             <TestEditorSteps />
           </Box>
 
-          <Stack direction="column" spacing={4} width="40%">
-            <TestEditorTags test={test} />
+          <Stack
+            direction="column"
+            spacing={4}
+            justifyContent="space-evenly"
+            width="40%"
+          >
+            <TestEditorTags />
 
-            <TestEditorLinks test={test} />
+            <TestEditorLinks />
 
-            <TestEditorRuns test={test} />
+            <TestEditorRuns />
           </Stack>
         </Stack>
       </Stack>
-    </BorderBox>
+    </Box>
   );
 }

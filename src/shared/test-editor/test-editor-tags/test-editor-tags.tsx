@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Test } from "testmatic";
 
 import { AddRemoveListBox } from "../../add-remove-list-box";
 import { Heading } from "../../heading";
@@ -9,17 +8,11 @@ import { tagEditorRoute } from "../../tag-editor";
 
 import { useTestEditorTags } from "./use-test-editor-tags.hook";
 
-export interface TestEditorTagsProps {
-  readonly test: Test;
-}
-
-export function TestEditorTags(props: TestEditorTagsProps) {
-  const { handleAddItem, handleItemDeleteClick } = useTestEditorTags(props);
-
-  const tags = props.test.tags;
+export function TestEditorTags() {
+  const { tags, handleAddItem, handleItemDeleteClick } = useTestEditorTags();
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} flex={1}>
       <Heading level={3}>Tags</Heading>
 
       <AddRemoveListBox onAddItem={handleAddItem}>

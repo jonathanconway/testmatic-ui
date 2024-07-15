@@ -1,7 +1,6 @@
 import { isError } from "lodash";
 import {
   Tag,
-  Test,
   isAlreadyExistsError,
   projectAddTestTag,
   projectDeleteTestTag,
@@ -10,20 +9,19 @@ import {
 
 import { showErrorNotification } from "../../notification";
 import { useProject } from "../../project";
+import { useEditingTest } from "../use-editing-test.hook";
 
-interface UseTestEditorTagsParams {
-  readonly test: Test;
-}
+export function useTestEditorTags() {
+  const { test } = useEditingTest();
 
-export function useTestEditorTags(params: UseTestEditorTagsParams) {
   const { project, saveProject } = useProject();
 
+  const tags = test?.tags ?? [];
+
   const handleAddItem = (newItem: string) => {
-    if (!project) {
+    if (!project || !test) {
       return;
     }
-
-    const { test } = params;
 
     const tag = projectGetOrCreateTagByName(project?.tagsByName ?? {})(newItem);
 
@@ -42,11 +40,9 @@ export function useTestEditorTags(params: UseTestEditorTagsParams) {
   };
 
   const handleItemDeleteClick = (tag: Tag) => () => {
-    if (!project) {
+    if (!project || !test) {
       return;
     }
-
-    const { test } = params;
 
     const projectDeleteTestTagResult = projectDeleteTestTag({
       project,
@@ -65,6 +61,7 @@ export function useTestEditorTags(params: UseTestEditorTagsParams) {
   };
 
   return {
+    tags,
     handleAddItem,
     handleItemDeleteClick,
   };

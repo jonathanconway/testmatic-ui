@@ -12,6 +12,9 @@ export function useTestStep() {
 
   const storageFns = getStorageFns();
 
+  const addNewStep = (newStepText: string) =>
+    storageFns.addNewTestStep(testName, newStepText);
+
   const updateStep = (lookupStepIndex: number, newStepText: string) =>
     storageFns.updateTestStep(testName, lookupStepIndex, newStepText);
 
@@ -21,6 +24,7 @@ export function useTestStep() {
   return {
     test,
 
+    addNewStep,
     updateStep,
     deleteStep,
   };

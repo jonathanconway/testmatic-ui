@@ -1,17 +1,16 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import {
-  Test,
   createLink,
   isAlreadyExistsError,
   projectAddTestLink,
 } from "testmatic";
 
 import { useProject } from "../../../project";
-import { isNotNil } from "../../../utils";
+import { isNotNil, isUrl } from "../../../utils";
+import { useEditingTest } from "../../use-editing-test.hook";
 
 interface UseTestEditorLinksAddLinkParams {
   readonly close: VoidFunction;
-  readonly test: Test;
 }
 
 interface UseTestEditorLinksAddLink {
@@ -47,6 +46,8 @@ export function useTestEditorLinksAddLink(
     },
   });
 
+  const { test } = useEditingTest();
+
   const { values, form, fields } = state;
 
   const errors = useMemo(() => {
@@ -81,6 +82,10 @@ export function useTestEditorLinksAddLink(
   const { project, saveProject } = useProject();
 
   function handleSubmitClick() {
+    if (!test) {
+      return;
+    }
+
     setState((previousState) => ({
       ...previousState,
       form: {
@@ -96,8 +101,6 @@ export function useTestEditorLinksAddLink(
       href: state.values.href,
       title: state.values.title,
     });
-
-    const { test } = params;
 
     const updatedProject = projectAddTestLink({
       project,
@@ -125,14 +128,6 @@ export function useTestEditorLinksAddLink(
     handleTitleInput,
     handleSubmitClick,
   };
-}
-
-function isUrl(input: string) {
-  try {
-    return Boolean(new URL(input));
-  } catch (e) {
-    return false;
-  }
 }
 
 function getHrefError(state: UseTestEditorLinksAddLink) {

@@ -1,16 +1,17 @@
+import { useEffect, useState } from "react";
+
 import { Notification } from "./notification";
 import {
   ShowNotificationEvent,
   ShowNotificationParams,
 } from "./show-notification";
-import { useEffect, useState } from "react";
 
 export function NotificationProvider() {
   const [state, setState] = useState<ShowNotificationParams>();
 
   useEffect(() => {
     const listener = (event: ShowNotificationEvent) => {
-      console.log(ShowNotificationEvent.type, event);
+      console.log("NotificationProvider ", event);
       setState(event.params);
     };
 

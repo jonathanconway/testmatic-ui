@@ -33,15 +33,14 @@ export const StepsList = styled.ol`
   counter-reset: item;
 `;
 
-export const StepsListItem = styled.li`
+export const StepsListItem = styled.li<{ readonly $counter: number }>`
   display: inline-flex;
-  // margin: 0.25rem;
   font-size: 0.85rem;
-  align-items: center;
+  align-items: baseline;
 
   &:before {
     display: inline-block;
-    content: counter(item) ". ";
+    content: "${({ $counter }) => $counter}. ";
     counter-increment: item;
     width: 1.5em;
     margin-right: 0.5rem;

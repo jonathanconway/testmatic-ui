@@ -1,3 +1,4 @@
+import { HTMLProps } from "react";
 import { Link } from "react-router-dom";
 import { Step, Tag, createTagFromName } from "testmatic";
 
@@ -9,22 +10,20 @@ import { stepFragments } from "../../step-fragments";
 
 import * as Styled from "./step-editor-display.styles";
 
-interface StepEditorDisplayProps {
+interface StepEditorDisplayProps
+  extends Omit<HTMLProps<HTMLDivElement>, "step"> {
   readonly step?: Step;
   readonly isVisible?: boolean;
-
-  readonly onClick?: VoidFunction;
 }
 
 export function StepEditorDisplay(props: StepEditorDisplayProps) {
+  const { step, isVisible, ...restProps } = props;
+
   const { project } = useProject();
   // todo: fix full tag lookup issue
 
   return (
-    <Styled.StepDisplay
-      $isVisible={props.isVisible ?? true}
-      onClick={props.onClick}
-    >
+    <Styled.StepDisplay $isVisible={props.isVisible ?? true} {...restProps}>
       {stepFragments(props.step).map((token, index) => {
         switch (token.type) {
           case "text":

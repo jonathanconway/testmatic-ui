@@ -1,5 +1,3 @@
-import { Test } from "testmatic";
-
 import { AddRemoveListBoxAddItemPopupContentProps } from "../../../add-remove-list-box";
 import { Button } from "../../../button";
 import { Stack } from "../../../layout";
@@ -10,9 +8,7 @@ import { RequiredChip, ValidationError } from "../../../validation";
 
 import { useTestEditorLinksAddLink } from "./use-test-editor-links-add-link.hook";
 
-type LinksBoxAddLinkProps = AddRemoveListBoxAddItemPopupContentProps & {
-  readonly test: Test;
-};
+type LinksBoxAddLinkProps = AddRemoveListBoxAddItemPopupContentProps;
 
 export function LinksBoxAddLink(props: LinksBoxAddLinkProps) {
   const {

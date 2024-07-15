@@ -1,4 +1,4 @@
-import { Run, Test, getRunFilepath } from "testmatic";
+import { getRunFilepath } from "testmatic";
 
 import { Box } from "../../../box";
 import { testRunFolderOpen } from "../../../client";
@@ -9,18 +9,20 @@ import { Stack } from "../../../layout";
 import { Link } from "../../../link";
 import { TextOverflow } from "../../../text-overflow";
 import { Tooltip } from "../../../tooltip";
+import { useEditingRun } from "../use-editing-run.hook";
 
-interface RunEditorFolderProps {
-  readonly test: Test;
-  readonly run: Run;
-}
+export function RunEditorFolder() {
+  const { test, run } = useEditingRun();
 
-export function RunEditorFolder(props: RunEditorFolderProps) {
-  const runFilepath = getRunFilepath(props.test, props.run);
+  if (!test || !run) {
+    return null;
+  }
+
+  const runFilepath = getRunFilepath(test, run);
   const runFilepathUrl = `file:///${runFilepath}`;
 
   const handleOpenClick = () => {
-    testRunFolderOpen(props.test.name, props.run.dateTime);
+    testRunFolderOpen(test.name, run.dateTime);
   };
 
   return (

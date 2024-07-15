@@ -1,8 +1,8 @@
 import express from "express";
 import { existsSync, mkdirSync, renameSync } from "fs";
+import { isError } from "lodash";
 import {
   getRunFilepath,
-  isError,
   projectGetTestByNameOrTitle,
   projectGetTestRunByDateTime,
 } from "testmatic";
@@ -21,15 +21,17 @@ export function getTestRunRecordings(app: express.Express) {
   app.get("/tests/:testName/runs/:runDateTime/recordings", async (req, res) => {
     const project = projectMdRead(getProjectPathCwd());
 
-    const { testName: testNameOrTitle, runDateTime } = req.params;
+    const { testName: lookupTestNameOrTitle, runDateTime } = req.params;
 
-    if (!project) {
-      res.json([]);
+    if (isError(project)) {
       res.status(500);
       return;
     }
 
-    const test = projectGetTestByNameOrTitle({ project, testNameOrTitle });
+    const test = projectGetTestByNameOrTitle({
+      project,
+      lookupTestNameOrTitle,
+    });
     if (isError(test)) {
       res.json([]);
       res.status(500);

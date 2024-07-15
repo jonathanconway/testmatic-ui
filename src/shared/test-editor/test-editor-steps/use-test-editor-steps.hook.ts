@@ -1,16 +1,16 @@
 import { isError } from "lodash";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Step, createTestStepFromText } from "testmatic";
 
 import { useTest, useTestStep } from "../../../hooks";
 import { homeRoute } from "../../../screens";
-import { showErrorNotification } from "../../notification";
+import {
+  showErrorNotification,
+  showSuccessNotification,
+} from "../../notification";
 import { StepInputClassNames } from "../../step";
-
-interface UseTestEditorStepsState {
-  readonly editingStep?: Step;
-}
+import { isNotNil, timeout } from "../../utils";
 
 export function useTestEditorSteps() {
   const stepsContainerRef = useRef<HTMLDivElement>(null);
@@ -18,18 +18,40 @@ export function useTestEditorSteps() {
 
   const { test } = useTest();
 
-  const { updateStep, deleteStep } = useTestStep();
-
-  const [state, setState] = useState<UseTestEditorStepsState>({});
+  const { addNewStep, updateStep, deleteStep } = useTestStep();
 
   const navigateTo = useNavigate();
 
   const handleClickAddStep = () => {
-    addNewStep();
+    handleAddNewStep();
   };
 
-  const handleStepEditorClick = (editingStep: Step) => () => {
-    setEditingStep(editingStep);
+  const getStepTextAreas = () => {
+    return Array.from(
+      stepsContainerRef.current?.querySelectorAll(
+        `.${StepInputClassNames.StepInputTextArea}`,
+      ) ?? [],
+    ).filter(isNotNil) as HTMLTextAreaElement[];
+  };
+
+  const getStepTextAreaAt = (index: number) => getStepTextAreas()[index];
+
+  const focusStepInput = (stepIndex: number) => {
+    const textArea = getStepTextAreas()[stepIndex];
+
+    focusAndSelectInput(textArea);
+  };
+
+  const focusLastStepInput = () => {
+    const textAreas = getStepTextAreas();
+    const lastTextArea = textAreas.slice(-1)[0];
+
+    focusAndSelectInput(lastTextArea);
+  };
+
+  const focusAndSelectInput = (input: HTMLTextAreaElement) => {
+    input.selectionStart = input.value.length;
+    input.focus();
   };
 
   const handleStepEditorGoPrevious = (stepIndex: number) => () => {
@@ -37,7 +59,7 @@ export function useTestEditorSteps() {
       return;
     }
 
-    setEditingStep(test.steps[stepIndex - 1]);
+    focusStepInput(stepIndex - 1);
   };
 
   const handleStepEditorGoLast = () => {
@@ -45,11 +67,10 @@ export function useTestEditorSteps() {
       return;
     }
 
-    setEditingStep(test.steps[test.steps.length - 1]);
+    focusStepInput(test.steps.length - 1);
   };
 
   const handleStepEditorGoNext = (stepIndex: number) => () => {
-    console.log("handleStepEditorGoNext", { stepIndex });
     if (!test) {
       return;
     }
@@ -59,52 +80,45 @@ export function useTestEditorSteps() {
       return;
     }
 
-    setEditingStep(test.steps[stepIndex + 1]);
+    focusStepInput(stepIndex + 1);
   };
 
-  const handleStepEditorCancel = (editingStepIndex: number) => () => {
-    console.log("handleStepEditorCancel");
-    setEditingStep(undefined);
-  };
-
-  const handleStepEditorEditingStepChange =
-    (editingStepIndex: number) => (editingStep: Step) => {
+  const handleStepEditorChange =
+    (editingStepIndex: number) => async (editingStep: Step) => {
       if (!test) {
         return;
       }
 
-      updateStep(editingStepIndex, editingStep.text);
+      const updateStepResult = await updateStep(
+        editingStepIndex,
+        editingStep.text,
+      );
+
+      if (isError(updateStepResult)) {
+        showErrorNotification(updateStepResult);
+        return;
+      }
+
+      // Wait for some DOM tasks to complete, which would otherwise disrupt the notification
+      await timeout(250);
+
+      const anchorElement = getStepTextAreaAt(editingStepIndex).parentElement;
+
+      showSuccessNotification("Updated", {
+        anchorElement,
+      });
     };
 
-  const setEditingStep = (editingStep?: Step) => {
-    setState((previousState) => ({
-      ...previousState,
-      editingStep,
-    }));
-  };
-
-  const addNewStep = (stepText = "") => {
+  const handleAddNewStep = (stepText = "") => {
     if (!test) {
       return;
     }
 
     const newStep = createTestStepFromText(stepText);
 
-    setEditingStep(newStep);
-
     addNewStep(newStep.text);
 
     setTimeout(focusLastStepInput);
-  };
-
-  const focusLastStepInput = () => {
-    const lastTextArea = Array.from(
-      stepsContainerRef?.current?.querySelectorAll(
-        `textarea.${StepInputClassNames.StepInputTextArea}`,
-      ) ?? [],
-    ).slice(-1)[0] as HTMLTextAreaElement;
-
-    lastTextArea.selectionStart = lastTextArea.value.length;
   };
 
   const focusStepAdderInput = () => {
@@ -112,20 +126,26 @@ export function useTestEditorSteps() {
   };
 
   const handleStepAdderInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    addNewStep(event.target.value);
+    handleAddNewStep(event.target.value);
   };
 
-  const handleDeleteClick = (deleteStepIndex: number) => () => {
-    if (!test) {
-      return;
-    }
+  const handleDeleteClick =
+    (deleteStepIndex: number) => (event: MouseEvent<HTMLButtonElement>) => {
+      if (!test) {
+        return;
+      }
 
-    const deleteStepResult = deleteStep(deleteStepIndex);
+      const deleteStepResult = deleteStep(deleteStepIndex);
 
-    if (isError(deleteStepResult)) {
-      showErrorNotification(deleteStepResult);
-    }
-  };
+      if (isError(deleteStepResult)) {
+        showErrorNotification(deleteStepResult);
+        return;
+      }
+
+      showSuccessNotification("Deleted", {
+        anchorElement: event.currentTarget,
+      });
+    };
 
   const handleCloseClick = () => {
     navigateTo(homeRoute());
@@ -133,25 +153,16 @@ export function useTestEditorSteps() {
 
   const steps = test?.steps ?? [];
 
-  const editingStep = state.editingStep;
-
   return {
     stepsContainerRef,
     stepAdderRef,
-    test,
     steps,
-    editingStep,
-    navigateTo,
+
     handleClickAddStep,
-    handleStepEditorClick,
     handleStepEditorGoPrevious,
     handleStepEditorGoLast,
     handleStepEditorGoNext,
-    handleStepEditorCancel,
-    handleStepEditorEditingStepChange,
-    addNewStep,
-    focusLastStepInput,
-    focusStepAdderInput,
+    handleStepEditorChange,
     handleStepAdderInput,
     handleDeleteClick,
     handleCloseClick,

@@ -8,7 +8,8 @@ export const Container = styled.div<{ $isVisible: boolean }>`
 
   ${({ $isVisible }) => `
     opacity: ${$isVisible ? 1 : 0};
-    z-index: ${$isVisible ? ZIndexes.StepEditorInputContainerVisible : 0};
+    // z-index: ${$isVisible ? ZIndexes.StepEditorInputContainerVisible : 0};
+    // z-index: 1;
   `}
 `;
 

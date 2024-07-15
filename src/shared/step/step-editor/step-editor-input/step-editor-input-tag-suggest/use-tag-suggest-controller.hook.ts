@@ -1,4 +1,10 @@
-import { ChangeEvent, KeyboardEvent, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  MutableRefObject,
+  useRef,
+  useState,
+} from "react";
 import { Tag, isTag, projectGetTagByNameOrTitle } from "testmatic";
 
 import { useProject } from "../../../../project";
@@ -14,7 +20,7 @@ interface UseTagSuggestControllerParams {
   readonly input: {
     readonly value: string;
     readonly onChange: (newValue: string) => void;
-    readonly ref: React.MutableRefObject<HTMLTextAreaElement | null>;
+    readonly ref: MutableRefObject<HTMLTextAreaElement | null>;
   };
 }
 

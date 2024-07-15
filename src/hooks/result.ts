@@ -1,3 +1,5 @@
+import { isError } from "lodash";
+
 export type ResultType = "ok" | "error";
 
 export interface Result<TResultType extends ResultType> {
@@ -36,4 +38,15 @@ export function resultError<TError extends object = object>(
     type: "error",
     error,
   };
+}
+
+export function objectToResultOkOrError<
+  TError extends object,
+  TObject extends object | TError,
+>(object: TObject): ResultOk | ResultError<TError> {
+  if (isError(object)) {
+    return resultError(object as TError);
+  }
+
+  return resultOk();
 }

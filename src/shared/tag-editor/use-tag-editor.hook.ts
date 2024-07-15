@@ -1,5 +1,5 @@
 import { snakeCase } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ProjectView,
@@ -57,7 +57,7 @@ export function useTagEditor() {
     ? getTestsReferencingTag(tests, originalTag)
     : [];
 
-  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeTitle = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (!project || !tag) {
       return;
     }
@@ -74,9 +74,7 @@ export function useTagEditor() {
     }));
   };
 
-  const handleChangeDescription = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const handleChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const description = event.target.value;
     updateDescription(description);
   };
@@ -85,7 +83,7 @@ export function useTagEditor() {
     navigate(homeRoute());
   };
 
-  const isSaveButtonDisabled = useMemo(() => {
+  const isCreateButtonDisabled = useMemo(() => {
     if (!state.tag) {
       return true;
     }
@@ -122,7 +120,7 @@ export function useTagEditor() {
     tag,
     tagReferencedTests,
     isNewTag,
-    isSaveButtonDisabled,
+    isCreateButtonDisabled,
     handleChangeTitle,
     handleChangeDescription,
     handleCloseClick,

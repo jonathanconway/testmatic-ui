@@ -3,7 +3,7 @@ import { Test, projectAddTest } from "testmatic";
 
 import {
   getProjectFromLocalStorage,
-  saveProjectLocalStorage,
+  saveProjectToLocalStorage,
 } from "../../../../shared";
 import { resultError, resultOk } from "../../../result";
 import { AddNewTestFn } from "../../../test";
@@ -19,7 +19,7 @@ export const addNewTest: AddNewTestFn = async (newTest: Test) => {
 
   const updatedProject = projectAddTestResult;
 
-  saveProjectLocalStorage(updatedProject);
+  saveProjectToLocalStorage(updatedProject);
 
   return resultOk();
 };

@@ -40,7 +40,7 @@ export function ProjectExplorerTestRunItem(
         gap={0.5}
         width="100%"
       >
-        <Icon icon="run" size="small" />
+        <Icon icon="run" size="small" cursor="default" />
 
         <Box flex={1} overflow="hidden">
           <TextOverflow>
@@ -58,7 +58,7 @@ export function ProjectExplorerTestRunItem(
         </Box>
 
         <Tooltip contents={sentenceCase(props.run?.result ?? "not-run")}>
-          <Icon icon={props.run?.result ?? IconNames.NotRun} />
+          <Icon icon={props.run?.result ?? IconNames.NotRun} cursor="default" />
         </Tooltip>
 
         <Tooltip contents="Delete run">

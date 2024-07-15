@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Test, projectDeleteTest } from "testmatic";
+import { Test, projectDeleteTest, projectGetTestRunLatest } from "testmatic";
 
 import { homeRoute } from "../../../screens";
 import { useProject } from "../../project";
 import { RunEditorRouteParams } from "../../run";
-import { useEditingTest } from "../../test-editor/use-editing-test.hook";
+import { getValueOrUndefinedIfError } from "../../utils";
 import { useProjectExplorer } from "../use-project-explorer.hook";
 
 interface UseProjectExplorerTestItemParams {
@@ -21,7 +21,7 @@ export function useProjectExplorerTestItem(
 ) {
   const { selected, shouldRenderExpand } = useProjectExplorer();
 
-  const { runs } = useEditingTest();
+  const { runs } = params.test;
 
   const { project, saveProject } = useProject();
 
@@ -55,6 +55,13 @@ export function useProjectExplorerTestItem(
 
   const isExpanded = state.isExpanded;
 
+  const testRunLatest = getValueOrUndefinedIfError(
+    projectGetTestRunLatest({
+      project,
+      lookupTestNameOrTitle: params.test.name,
+    }),
+  );
+
   const handleTestDeleteClick = (testToDelete: Test) => () => {
     if (!project) {
       return;
@@ -75,6 +82,7 @@ export function useProjectExplorerTestItem(
     isSelected,
     shouldRenderExpand,
     runs,
+    testRunLatest,
     toggleExpanded,
     handleTestDeleteClick,
   };

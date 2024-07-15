@@ -1,19 +1,14 @@
-import { StepEditorDisplay } from "../../../step";
+import { Box } from "../../../box";
+import { CheckBox } from "../../../check-box";
 import { Heading } from "../../../heading";
 import { Stack } from "../../../layout";
+import { StepEditorDisplay } from "../../../step";
+
 import * as Styled from "./run-editor-steps.styles";
 import { useRunEditorSteps } from "./use-run-editor-steps.hook";
-import { Test } from "testmatic";
-import { Box } from "../../../box";
-import { CheckBox } from "../../../check-box/check-box";
 
-interface RunEditorStepsProps {
-  readonly test?: Test;
-}
-
-export function RunEditorSteps(props: RunEditorStepsProps) {
-  const { steps, completed, handleClickStepCompleted } =
-    useRunEditorSteps(props);
+export function RunEditorSteps() {
+  const { steps, completed, handleClickStepCompleted } = useRunEditorSteps();
 
   return (
     <Styled.Container>

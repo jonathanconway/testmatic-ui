@@ -1,6 +1,7 @@
-import { isError, snakeCase } from "lodash";
+import { isError } from "lodash";
+import { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Test, parseTags, projectAddTest, projectUpdateTest } from "testmatic";
+import { projectAddTest } from "testmatic";
 
 import { getStorageFns } from "../../hooks";
 import { homeRoute } from "../../screens";
@@ -11,22 +12,20 @@ import { testEditorRoute } from "./test-editor.routes";
 import { useEditingTest } from "./use-editing-test.hook";
 
 export function useTestEditor() {
-  const { editingTest, test, testName, isNewTest, isDirty, setEditingTest } =
+  const { editingTest, test, isNewTest, isDirty, setEditingTest } =
     useEditingTest();
 
   const { project, saveProject } = useProject();
 
-  const isSaveButtonDisabled = !isDirty;
+  const isCreateButtonDisabled = !isDirty;
 
   const navigateTo = useNavigate();
 
   const storageFns = getStorageFns();
 
-  const handleClickSave = () => {
+  const handleClickCreate = () => {
     if (isNewTest) {
       saveNewTest();
-    } else {
-      saveTest();
     }
   };
 
@@ -53,49 +52,16 @@ export function useTestEditor() {
     });
   };
 
-  const saveTest = async () => {
-    if (!project || !editingTest || !testName) {
-      return;
-    }
-
-    const updatedProject = projectUpdateTest({
-      project,
-      testName,
-      updatedTest: editingTest,
-    });
-    console.log("saveTest", {
-      project,
-      editingTest,
-      testName,
-      updatedProject,
-    });
-
-    saveProject(updatedProject);
-  };
-
-  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (!test) {
       return;
     }
 
     const title = event.target.value;
 
-    const updateTestTitleResult = storageFns.updateTestTitle(test.name, title);
-
-    if (isError(updateTestTitleResult)) {
-      showErrorNotification(updateTestTitleResult);
+    if (title === test.title) {
       return;
     }
-  };
-
-  const handleChangeDescription = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    if (!test) {
-      return;
-    }
-
-    const title = event.target.value;
 
     const updateTestDescriptionResult = storageFns.updateTestDescription(
       test.name,
@@ -104,22 +70,7 @@ export function useTestEditor() {
 
     if (isError(updateTestDescriptionResult)) {
       showErrorNotification(updateTestDescriptionResult);
-      return;
     }
-  };
-
-  const handleChangeTest = (updatedTest: Test) => {
-    // setEditingTest(updatedTest);
-
-    const updatedTestWithParsedTags = {
-      ...updatedTest,
-      steps: updatedTest.steps.map((step) => ({
-        ...step,
-        tags: parseTags(step.text),
-      })),
-    };
-
-    setEditingTest(updatedTestWithParsedTags);
   };
 
   const handleCloseClick = () => {
@@ -129,11 +80,9 @@ export function useTestEditor() {
   return {
     test,
     isNewTest,
-    isSaveButtonDisabled,
-    handleClickSave,
-    handleChangeTitle,
+    isCreateButtonDisabled,
+    handleClickCreate,
     handleChangeDescription,
-    handleChangeTest,
     handleCloseClick,
   };
 }

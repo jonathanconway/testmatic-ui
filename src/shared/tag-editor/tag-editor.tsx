@@ -5,9 +5,9 @@ import { Box } from "../box";
 import { Button } from "../button";
 import { Heading } from "../heading";
 import { IconButton } from "../icon-button";
-import { InlineExpandingTextBox } from "../inline-expanding-text-box";
 import { Header, Stack } from "../layout";
 import { testEditorRoute } from "../test-editor";
+import { InlineExpandingTextBox } from "../text-box/inline-expanding-text-box";
 import { TitleEditor } from "../title-editor";
 import { Tooltip } from "../tooltip";
 
@@ -19,7 +19,7 @@ export function TagEditor() {
     tag,
     tagReferencedTests,
     isNewTag,
-    isSaveButtonDisabled,
+    isCreateButtonDisabled,
     handleCloseClick,
     handleChangeTitle,
     handleChangeDescription,
@@ -52,9 +52,14 @@ export function TagEditor() {
           }
           actionsSlot={
             <Stack direction="row" spacing={1}>
-              <Button disabled={isSaveButtonDisabled} onClick={handleClickSave}>
-                Save
-              </Button>
+              {isNewTag && (
+                <Button
+                  disabled={isCreateButtonDisabled}
+                  onClick={handleClickSave}
+                >
+                  Create
+                </Button>
+              )}
 
               <Tooltip contents="Close">
                 <IconButton

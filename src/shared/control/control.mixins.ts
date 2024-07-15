@@ -1,8 +1,13 @@
 import { css } from "styled-components";
 
-export const controlBase = css`
+export const controlBorder = css`
   border: solid 1px silver;
   border-radius: 0.25rem;
+`;
+
+export const controlBase = css`
+  ${controlBorder}
+
   padding: 0.25rem;
   font-size: 0.85rem;
 `;

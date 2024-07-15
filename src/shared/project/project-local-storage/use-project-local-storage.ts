@@ -6,7 +6,7 @@ import { emptyProjectView } from "../empty-project";
 
 import { getProjectFromLocalStorage } from "./get-project-local-storage";
 import { RefreshProjectLocalStorageEvent } from "./refresh-project-local-storage-event";
-import { saveProjectLocalStorage } from "./save-project-local-storage";
+import { saveProjectToLocalStorage } from "./save-project-local-storage";
 
 interface UseProjectLocalStorageParams {
   readonly enabled: boolean;
@@ -60,7 +60,7 @@ export function useProjectLocalStorage(params: UseProjectLocalStorageParams) {
   function saveProject(project: ProjectView) {
     setState({ project });
 
-    saveProjectLocalStorage(project);
+    saveProjectToLocalStorage(project);
   }
 
   const refetch = noop;

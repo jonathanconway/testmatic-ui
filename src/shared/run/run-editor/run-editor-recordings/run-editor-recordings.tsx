@@ -5,9 +5,7 @@ import { Stack } from "../../../layout";
 import * as Styled from "./run-editor-recordings.styles";
 import { useRunEditorRecordings } from "./use-run-editor-recordings.hook";
 
-interface RunEditorRecordingsProps {}
-
-export function RunEditorRecordings(props: RunEditorRecordingsProps) {
+export function RunEditorRecordings() {
   const { runRecordings } = useRunEditorRecordings();
 
   return (

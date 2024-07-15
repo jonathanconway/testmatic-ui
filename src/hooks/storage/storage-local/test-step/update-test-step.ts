@@ -3,10 +3,10 @@ import { projectUpdateTestStep } from "testmatic";
 
 import {
   getProjectFromLocalStorage,
-  saveProjectLocalStorage,
+  saveProjectToLocalStorage,
 } from "../../../../shared";
 import { resultError, resultOk } from "../../../result";
-import { UpdateTestStepFn } from "../../../test-step/update-test-step";
+import { UpdateTestStepFn } from "../../../test-step";
 
 export const updateTestStep: UpdateTestStepFn = async (
   lookupTestName: string,
@@ -28,7 +28,7 @@ export const updateTestStep: UpdateTestStepFn = async (
 
   const updatedProject = projectUpdateTestStepResult;
 
-  saveProjectLocalStorage(updatedProject);
+  saveProjectToLocalStorage(updatedProject);
 
   return resultOk();
 };

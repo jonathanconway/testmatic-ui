@@ -1,26 +1,15 @@
+import { InlineExpandingTextBox } from "../text-box/inline-expanding-text-box";
+import { Props } from "../utils";
+
 import * as Styled from "./title-editor.styles";
-import { HTMLProps, useEffect, useRef } from "react";
 
-export interface TitleEditorProps extends HTMLProps<HTMLInputElement> {
-  readonly autoSelect?: boolean;
-}
+export interface TitleEditorProps
+  extends Props<typeof InlineExpandingTextBox> {}
 
-export function TitleEditor({ autoSelect, ...restProps }: TitleEditorProps) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    if (autoSelect) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-        inputRef.current?.select();
-      });
-    }
-  }, [autoSelect]);
-
+export function TitleEditor({ ...restProps }: TitleEditorProps) {
   return (
     <Styled.Container>
-      <Styled.Input type="text" ref={inputRef} {...restProps} />
-      <Styled.Display>{restProps.value}</Styled.Display>
+      <InlineExpandingTextBox {...restProps} />
     </Styled.Container>
   );
 }

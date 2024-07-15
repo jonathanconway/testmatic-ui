@@ -79,7 +79,6 @@ export function PopoverWindow(props: PopoverWindowProps) {
 
   useEffect(() => {
     function handleWindowFocusIn(event: FocusEvent) {
-      console.log("handleWindowFocus", event.target);
       if (
         isElementOutsideContainer(
           event.target as HTMLElement,

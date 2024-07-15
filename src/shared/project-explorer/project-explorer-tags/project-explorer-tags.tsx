@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
-
 import { Button } from "../../button";
 import { IconButton } from "../../icon-button";
+import { Link } from "../../link";
 import { TAG_NEW_NAME, tagEditorRoute } from "../../tag-editor";
 import { Tooltip } from "../../tooltip";
 import * as Styled from "../project-explorer.styles";

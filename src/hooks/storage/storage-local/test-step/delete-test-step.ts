@@ -3,7 +3,7 @@ import { projectDeleteTestStep } from "testmatic";
 
 import {
   getProjectFromLocalStorage,
-  saveProjectLocalStorage,
+  saveProjectToLocalStorage,
 } from "../../../../shared";
 import { resultError, resultOk } from "../../../result";
 import { DeleteTestStepFn } from "../../../test-step";
@@ -14,19 +14,17 @@ export const deleteTestStep: DeleteTestStepFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const projectUpdateTestStepResult = projectDeleteTestStep({
+  const updatedProject = projectDeleteTestStep({
     project,
     lookupTestNameOrTitle: lookupTestName,
     lookupStepIndex,
   });
 
-  if (isError(projectUpdateTestStepResult)) {
-    return resultError(projectUpdateTestStepResult);
+  if (isError(updatedProject)) {
+    return resultError(updatedProject);
   }
 
-  const updatedProject = projectUpdateTestStepResult;
-
-  saveProjectLocalStorage(updatedProject);
+  saveProjectToLocalStorage(updatedProject);
 
   return resultOk();
 };

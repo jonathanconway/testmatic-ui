@@ -7,8 +7,12 @@ import {
   UpdateTestDescriptionFn,
   UpdateTestTitleFn,
 } from "../test";
-import { DeleteTestStepFn } from "../test-step";
-import { UpdateTestStepFn } from "../test-step/update-test-step";
+import { UpdateTestRunResultFn, UpdateTestRunStepStatusFn } from "../test-run";
+import {
+  AddNewTestStepFn,
+  DeleteTestStepFn,
+  UpdateTestStepFn,
+} from "../test-step";
 
 import * as httpClientStorageFns from "./storage-http-client";
 import * as localStorageFns from "./storage-local";
@@ -20,10 +24,14 @@ export interface StorageFns {
   readonly updateTestTitle: UpdateTestTitleFn;
   readonly updateTestDescription: UpdateTestDescriptionFn;
 
+  readonly addNewTestStep: AddNewTestStepFn;
   readonly updateTestStep: UpdateTestStepFn;
   readonly deleteTestStep: DeleteTestStepFn;
 
   readonly updateTagDescriptionFn: UpdateTagDescriptionFn;
+
+  readonly updateTestRunStep: UpdateTestRunStepStatusFn;
+  readonly updateTestRunResult: UpdateTestRunResultFn;
 }
 
 export function getStorageFns() {

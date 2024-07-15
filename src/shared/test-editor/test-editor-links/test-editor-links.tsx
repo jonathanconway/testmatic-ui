@@ -3,26 +3,22 @@ import { Heading } from "../../heading";
 import { Stack } from "../../layout";
 import { ListBoxItem } from "../../list-box";
 import { Tooltip } from "../../tooltip";
+
 import { LinksBoxAddLink } from "./test-editor-links-add-link";
 import { useTestLinks } from "./use-test-editor-links.hook";
-import { Test } from "testmatic";
 
-export interface TestEditorLinksProps {
-  readonly test: Test;
-}
-
-export function TestEditorLinks(props: TestEditorLinksProps) {
-  const { handleDeleteClick } = useTestLinks(props);
+export function TestEditorLinks() {
+  const { links, handleDeleteClick } = useTestLinks();
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} flex={1}>
       <AddRemoveListBox
         headerContent={<Heading level={3}>Links</Heading>}
         renderAddItemPopupContent={({ close }) => (
-          <LinksBoxAddLink test={props.test} close={close} />
+          <LinksBoxAddLink close={close} />
         )}
       >
-        {props.test.links.map((link) => (
+        {links.map((link) => (
           <ListBoxItem
             key={link.href}
             value={link.href}

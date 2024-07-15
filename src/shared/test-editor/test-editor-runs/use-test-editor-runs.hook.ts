@@ -15,12 +15,16 @@ export function useTestEditorRuns() {
 
   const { test, runs } = useEditingTest();
 
+  const testName = test?.name ?? "";
+
   function handleAddItem() {
     if (!test) {
       return;
     }
 
-    const createRunNowResult = createRunNow();
+    const createRunNowResult = createRunNow({
+      test,
+    });
 
     if (isError(createRunNowResult)) {
       showErrorNotification(createRunNowResult);
@@ -65,6 +69,7 @@ export function useTestEditorRuns() {
   }
 
   return {
+    testName,
     runs,
     handleAddItem,
     handleDeleteItem,

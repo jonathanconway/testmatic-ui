@@ -3,25 +3,23 @@ import { projectDeleteTest } from "testmatic";
 
 import {
   getProjectFromLocalStorage,
-  saveProjectLocalStorage,
+  saveProjectToLocalStorage,
 } from "../../../../shared";
 import { resultError, resultOk } from "../../../result";
 import { DeleteTestFn } from "../../../test";
 
-export const deleteTest: DeleteTestFn = (lookupTestName: string) => {
+export const deleteTest: DeleteTestFn = async (lookupTestName: string) => {
   const project = getProjectFromLocalStorage();
 
   const testToDelete = project.testsByName[lookupTestName];
 
-  const projectDeleteTestResult = projectDeleteTest({ project, testToDelete });
+  const updatedProject = projectDeleteTest({ project, testToDelete });
 
-  if (isError(projectDeleteTestResult)) {
-    return resultError(projectDeleteTestResult);
+  if (isError(updatedProject)) {
+    return resultError(updatedProject);
   }
 
-  const updatedProject = projectDeleteTestResult;
-
-  saveProjectLocalStorage(updatedProject);
+  saveProjectToLocalStorage(updatedProject);
 
   return resultOk();
 };

@@ -1,32 +1,34 @@
-import { useState } from "react";
-import { Test } from "testmatic";
+import { getStorageFns } from "../../../../hooks";
+import { useEditingRun } from "../use-editing-run.hook";
 
-interface UseRunEditorStepsParams {
-  readonly test?: Test;
-}
+export function useRunEditorSteps() {
+  const { test, run } = useEditingRun();
 
-interface UseRunEditorStepsState {
-  readonly completed: Record<number, boolean>;
-}
-
-export function useRunEditorSteps(params: UseRunEditorStepsParams) {
-  const [state, setState] = useState<UseRunEditorStepsState>({
-    completed: {},
-  });
+  const { updateTestRunStepIsCompleted } = getStorageFns();
 
   const handleClickStepCompleted = (stepIndex: number) => {
-    setState((previousState) => ({
-      ...previousState,
-      completed: {
-        ...state.completed,
-        [stepIndex]: state.completed[stepIndex] ? false : true,
-      },
-    }));
+    const lookupTestName = test?.name;
+    const lookupRunDateTime = run?.dateTime;
+    const lookupStepIndex = stepIndex;
+    const stepIsCompleted = !run?.steps[stepIndex].isCompleted;
+
+    if (!lookupTestName || !lookupRunDateTime) {
+      return;
+    }
+
+    updateTestRunStepIsCompleted(
+      lookupTestName,
+      lookupRunDateTime,
+      lookupStepIndex,
+      stepIsCompleted,
+    );
   };
 
-  const steps = params.test?.steps ?? [];
+  const steps = run?.steps ?? [];
 
-  const completed = state.completed;
+  const completed = Object.fromEntries(
+    steps.map((step, stepIndex) => [stepIndex, step.isCompleted]) ?? [],
+  );
 
   return {
     steps,

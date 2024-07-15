@@ -5,15 +5,16 @@ import { getProjectPathCwd } from "./get-project-path-cwd";
 
 export function postTestRunUpdateResult(app: express.Express) {
   app.post("/tests/:testName/runs/:runDateTime/result", (req, res) => {
-    const { testName: testNameOrTitle, runDateTime } = req.params;
+    const { testName: lookupTestNameOrTitle, runDateTime: lookupRunDateTime } =
+      req.params;
     const { result: runResultValue } = req.body;
 
     const projectPath = getProjectPathCwd();
 
     runResult({
-      testNameOrTitle,
+      lookupTestNameOrTitle,
       runResultValue,
-      runDateTime,
+      lookupRunDateTime,
       projectPath,
     });
 

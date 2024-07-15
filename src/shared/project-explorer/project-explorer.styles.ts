@@ -5,9 +5,19 @@ export const ProjectExplorerListBox = styled.div`
   flex-direction: column;
   overflow: scroll;
   gap: 1rem;
+  background-color: green;
+
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border: solid 2px #dedede;
 `;
 
-export const ProjectExplorerSection = styled.div``;
+export const ProjectExplorerSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
 
 export const ProjectExplorerSubheading = styled.div`
   display: flex;
@@ -18,7 +28,6 @@ export const ProjectExplorerSubheading = styled.div`
   font-weight: 500;
   text-transform: uppercase;
   color: gray;
-  padding: 0.5rem 0;
 `;
 
 export const ProjectExplorerItem = styled.div<{ $selected: boolean }>`
@@ -65,14 +74,8 @@ a {
 export const ProjectExplorerItemNested = styled(ProjectExplorerItem)<{
   $selected: boolean;
 }>`
-  padding-left: 2rem;
+  padding-left: 1.5rem;
 `;
-
-// export const ProjectExplorerItemIcon = styled.span`
-//   display: inline-flex;
-//   width: 1.5rem;
-//   height: 1.3rem;
-// `;
 
 export const ProjectExplorerItemActions = styled.div`
   display: flex;

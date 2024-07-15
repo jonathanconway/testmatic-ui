@@ -1,93 +1,109 @@
-import { HTMLProps, KeyboardEvent, useRef } from "react";
+import {
+  ForwardedRef,
+  HTMLProps,
+  KeyboardEvent,
+  MouseEventHandler,
+  SyntheticEvent,
+  forwardRef,
+  useRef,
+  useState,
+} from "react";
 import { Step } from "testmatic";
 
 import { Box } from "../../box";
 import { IconButton } from "../../icon-button";
-import { Stack } from "../../layout";
 import { Tooltip } from "../../tooltip";
 import "../../utils";
 import { timeout } from "../../utils";
 
-import {
-  StepEditorDisplay,
-  focusStepEditorDisplayLastLink,
-} from "./step-editor-display";
+import { focusStepEditorDisplayLastLink } from "./step-editor-display";
 import { StepEditorInput } from "./step-editor-input";
 import * as Styled from "./step-editor.styles";
 
 export interface StepEditorProps
   extends Omit<HTMLProps<HTMLDivElement>, "onChange" | "step"> {
   readonly step: Step;
-  readonly isEditing: boolean;
 
-  readonly onClick: VoidFunction;
-  readonly onChange: (step: Step) => void;
-  readonly onCancel: VoidFunction;
+  readonly onChange: (
+    step: Step,
+    event: SyntheticEvent<HTMLTextAreaElement>,
+  ) => void | Promise<void>;
   readonly onGoPrevious: VoidFunction;
   readonly onGoNext: VoidFunction;
-  readonly onDeleteClick: VoidFunction;
+  readonly onDeleteClick: MouseEventHandler;
 }
 
-export const StepEditor = function (props: StepEditorProps) {
-  const {
-    step,
-    isEditing,
+interface StepEditorState {
+  readonly isEditing: boolean;
+}
 
-    onClick,
-    onChange,
-    onCancel,
-    onGoPrevious,
-    onGoNext,
-    onDeleteClick,
+export const StepEditor = forwardRef(
+  (props: StepEditorProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
+    const {
+      step,
 
-    ...restProps
-  } = props;
+      onChange,
+      onGoPrevious,
+      onGoNext,
+      onDeleteClick,
 
-  const containerRef = useRef<HTMLDivElement>(null);
+      ...restProps
+    } = props;
 
-  const handleStepInputKeyDown = async (
-    event: KeyboardEvent<HTMLTextAreaElement>,
-  ) => {
-    if (event.key === "Tab" && event.shiftKey) {
-      props.onCancel();
+    const [state, setState] = useState<StepEditorState>({ isEditing: false });
 
-      // Wait for props.onCancel() handler to have run
-      await timeout();
+    const containerRef = useRef<HTMLDivElement>(null);
 
-      focusStepEditorDisplayLastLink(containerRef.current);
-    }
-  };
+    const handleStepInputKeyDown = async (
+      event: KeyboardEvent<HTMLTextAreaElement>,
+    ) => {
+      if (event.key === "Tab" && event.shiftKey) {
+        // Wait for props.onCancel() handler to have run
+        await timeout();
 
-  return (
-    <Styled.Container {...restProps} ref={containerRef}>
-      <Styled.MainContainer>
-        <StepEditorDisplay
-          step={props.step}
-          isVisible={!props.isEditing}
-          onClick={props.onClick}
-        />
+        focusStepEditorDisplayLastLink(containerRef.current);
+      }
+    };
 
-        <StepEditorInput
-          step={props.step}
-          isVisible={props.isEditing}
-          onKeyDown={handleStepInputKeyDown}
-          onEdit={props.onClick}
-          onChange={props.onChange}
-          onCancel={props.onCancel}
-          onGoPrevious={props.onGoPrevious}
-          onGoNext={props.onGoNext}
-        />
-      </Styled.MainContainer>
+    const handleStepInputFocus = () => {
+      setState({ isEditing: true });
+    };
 
-      <Box width="1rem">
-        <Tooltip contents="Delete step">
-          <IconButton
-            icon="delete"
-            size="small"
-            onClick={props.onDeleteClick}
+    const handleStepInputBlur = () => {
+      setState({ isEditing: false });
+    };
+
+    return (
+      <Styled.Container {...restProps} ref={containerRef}>
+        <Styled.MainContainer>
+          <Styled.StepEditorDisplay
+            step={props.step}
+            isVisible={!state.isEditing}
           />
-        </Tooltip>
-      </Box>
-    </Styled.Container>
-  );
-};
+
+          <StepEditorInput
+            ref={ref}
+            step={props.step}
+            isVisible={state.isEditing}
+            onKeyDown={handleStepInputKeyDown}
+            onFocus={handleStepInputFocus}
+            onBlur={handleStepInputBlur}
+            onChange={props.onChange}
+            onGoPrevious={props.onGoPrevious}
+            onGoNext={props.onGoNext}
+          />
+        </Styled.MainContainer>
+
+        <Box width="1rem">
+          <Tooltip contents="Delete step">
+            <IconButton
+              icon="delete"
+              size="small"
+              onClick={props.onDeleteClick}
+            />
+          </Tooltip>
+        </Box>
+      </Styled.Container>
+    );
+  },
+);

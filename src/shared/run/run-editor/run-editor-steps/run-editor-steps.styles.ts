@@ -39,8 +39,7 @@ export const StepsListItemLabel = styled.label`
 
 export const StepsListItem = styled.li<{ readonly $checked: boolean }>`
   display: inline-flex;
-  padding: 0.25rem 0;
-  align-items: center;
+  align-items: baseline;
   font-size: 0.85rem;
   border-radius: 0.25rem;
 
