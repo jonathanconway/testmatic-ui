@@ -6,6 +6,10 @@ import { showNotification } from "../../notification";
 
 import { useGetProject } from "./use-get-project.hook";
 
+interface UsePostProjectParams {
+  readonly enabled: boolean;
+}
+
 async function postProject(project: Project) {
   await fetch("http://localhost:3100/project", {
     method: "POST",
@@ -21,11 +25,11 @@ function pickProject(projectOrProjectView: Project | ProjectView): Project {
   return pick(projectOrProjectView, ["tests", "tags"]) as Project;
 }
 
-export function usePostProject() {
+export function usePostProject(params: UsePostProjectParams) {
   const mutationFn = (projectOrProjectView: Project | ProjectView) =>
     postProject(pickProject(projectOrProjectView));
 
-  const { refetch } = useGetProject({ enabled: true });
+  const { refetch } = useGetProject({ enabled: params.enabled });
 
   const onSuccess = () => {
     refetch();

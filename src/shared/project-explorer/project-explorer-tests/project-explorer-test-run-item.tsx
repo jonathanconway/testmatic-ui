@@ -40,7 +40,7 @@ export function ProjectExplorerTestRunItem(
         gap={0.5}
         width="100%"
       >
-        <Icon icon="run" size="small" cursor="default" />
+        <Icon icon={IconNames.Run} size="small" cursor="default" />
 
         <Box flex={1} overflow="hidden">
           <TextOverflow>
@@ -64,7 +64,7 @@ export function ProjectExplorerTestRunItem(
         <Tooltip contents="Delete run">
           <IconButton
             size="small"
-            icon="delete"
+            icon={IconNames.Delete}
             onClick={handleDeleteRunClick(props.run)}
           />
         </Tooltip>

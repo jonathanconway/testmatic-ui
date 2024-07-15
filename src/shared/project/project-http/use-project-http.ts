@@ -15,7 +15,7 @@ interface UseProjectHttpParams {
 }
 
 export function useProjectHttp(params: UseProjectHttpParams): UseProjectResult {
-  const { data, refetch } = useGetProject({
+  const { data, refetch: refetchProject } = useGetProject({
     enabled: params.enabled,
   });
 
@@ -23,7 +23,7 @@ export function useProjectHttp(params: UseProjectHttpParams): UseProjectResult {
 
   const { setQueryData } = useQueryClient();
 
-  const { mutate: postProject } = usePostProject();
+  const { mutate: postProject } = usePostProject({ enabled: params.enabled });
 
   const saveProject = (project: ProjectView) => {
     postProject(project);
@@ -33,6 +33,6 @@ export function useProjectHttp(params: UseProjectHttpParams): UseProjectResult {
   return {
     project,
     saveProject,
-    refetch,
+    refetchProject,
   };
 }

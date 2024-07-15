@@ -1,25 +1,13 @@
-import { isError } from "lodash";
 import { Test, projectAddTest } from "testmatic";
 
-import {
-  getProjectFromLocalStorage,
-  saveProjectToLocalStorage,
-} from "../../../../shared";
-import { resultError, resultOk } from "../../../result";
+import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddNewTestFn } from "../../../test";
+import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const addNewTest: AddNewTestFn = async (newTest: Test) => {
   const project = getProjectFromLocalStorage();
 
   const projectAddTestResult = projectAddTest({ project, newTest });
 
-  if (isError(projectAddTestResult)) {
-    return resultError(projectAddTestResult);
-  }
-
-  const updatedProject = projectAddTestResult;
-
-  saveProjectToLocalStorage(updatedProject);
-
-  return resultOk();
+  return saveProjectToLocalStorageOrForwardError(projectAddTestResult);
 };

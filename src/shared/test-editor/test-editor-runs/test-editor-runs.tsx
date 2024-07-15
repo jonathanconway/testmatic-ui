@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AddRemoveListBox } from "../../add-remove-list-box";
 import { Box } from "../../box";
 import { Heading } from "../../heading";
-import { Icon } from "../../icon";
+import { Icon, IconNames } from "../../icon";
 import { Stack } from "../../layout";
 import { ListBoxItem } from "../../list-box";
 import { RunResultIcon, runEditorRoute } from "../../run";
@@ -28,7 +28,7 @@ export function TestEditorRuns() {
             onDeleteClick={handleDeleteItem(run)}
           >
             <Stack direction="row" gap={0.5} alignItems="center" mr={1}>
-              <Icon icon="run" />
+              <Icon icon={IconNames.Run} />
               <Box flex={1}>
                 <Link
                   to={runEditorRoute({

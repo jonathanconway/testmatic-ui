@@ -1,3 +1,4 @@
+import { AppWorkspace } from "../../app";
 import { Box } from "../../box";
 import { Button } from "../../button";
 import { Header, Stack } from "../../layout";
@@ -18,8 +19,8 @@ export function RunEditor() {
   }
 
   return (
-    <Box flex={1} overflow="scroll" padding="0.5rem">
-      <Stack spacing={2} height="100%">
+    <AppWorkspace>
+      <Stack spacing={2} flex={1}>
         <Header
           headingSlot={<RunEditorHeading />}
           actionsSlot={
@@ -45,6 +46,6 @@ export function RunEditor() {
           </Stack>
         </Stack>
       </Stack>
-    </Box>
+    </AppWorkspace>
   );
 }

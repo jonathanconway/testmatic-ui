@@ -1,6 +1,11 @@
 {
   "name": "testmatic-ui",
   "version": "0.1.0",
+  "author": {
+    "name": "Jonathan Conway",
+    "email": "jon@conwy.co",
+    "url": "https://conwy.co"
+  },
   "description": "Web UI for Testmatic – a rapid-entry test case manager.",
   "bin": {
     "testmatic-ui": "./build-js/cli/cli-exec.js"

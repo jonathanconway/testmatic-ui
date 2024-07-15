@@ -5,7 +5,7 @@ import {
   projectAddTestLink,
 } from "testmatic";
 
-import { useProject } from "../../../project";
+import { useProject } from "../../../../hooks";
 import { isNotNil, isUrl } from "../../../utils";
 import { useEditingTest } from "../../use-editing-test.hook";
 

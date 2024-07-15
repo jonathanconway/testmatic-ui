@@ -4,7 +4,7 @@ import { Ids } from "../test-editor.const";
 import { useTestEditorTitle } from "./use-test-editor-title.hook";
 
 export function TestEditorTitle() {
-  const { title, isNewTest, handleChangeTitle } = useTestEditorTitle();
+  const { title, isNewTest, handleTitleChange } = useTestEditorTitle();
 
   return (
     <TitleEditor
@@ -12,7 +12,7 @@ export function TestEditorTitle() {
       defaultValue={title}
       autoFocus={isNewTest}
       autoSelect={isNewTest}
-      onBlur={handleChangeTitle}
+      onBlur={handleTitleChange}
     />
   );
 }

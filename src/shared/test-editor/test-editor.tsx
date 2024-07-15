@@ -1,3 +1,4 @@
+import { AppWorkspace } from "../app";
 import { Box } from "../box";
 import { Button } from "../button";
 import { Heading } from "../heading";
@@ -14,22 +15,15 @@ import { TestEditorTitle } from "./test-editor-title";
 import { useTestEditor } from "./use-test-editor.hook";
 
 export function TestEditor() {
-  const {
-    test,
-    isCreateButtonDisabled,
-    isNewTest,
-    handleClickCreate,
-    handleChangeDescription,
-    handleCloseClick,
-  } = useTestEditor();
+  const { test, handleChangeDescription, handleCloseClick } = useTestEditor();
 
   if (!test) {
     return null;
   }
 
   return (
-    <Box flex={1} overflow="scroll" padding="0.5rem">
-      <Stack spacing={2} height="100%">
+    <AppWorkspace>
+      <Stack spacing={2} flex={1}>
         <Header
           headingSlot={
             <Heading level={2}>
@@ -43,15 +37,6 @@ export function TestEditor() {
           }
           actionsSlot={
             <Stack direction="row" spacing={1}>
-              {isNewTest && (
-                <Button
-                  disabled={isCreateButtonDisabled}
-                  onClick={handleClickCreate}
-                >
-                  Create
-                </Button>
-              )}
-
               <Tooltip contents="Close">
                 <Button onClick={handleCloseClick}>✕</Button>
               </Tooltip>
@@ -86,6 +71,6 @@ export function TestEditor() {
           </Stack>
         </Stack>
       </Stack>
-    </Box>
+    </AppWorkspace>
   );
 }

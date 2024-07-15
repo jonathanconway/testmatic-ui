@@ -1,4 +1,4 @@
-import { resultError, resultOk } from "../../../result";
+import { responseToResult } from "../../../response";
 import { UpdateTagDescriptionFn } from "../../../tag";
 
 import { tagPatch } from "./tag-patch.http";
@@ -11,9 +11,5 @@ export const updateTagDescription: UpdateTagDescriptionFn = async (
     description: newTagDescription,
   });
 
-  if (response.ok) {
-    return resultOk();
-  } else {
-    return resultError(await response.json());
-  }
+  return responseToResult(response);
 };

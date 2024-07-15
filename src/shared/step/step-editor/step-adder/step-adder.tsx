@@ -9,6 +9,10 @@ export interface StepAdderProps extends HTMLProps<HTMLTextAreaElement> {
   readonly onGoPrevious: VoidFunction;
 }
 
+export const StepAdderIds = {
+  Input: "step-adder-input",
+};
+
 export const StepAdder = forwardRef(
   (props: StepAdderProps, ref?: LegacyRef<HTMLTextAreaElement>) => {
     const { onGoPrevious, ...restProps } = props;
@@ -28,8 +32,8 @@ export const StepAdder = forwardRef(
     return (
       <Stack direction="row" width="100%" gap="0.5rem" margin="1px">
         <Styled.TextArea
+          id={StepAdderIds.Input}
           placeholder="Add new step"
-          value=""
           ref={ref}
           onKeyDown={handleKeyDown}
           rows={1}

@@ -5,6 +5,7 @@ import { Icon, IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Stack } from "../../layout";
 import { Link } from "../../link";
+import { Menu } from "../../menu";
 import { testEditorRoute } from "../../test-editor";
 import { TextOverflow } from "../../text-overflow";
 import { Tooltip } from "../../tooltip";
@@ -25,8 +26,10 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
     shouldRenderExpand,
     runs,
     testRunLatest,
+    testActionsRef,
     toggleExpanded,
     handleTestDeleteClick,
+    handleTestDuplicateClick,
   } = useProjectExplorerTestItem(props);
 
   return (
@@ -53,7 +56,7 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
             </>
           )}
 
-          <Icon icon="test" size="small" />
+          <Icon icon={IconNames.Test} size="small" />
 
           <Box flex={1} overflow="hidden">
             <TextOverflow>
@@ -72,11 +75,30 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
             />
           </Tooltip>
 
+          <Menu
+            anchor={
+              <Tooltip contents="Test actions">
+                <IconButton
+                  size="small"
+                  icon={IconNames.ThreeDots}
+                  ref={testActionsRef}
+                />
+              </Tooltip>
+            }
+            options={[
+              {
+                key: "duplicate",
+                label: "Duplicate",
+                onClick: handleTestDuplicateClick(props.test.name),
+              },
+            ]}
+          />
+
           <Tooltip contents="Delete test">
             <IconButton
               size="small"
-              icon="delete"
-              onClick={handleTestDeleteClick(props.test)}
+              icon={IconNames.Delete}
+              onClick={handleTestDeleteClick(props.test.name)}
             />
           </Tooltip>
         </Stack>

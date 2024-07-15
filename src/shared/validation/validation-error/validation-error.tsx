@@ -1,4 +1,4 @@
-import { Icon } from "../../icon";
+import { Icon, IconNames } from "../../icon";
 import { Stack } from "../../layout";
 import { Error } from "../../text";
 
@@ -9,7 +9,7 @@ interface ValidationErrorProps {
 export function ValidationError(props: ValidationErrorProps) {
   return props.message ? (
     <Stack direction="row" alignItems="start" spacing={1}>
-      <Icon icon="error" color="red" />
+      <Icon icon={IconNames.Error} color="red" />
       <Error>{props.message}</Error>
     </Stack>
   ) : null;

@@ -1,22 +1,24 @@
-import { useParams } from "react-router-dom";
+import { useProject } from "../../hooks";
+import { TEST_NEW, TEST_NEW_NAME } from "../../shared";
+import { useStorage } from "../storage";
 
-import { TestEditorRouteParams, useProject } from "../../shared";
-import { getStorageFns } from "../storage";
-
-export function useTest() {
-  const { testName = "" } = useParams<TestEditorRouteParams>();
-
+export function useTest(testName = "") {
   const { project } = useProject();
 
-  const test = testName ? project.testsByName[testName] : undefined;
+  const test = (() => {
+    if (testName === TEST_NEW_NAME) {
+      return TEST_NEW;
+    }
+    return project.testsByName[testName];
+  })();
 
-  const storageFns = getStorageFns();
+  const { updateTestTitle, updateTestDescription } = useStorage();
 
-  const updateTitle = (newTitle: string) =>
-    storageFns.updateTestTitle(testName, newTitle);
+  // todo: do i really have to type newTitle again? why can't typescript do inference here?
+  const updateTitle = (newTitle: string) => updateTestTitle(testName, newTitle);
 
   const updateDescription = (newDescription: string) =>
-    storageFns.updateTestDescription(testName, newDescription);
+    updateTestDescription(testName, newDescription);
 
   return {
     test,

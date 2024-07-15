@@ -1,6 +1,6 @@
 import { isSurge } from "../../env";
 import { GetProjectFn } from "../project";
-import { UpdateTagDescriptionFn } from "../tag";
+import { AddNewTagFn, DeleteTagFn, UpdateTagDescriptionFn } from "../tag";
 import {
   AddNewTestFn,
   DeleteTestFn,
@@ -19,6 +19,7 @@ import * as localStorageFns from "./storage-local";
 
 export interface StorageFns {
   readonly getProject: GetProjectFn;
+
   readonly addNewTest: AddNewTestFn;
   readonly deletetest: DeleteTestFn;
   readonly updateTestTitle: UpdateTestTitleFn;
@@ -32,6 +33,9 @@ export interface StorageFns {
 
   readonly updateTestRunStep: UpdateTestRunStepStatusFn;
   readonly updateTestRunResult: UpdateTestRunResultFn;
+
+  readonly addNewTag: AddNewTagFn;
+  readonly deleteTag: DeleteTagFn;
 }
 
 export function getStorageFns() {

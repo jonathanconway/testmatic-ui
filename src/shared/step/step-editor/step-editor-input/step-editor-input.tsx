@@ -1,6 +1,7 @@
 import {
-  ChangeEvent,
   FocusEvent,
+  FormEvent,
+  FormEventHandler,
   KeyboardEvent,
   KeyboardEventHandler,
   LegacyRef,
@@ -13,13 +14,14 @@ import {
 import { Step, Tag, createTestStepFromText } from "testmatic";
 
 import { Popover } from "../../../popover";
-import { ExpandingTextBox } from "../../../text-box/expanding-text-box";
+import { ExpandingTextBox } from "../../../text-box";
 import "../../../utils";
 
 import { useTagSuggestController } from "./step-editor-input-tag-suggest";
 import { TagSuggest } from "./step-editor-input-tag-suggest/tag-suggest";
 import * as Styled from "./step-editor-input.styles";
 
+// todo: fix to inherit events from text area dom element type
 interface StepEditorInputProps {
   readonly step: Step;
   readonly ref?: LegacyRef<HTMLTextAreaElement>;
@@ -35,6 +37,7 @@ interface StepEditorInputProps {
   readonly onBlur: VoidFunction;
   readonly onGoPrevious: VoidFunction;
   readonly onGoNext: VoidFunction;
+  readonly onInput?: FormEventHandler<HTMLTextAreaElement>;
 }
 
 export interface StepEditorInputState {
@@ -107,18 +110,17 @@ export function StepEditorInput(props: StepEditorInputProps) {
       return;
     }
 
-    if (state.isDirty) {
-      event.preventDefault();
-      handleKeyDownEnterOrTab(event);
-    }
+    // if (state.isDirty) {
+    // event.preventDefault();
+    // handleKeyDownEnterOrTab(event);
+    // }
   };
 
   const handleKeyDownEnterOrTab = (
     event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
-    triggerOnChangeIfDirty(event);
-
-    props.onGoNext();
+    // triggerOnChangeIfDirty(event);
+    // props.onGoNext();
   };
 
   const handleKeyDownEscape = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -146,7 +148,7 @@ export function StepEditorInput(props: StepEditorInputProps) {
 
     event.preventDefault();
 
-    triggerOnChangeIfDirty(event);
+    // triggerOnChangeIfDirty(event);
 
     props.onGoPrevious();
   };
@@ -160,13 +162,13 @@ export function StepEditorInput(props: StepEditorInputProps) {
 
     event.preventDefault();
 
-    triggerOnChangeIfDirty(event);
+    // triggerOnChangeIfDirty(event);
 
     props.onGoNext();
   };
 
-  const handleInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value;
+  const handleInput = (event: FormEvent<HTMLTextAreaElement>) => {
+    const value = event.currentTarget.value;
 
     setState({
       ...state,
@@ -176,6 +178,8 @@ export function StepEditorInput(props: StepEditorInputProps) {
     });
 
     tagSuggestController.input.handleInput(event);
+
+    props.onInput?.(event);
   };
 
   const handleInputChange = (newValue: string) => {
@@ -204,9 +208,7 @@ export function StepEditorInput(props: StepEditorInputProps) {
   const triggerOnChangeIfDirty = useCallback(
     (event: SyntheticEvent<HTMLTextAreaElement>) => {
       if (state.isDirty) {
-        setTimeout(() => {
-          props.onChange(createTestStepFromText(state.value), event);
-        });
+        props.onChange(createTestStepFromText(state.value), event);
       }
     },
     [props, state.isDirty, state.value],
@@ -240,7 +242,6 @@ export function StepEditorInput(props: StepEditorInputProps) {
     <Styled.Container $isVisible={props.isVisible}>
       <ExpandingTextBox
         ref={textAreaRef}
-        // autoFocus={props.isVisible}
         className={StepInputClassNames.StepInputTextArea}
         value={state.value}
         placeholder={props.isAdding ? "Add new step" : undefined}

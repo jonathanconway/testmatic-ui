@@ -1,4 +1,5 @@
 import { Button } from "../../button";
+import { IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { TEST_NEW_NAME } from "../../test-editor";
 import { Tooltip } from "../../tooltip";
@@ -6,6 +7,10 @@ import * as Styled from "../project-explorer.styles";
 
 import { ProjectExplorerTestItem } from "./project-explorer-test-item";
 import { useProjectExplorerTests } from "./use-project-explorer-tests.hook";
+
+export const ProjectExplorerTestsIds = {
+  Section: "project-explorer-tests-section",
+};
 
 export function ProjectExplorerTests() {
   const {
@@ -16,7 +21,7 @@ export function ProjectExplorerTests() {
   } = useProjectExplorerTests();
 
   return (
-    <Styled.ProjectExplorerSection>
+    <Styled.ProjectExplorerSection id={ProjectExplorerTestsIds.Section}>
       <Styled.ProjectExplorerSubheading>
         Tests <Button onClick={handleTestAddClick}>Add</Button>
       </Styled.ProjectExplorerSubheading>
@@ -37,7 +42,7 @@ export function ProjectExplorerTests() {
               <Tooltip contents="Cancel new test">
                 <IconButton
                   size="small"
-                  icon="delete"
+                  icon={IconNames.Delete}
                   onClick={handleTestAddCancelClick}
                 />
               </Tooltip>

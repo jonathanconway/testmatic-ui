@@ -1,12 +1,8 @@
-import { isError } from "lodash";
 import { projectUpdateTag } from "testmatic";
 
-import {
-  getProjectFromLocalStorage,
-  saveProjectToLocalStorage,
-} from "../../../../shared";
-import { resultError, resultOk } from "../../../result";
+import { getProjectFromLocalStorage } from "../../../../shared";
 import { UpdateTagDescriptionFn } from "../../../tag";
+import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const updateTagDescription: UpdateTagDescriptionFn = async (
   lookupTagName: string,
@@ -21,23 +17,11 @@ export const updateTagDescription: UpdateTagDescriptionFn = async (
     description: newTagDescription,
   };
 
-  const projectUpdateTagResult = projectUpdateTag({
+  const updatedProject = projectUpdateTag({
     project,
     lookupTagNameOrTitle: lookupTagName,
     updatedTag,
   });
 
-  if (isError(projectUpdateTagResult)) {
-    return resultError(projectUpdateTagResult);
-  }
-
-  const updatedProject = projectUpdateTagResult;
-
-  if (isError(updatedProject)) {
-    return resultError(updatedProject);
-  }
-
-  saveProjectToLocalStorage(updatedProject);
-
-  return resultOk();
+  return saveProjectToLocalStorageOrForwardError(updatedProject);
 };

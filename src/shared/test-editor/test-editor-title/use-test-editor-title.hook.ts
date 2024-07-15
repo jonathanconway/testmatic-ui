@@ -16,7 +16,7 @@ import { useEditingTest } from "../use-editing-test.hook";
 interface UseTestEditorTitleResult {
   readonly title?: string;
   readonly isNewTest: boolean;
-  readonly handleChangeTitle: (
+  readonly handleTitleChange: (
     event: SyntheticEvent<HTMLTextAreaElement>,
   ) => Promise<void>;
 }
@@ -30,7 +30,7 @@ export function useTestEditorTitle(): UseTestEditorTitleResult {
 
   const title = test?.title;
 
-  const handleChangeTitle = async (
+  const handleTitleChange = async (
     event: SyntheticEvent<HTMLTextAreaElement>,
   ) => {
     if (!test) {
@@ -66,7 +66,7 @@ export function useTestEditorTitle(): UseTestEditorTitleResult {
   };
 
   return {
-    handleChangeTitle,
+    handleTitleChange,
     title,
     isNewTest,
   };

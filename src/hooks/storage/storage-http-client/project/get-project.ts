@@ -13,6 +13,7 @@ export const getProject: GetProjectFn = async () => {
   const cachedProject = queryClient.getQueryData(
     USE_GET_PROJECT_QUERY_KEY,
   ) as Maybe<Project>;
+
   if (cachedProject) {
     // todo: project view should be cached
     return resultOkWithData(createProjectView(cachedProject));

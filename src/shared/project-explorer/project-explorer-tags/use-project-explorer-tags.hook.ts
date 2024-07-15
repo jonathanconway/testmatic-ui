@@ -1,14 +1,13 @@
 import { isError } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
-import { Tag, projectDeleteTag } from "testmatic";
 
+import { useProject } from "../../../hooks";
 import { homeRoute } from "../../../screens";
-import { showErrorNotification } from "../../notification";
-import { useProject } from "../../project";
+import { showSuccessOrErrorNotification } from "../../notification";
 import { tagEditorNewTagRoute } from "../../tag-editor";
 
 export function useProjectExplorerTags() {
-  const { project, saveProject } = useProject();
+  const { project, deleteTag } = useProject();
 
   const navigate = useNavigate();
 
@@ -18,22 +17,18 @@ export function useProjectExplorerTags() {
     navigate(tagEditorNewTagRoute());
   };
 
-  const handleTagDeleteClick = (tagToDelete: Tag) => () => {
+  const handleTagDeleteClick = (lookupTagName: string) => async () => {
     if (!project) {
       return;
     }
 
-    const updatedProject = projectDeleteTag({
-      project,
-      lookupTagNameOrTitle: tagToDelete.name,
-    });
+    const deleteTagResult = deleteTag(lookupTagName);
 
-    if (isError(updatedProject)) {
-      showErrorNotification(updatedProject);
+    showSuccessOrErrorNotification(deleteTagResult);
+
+    if (isError(deleteTagResult)) {
       return;
     }
-
-    saveProject(updatedProject);
 
     navigate(homeRoute());
   };

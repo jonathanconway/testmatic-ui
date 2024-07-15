@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 
-import { BorderBox } from "../border-box";
+import { AppWorkspace } from "../app";
 import { Box } from "../box";
 import { Button } from "../button";
 import { Heading } from "../heading";
+import { IconNames } from "../icon";
 import { IconButton } from "../icon-button";
 import { Header, Stack } from "../layout";
 import { testEditorRoute } from "../test-editor";
-import { InlineExpandingTextBox } from "../text-box/inline-expanding-text-box";
+import { Text } from "../text";
+import { InlineExpandingTextBox } from "../text-box";
 import { TitleEditor } from "../title-editor";
 import { Tooltip } from "../tooltip";
 
@@ -31,12 +33,12 @@ export function TagEditor() {
   }
 
   return (
-    <BorderBox flex={1}>
-      <Stack spacing={2} height="100%">
+    <AppWorkspace>
+      <Stack spacing={2} flex={1}>
         <Header
           headingSlot={
             <Heading level={2}>
-              <Stack direction="row" spacing={1} alignContent="center">
+              <Stack direction="row" spacing={1} alignItems="center">
                 <span>Tag:</span>
 
                 <Box flex={1}>
@@ -63,7 +65,7 @@ export function TagEditor() {
 
               <Tooltip contents="Close">
                 <IconButton
-                  icon="close"
+                  icon={IconNames.Close}
                   size="normal"
                   onClick={handleCloseClick}
                 />
@@ -73,11 +75,13 @@ export function TagEditor() {
         ></Header>
 
         <Stack spacing={2} height="100%">
-          <InlineExpandingTextBox
-            value={tag.description}
-            onChange={handleChangeDescription}
-            placeholder="Description (optional)"
-          />
+          <Text>
+            <InlineExpandingTextBox
+              value={tag.description}
+              onChange={handleChangeDescription}
+              placeholder="Description (optional)"
+            />
+          </Text>
 
           {tagReferencedTests.length > 0 && (
             <Stack spacing={1}>
@@ -96,6 +100,6 @@ export function TagEditor() {
           )}
         </Stack>
       </Stack>
-    </BorderBox>
+    </AppWorkspace>
   );
 }

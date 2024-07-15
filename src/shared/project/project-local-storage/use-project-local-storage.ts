@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { useEffect, useState } from "react";
 import { ProjectView } from "testmatic";
 
@@ -63,11 +62,15 @@ export function useProjectLocalStorage(params: UseProjectLocalStorageParams) {
     saveProjectToLocalStorage(project);
   }
 
-  const refetch = noop;
+  const refetchProject = () => {
+    const project = getProjectFromLocalStorage();
+
+    setState({ project });
+  };
 
   return {
     project,
     saveProject,
-    refetch,
+    refetchProject,
   };
 }

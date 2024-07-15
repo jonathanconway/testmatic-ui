@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 
-import { TagEditorRouteParams, useProject } from "../../shared";
+import { TagEditorRouteParams } from "../../shared";
+import { useProject } from "../project";
 import { getStorageFns } from "../storage";
 
 export function useTag() {

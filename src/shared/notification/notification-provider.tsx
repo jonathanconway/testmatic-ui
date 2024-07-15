@@ -11,7 +11,6 @@ export function NotificationProvider() {
 
   useEffect(() => {
     const listener = (event: ShowNotificationEvent) => {
-      console.log("NotificationProvider ", event);
       setState(event.params);
     };
 

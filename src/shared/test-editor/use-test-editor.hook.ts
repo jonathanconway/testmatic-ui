@@ -1,76 +1,62 @@
-import { isError } from "lodash";
 import { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { projectAddTest } from "testmatic";
 
-import { getStorageFns } from "../../hooks";
+import { useStorage } from "../../hooks";
 import { homeRoute } from "../../screens";
-import { showErrorNotification } from "../notification";
-import { useProject } from "../project";
+import { showSuccessOrErrorNotification } from "../notification";
 
-import { testEditorRoute } from "./test-editor.routes";
 import { useEditingTest } from "./use-editing-test.hook";
 
 export function useTestEditor() {
-  const { editingTest, test, isNewTest, isDirty, setEditingTest } =
-    useEditingTest();
+  const { test, isNewTest } = useEditingTest();
 
-  const { project, saveProject } = useProject();
-
-  const isCreateButtonDisabled = !isDirty;
+  // isCreateButtonDisabled,
+  // isNewTest,
+  // handleClickCreate,
 
   const navigateTo = useNavigate();
 
-  const storageFns = getStorageFns();
+  const { updateTestDescription } = useStorage();
 
-  const handleClickCreate = () => {
-    if (isNewTest) {
-      saveNewTest();
-    }
-  };
+  // const saveNewTest = async () => {
+  //   const newTest = editingTest;
 
-  const saveNewTest = async () => {
-    const newTest = editingTest;
+  //   if (!newTest || !project) {
+  //     return;
+  //   }
 
-    if (!newTest || !project) {
-      return;
-    }
+  //   const updatedProject = projectAddTest({ project, newTest });
 
-    const updatedProject = projectAddTest({ project, newTest });
+  //   if (isError(updatedProject)) {
+  //     showErrorNotification(updatedProject);
+  //     return;
+  //   }
 
-    if (isError(updatedProject)) {
-      showErrorNotification(updatedProject);
-      return;
-    }
+  //   const addNewTestResult = await addNewTest(newTest);
 
-    saveProject(updatedProject);
+  //   showSuccessOrErrorNotification(addNewTestResult);
 
-    setEditingTest(undefined);
+  //   if (isError(addNewTestResult)) {
+  //     return;
+  //   }
 
-    setTimeout(() => {
-      navigateTo(testEditorRoute(newTest.name));
-    });
-  };
+  //   setEditingTest(undefined);
+
+  //   setTimeout(() => {
+  //     navigateTo(testEditorRoute(newTest.name));
+  //   });
+  // };
 
   const handleChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    if (!test) {
-      return;
-    }
-
     const title = event.target.value;
 
     if (title === test.title) {
       return;
     }
 
-    const updateTestDescriptionResult = storageFns.updateTestDescription(
-      test.name,
-      title,
-    );
+    const updateTestDescriptionResult = updateTestDescription(test.name, title);
 
-    if (isError(updateTestDescriptionResult)) {
-      showErrorNotification(updateTestDescriptionResult);
-    }
+    showSuccessOrErrorNotification(updateTestDescriptionResult);
   };
 
   const handleCloseClick = () => {
@@ -80,8 +66,8 @@ export function useTestEditor() {
   return {
     test,
     isNewTest,
-    isCreateButtonDisabled,
-    handleClickCreate,
+    // isCreateButtonDisabled,
+    // handleClickCreate,
     handleChangeDescription,
     handleCloseClick,
   };

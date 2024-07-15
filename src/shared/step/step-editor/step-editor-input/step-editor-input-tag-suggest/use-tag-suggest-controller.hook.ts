@@ -1,5 +1,5 @@
 import {
-  ChangeEvent,
+  FormEvent,
   KeyboardEvent,
   MutableRefObject,
   useRef,
@@ -7,7 +7,7 @@ import {
 } from "react";
 import { Tag, isTag, projectGetTagByNameOrTitle } from "testmatic";
 
-import { useProject } from "../../../../project";
+import { useProject } from "../../../../../hooks";
 import { Maybe } from "../../../../utils";
 
 import { filterTags } from "./tag-suggest-filter-tags";
@@ -158,10 +158,12 @@ export function useTagSuggestController(params: UseTagSuggestControllerParams) {
     }
   };
 
-  const handleInputInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputInput = (event: FormEvent<HTMLTextAreaElement>) => {
     inputLastEvent.current = "input";
 
-    const newInputTagSelectionInfo = getInputTagSelectionInfo(event.target);
+    const newInputTagSelectionInfo = getInputTagSelectionInfo(
+      event.currentTarget,
+    );
 
     const newFilterText =
       newInputTagSelectionInfo?.valueBetweenBracketsBeforeCursor;

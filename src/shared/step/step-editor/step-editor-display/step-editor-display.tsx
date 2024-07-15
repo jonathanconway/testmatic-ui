@@ -2,7 +2,7 @@ import { HTMLProps } from "react";
 import { Link } from "react-router-dom";
 import { Step, Tag, createTagFromName } from "testmatic";
 
-import { useProject } from "../../../project";
+import { useProject } from "../../../../hooks";
 import { TagTooltipContents } from "../../../tag";
 import { tagEditorRoute } from "../../../tag-editor";
 import { Tooltip } from "../../../tooltip";

@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect } from "react";
 import { Tag } from "testmatic";
 
-import { useProject } from "../../../../project";
+import { useProject } from "../../../../../hooks";
 
 import { filterTags } from "./tag-suggest-filter-tags";
 import * as Styled from "./tag-suggest.styles";

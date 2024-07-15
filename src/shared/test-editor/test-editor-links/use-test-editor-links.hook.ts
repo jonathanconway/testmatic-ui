@@ -1,6 +1,6 @@
 import { Link, projectDeleteTestLink } from "testmatic";
 
-import { useProject } from "../../project";
+import { useProject } from "../../../hooks";
 import { useEditingTest } from "../use-editing-test.hook";
 
 export function useTestLinks() {

@@ -1,19 +1,12 @@
-import { snakeCase } from "lodash";
+import { isError, snakeCase } from "lodash";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ProjectView,
-  Tag,
-  getTestsReferencingTag,
-  isAlreadyExistsError,
-  isTag,
-  projectAddTag,
-} from "testmatic";
+import { ProjectView, Tag, getTestsReferencingTag, isTag } from "testmatic";
 
-import { useTag } from "../../hooks";
+import { useProject, useTag } from "../../hooks";
 import { homeRoute } from "../../screens";
 import { showErrorNotification } from "../notification";
-import { useProject } from "../project";
+import { timeout } from "../utils";
 
 import { TAG_NEW, TAG_NEW_NAME, tagEditorRoute } from "./tag-editor.routes";
 
@@ -22,7 +15,7 @@ interface UseTagEditorState {
 }
 
 export function useTagEditor() {
-  const { project, saveProject } = useProject();
+  const { project, addNewTag } = useProject();
 
   const { tagName = undefined } = useParams();
 
@@ -102,18 +95,16 @@ export function useTagEditor() {
       return;
     }
 
-    const updatedProject = projectAddTag({ project, newTag });
+    const addNewTagResult = await addNewTag(newTag);
 
-    if (isAlreadyExistsError(updatedProject)) {
-      showErrorNotification(updatedProject);
+    if (isError(addNewTagResult)) {
+      showErrorNotification(addNewTagResult);
       return;
     }
 
-    saveProject(updatedProject);
+    await timeout();
 
-    setTimeout(() => {
-      navigate(tagEditorRoute(newTag.name));
-    });
+    navigate(tagEditorRoute(newTag.name));
   };
 
   return {

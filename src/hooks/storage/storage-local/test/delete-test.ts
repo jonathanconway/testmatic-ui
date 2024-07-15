@@ -1,12 +1,8 @@
-import { isError } from "lodash";
 import { projectDeleteTest } from "testmatic";
 
-import {
-  getProjectFromLocalStorage,
-  saveProjectToLocalStorage,
-} from "../../../../shared";
-import { resultError, resultOk } from "../../../result";
+import { getProjectFromLocalStorage } from "../../../../shared";
 import { DeleteTestFn } from "../../../test";
+import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const deleteTest: DeleteTestFn = async (lookupTestName: string) => {
   const project = getProjectFromLocalStorage();
@@ -15,11 +11,5 @@ export const deleteTest: DeleteTestFn = async (lookupTestName: string) => {
 
   const updatedProject = projectDeleteTest({ project, testToDelete });
 
-  if (isError(updatedProject)) {
-    return resultError(updatedProject);
-  }
-
-  saveProjectToLocalStorage(updatedProject);
-
-  return resultOk();
+  return saveProjectToLocalStorageOrForwardError(updatedProject);
 };

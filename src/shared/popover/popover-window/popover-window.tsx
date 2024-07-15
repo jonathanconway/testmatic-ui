@@ -1,9 +1,12 @@
 import { HTMLProps, ReactNode, useEffect, useRef } from "react";
 
 import { Heading } from "../../heading";
+import { IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Stack } from "../../layout";
 import { Tooltip } from "../../tooltip";
+import { isElementOutsideContainer } from "../is-element-outside-container";
+import { usePopoverClickOutside } from "../use-popover-click-outside.hook";
 
 import * as Styled from "./popover-window.styles";
 
@@ -12,31 +15,6 @@ interface PopoverWindowProps extends Omit<HTMLProps<HTMLDivElement>, "title"> {
   readonly actions?: ReactNode;
 
   readonly onClose?: VoidFunction;
-}
-
-function isDescendentOf(element: HTMLElement, parent: HTMLElement) {
-  while (element) {
-    if (element === parent) {
-      return true;
-    }
-    element = element.parentElement as HTMLElement;
-  }
-  return false;
-}
-
-function isElementOutsideContainer(
-  element?: HTMLElement | null,
-  containerElement?: HTMLDivElement | null,
-) {
-  if (!element) {
-    return false;
-  }
-
-  if (!containerElement) {
-    return false;
-  }
-
-  return !isDescendentOf(element as HTMLElement, containerElement);
 }
 
 function focusFirstFocusableElement(container?: HTMLElement | null) {
@@ -58,24 +36,10 @@ export function PopoverWindow(props: PopoverWindowProps) {
     });
   }, []);
 
-  useEffect(() => {
-    function handleWindowMouseDown(event: MouseEvent) {
-      if (
-        isElementOutsideContainer(
-          event.target as HTMLElement,
-          containerRef.current,
-        )
-      ) {
-        onClose?.();
-      }
-    }
-
-    window.addEventListener("mousedown", handleWindowMouseDown);
-
-    return () => {
-      window.removeEventListener("mousedown", handleWindowMouseDown);
-    };
-  }, [onClose]);
+  usePopoverClickOutside({
+    onClose,
+    containerRef,
+  });
 
   useEffect(() => {
     function handleWindowFocusIn(event: FocusEvent) {
@@ -106,7 +70,7 @@ export function PopoverWindow(props: PopoverWindowProps) {
             <Heading level={3}>{props.title}</Heading>
           </Stack>
           <Tooltip contents="Close">
-            <IconButton icon="close" onClick={onClose} />
+            <IconButton icon={IconNames.Close} onClick={onClose} />
           </Tooltip>
         </Stack>
 

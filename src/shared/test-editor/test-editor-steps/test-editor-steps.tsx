@@ -3,6 +3,7 @@ import { Heading } from "../../heading";
 import { Stack } from "../../layout";
 import { StepAdder, StepEditor } from "../../step";
 
+import { TestEditorStepsIds } from "./test-editor-steps.const";
 import * as Styled from "./test-editor-steps.styles";
 import { useTestEditorSteps } from "./use-test-editor-steps.hook";
 
@@ -13,17 +14,34 @@ export function TestEditorSteps() {
     steps,
 
     handleClickAddStep,
-    handleStepAdderInput,
+
     handleStepEditorChange,
     handleStepEditorGoPrevious,
     handleStepEditorGoLast,
     handleStepEditorGoNext,
-    handleDeleteClick,
+    handleStepEditorDeleteClick,
+
+    handleStepAdderFocus,
+    handleStepAdderInput,
+
+    addingStep,
+    addingStepRef,
+    afterFocusRef,
+    handleAddingStepEditorChange,
+    handleAddingStepEditorGoPrevious,
+    handleAddingStepEditorGoNext,
+    handleAddingStepDeleteClick,
+    handleAddingStepEditorBlur,
+    handleAddingStepEditorInput,
   } = useTestEditorSteps();
 
   return (
     <Styled.Container>
-      <Stack spacing={1} ref={stepsContainerRef}>
+      <Stack
+        spacing={1}
+        id={TestEditorStepsIds.Container}
+        ref={stepsContainerRef}
+      >
         <Styled.StepsHeader>
           <Heading level={3}>Steps </Heading>
           <Button onClick={handleClickAddStep}>Add step</Button>
@@ -38,22 +56,29 @@ export function TestEditorSteps() {
               >
                 <StepEditor
                   step={step}
+                  stepIndex={stepIndex}
                   onChange={handleStepEditorChange(stepIndex)}
                   onGoPrevious={handleStepEditorGoPrevious(stepIndex)}
                   onGoNext={handleStepEditorGoNext(stepIndex)}
-                  onDeleteClick={handleDeleteClick(stepIndex)}
+                  onDeleteClick={handleStepEditorDeleteClick(stepIndex)}
                 />
               </Styled.StepsListItem>
             ))}
 
-            <Styled.StepsListItem key="adding-step" $counter={steps.length + 1}>
+            <Styled.StepsListItem
+              key="adding-step-trigger"
+              $counter={steps.length + (addingStep ? 2 : 1)}
+            >
               <StepAdder
                 ref={stepAdderRef}
-                onInput={handleStepAdderInput}
+                onFocus={handleStepAdderFocus}
+                onBlur={handleStepAdderInput}
                 onGoPrevious={handleStepEditorGoLast}
+                onInput={handleAddingStepEditorInput}
               />
             </Styled.StepsListItem>
           </Styled.StepsList>
+          <span ref={afterFocusRef} tabIndex={0}></span>
         </Styled.StepsMain>
       </Stack>
     </Styled.Container>

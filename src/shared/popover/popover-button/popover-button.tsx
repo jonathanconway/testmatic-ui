@@ -35,7 +35,11 @@ export function PopoverButton(props: PopoverButtonProps) {
     <>
       <Button ref={buttonRef} onClick={handleButtonClick} {...restProps} />
 
-      <Popover isOpen={state.isOpen} anchorElement={buttonRef.current}>
+      <Popover
+        isOpen={state.isOpen}
+        anchorElement={buttonRef.current}
+        onClose={handlePopoverClose}
+      >
         {props.renderPopover({
           onClose: handlePopoverClose,
         })}

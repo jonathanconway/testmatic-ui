@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Run } from "testmatic";
 
-import { useProject } from "../../project";
+import { useProject } from "../../../hooks";
 
 interface RunEditorRunState {
   readonly run?: Run;
@@ -12,7 +12,7 @@ interface RunEditorRunState {
 export function useEditingRun() {
   const [state, setState] = useState<RunEditorRunState>({});
 
-  const { project, refetch: refetchProject } = useProject();
+  const { project, refetchProject } = useProject();
 
   const { testName = undefined, runDateTime = undefined } = useParams();
 

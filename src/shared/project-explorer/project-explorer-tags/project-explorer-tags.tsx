@@ -1,4 +1,5 @@
 import { Button } from "../../button";
+import { IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Link } from "../../link";
 import { TAG_NEW_NAME, tagEditorRoute } from "../../tag-editor";
@@ -45,8 +46,8 @@ export function ProjectExplorerTags() {
               <Tooltip contents="Delete tag">
                 <IconButton
                   size="small"
-                  icon="delete"
-                  onClick={handleTagDeleteClick(tag)}
+                  icon={IconNames.Delete}
+                  onClick={handleTagDeleteClick(tag.name)}
                 />
               </Tooltip>
             </Styled.ProjectExplorerItemActions>

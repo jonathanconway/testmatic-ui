@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from "react";
 import { convertProjectJSONToProject } from "testmatic";
 
+import { useProject } from "../../../../../hooks";
 import { showSuccessNotification } from "../../../../notification";
-import { useProject } from "../../../../project";
 
 interface UseImportPopoverParams {
   readonly onClose?: VoidFunction;

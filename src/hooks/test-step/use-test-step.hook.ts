@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 
-import { TestEditorRouteParams, useProject } from "../../shared";
+import { TestEditorRouteParams } from "../../shared";
+import { useProject } from "../project";
 import { getStorageFns } from "../storage";
 
 export function useTestStep() {

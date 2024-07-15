@@ -7,4 +7,5 @@ export const ICON_SYMBOLS: Partial<Record<IconName, string>> = {
   [IconNames.Error]: "⚠",
   [IconNames.Expand]: "+",
   [IconNames.Collapse]: "-",
+  [IconNames.ThreeDots]: "⋮",
 };

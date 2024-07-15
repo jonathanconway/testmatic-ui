@@ -19,10 +19,6 @@ export const TEST_NEW = createTest({
   stepTexts: ["First step"],
 }) as Test;
 
-export function testEditorNewTestRoute() {
-  return testEditorRoute(TEST_NEW_NAME);
-}
-
 export interface TestEditorRouteParams extends Record<string, string> {
   readonly testName: string;
 }

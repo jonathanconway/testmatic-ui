@@ -6,8 +6,8 @@ import {
   projectDeleteRun,
 } from "testmatic";
 
+import { useProject } from "../../../hooks";
 import { showErrorNotification } from "../../notification";
-import { useProject } from "../../project";
 import { useEditingTest } from "../use-editing-test.hook";
 
 export function useTestEditorRuns() {

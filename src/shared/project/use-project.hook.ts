@@ -4,7 +4,7 @@ import { useProjectHttp } from "./project-http";
 import { useProjectLocalStorage } from "./project-local-storage";
 import { UseProjectResult } from "./use-project.types";
 
-export function useProject(): UseProjectResult {
+export function useProject2(): UseProjectResult {
   const projectLocalStorage = useProjectLocalStorage({ enabled: isSurge });
 
   const projectHttp = useProjectHttp({ enabled: !isSurge });

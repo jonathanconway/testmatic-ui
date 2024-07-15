@@ -1,7 +1,7 @@
 import { Tag, getTestsReferencingTag } from "testmatic";
 
-import { Icon } from "../../icon";
-import { useProject } from "../../project";
+import { useProject } from "../../../hooks";
+import { Icon, IconNames } from "../../icon";
 
 import * as Styled from "./tag-tooltip-contents.styles";
 
@@ -40,7 +40,7 @@ export function TagTooltipContents(props: TagTooltipContentsProps) {
           <Styled.UnorderedList>
             {props.tag.links.map((link) => (
               <li key={link.href}>
-                <Icon icon="link" /> {link.title ?? link.href}
+                <Icon icon={IconNames.Link} /> {link.title ?? link.href}
               </li>
             ))}
           </Styled.UnorderedList>
@@ -56,7 +56,7 @@ export function TagTooltipContents(props: TagTooltipContentsProps) {
           <Styled.UnorderedList>
             {tagTests.map((test) => (
               <li key={test.name}>
-                <Icon icon="test" /> {test.title}
+                <Icon icon={IconNames.Test} /> {test.title}
               </li>
             ))}
           </Styled.UnorderedList>

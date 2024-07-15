@@ -3,7 +3,7 @@ import { Link, ProjectView, Run, Step, Tag, Test } from "testmatic";
 export interface UseProjectResult {
   readonly project: ProjectView;
   readonly saveProject: (updatedProject: ProjectView) => void;
-  readonly refetch: VoidFunction;
+  readonly refetchProject: VoidFunction;
 }
 
 export interface UseProjectMethods {

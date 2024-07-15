@@ -1,7 +1,7 @@
 import { HTMLProps } from "react";
 
 import { Box } from "../../box";
-import { ICON_SYMBOLS } from "../../icon";
+import { ICON_SYMBOLS, IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Stack } from "../../layout";
 import { Tooltip } from "../../tooltip";
@@ -22,12 +22,20 @@ export function ListBoxItem(props: ListBoxItemProps) {
 
       <Stack direction="row" spacing="0.25rem" alignItems="center">
         <Tooltip contents="Edit">
-          <IconButton icon="edit" size="small" onClick={props.onEditClick}>
+          <IconButton
+            icon={IconNames.Edit}
+            size="small"
+            onClick={props.onEditClick}
+          >
             {ICON_SYMBOLS.edit}
           </IconButton>
         </Tooltip>
         <Tooltip contents="Delete">
-          <IconButton icon="delete" size="small" onClick={props.onDeleteClick}>
+          <IconButton
+            icon={IconNames.Delete}
+            size="small"
+            onClick={props.onDeleteClick}
+          >
             {ICON_SYMBOLS.delete}
           </IconButton>
         </Tooltip>
