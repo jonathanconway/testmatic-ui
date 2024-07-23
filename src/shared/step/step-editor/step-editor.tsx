@@ -126,6 +126,7 @@ export const StepEditor = forwardRef(
             onGoPrevious={props.onGoPrevious}
             onGoNext={props.onGoNext}
             onInput={props.onInput}
+            placeholder={props.placeholder}
           />
         </Styled.MainContainer>
 

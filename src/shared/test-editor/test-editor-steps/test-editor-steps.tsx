@@ -1,3 +1,5 @@
+import { createTestStepFromText } from "testmatic";
+
 import { Button } from "../../button";
 import { Heading } from "../../heading";
 import { Stack } from "../../layout";
@@ -6,6 +8,8 @@ import { StepAdder, StepEditor } from "../../step";
 import { TestEditorStepsIds } from "./test-editor-steps.const";
 import * as Styled from "./test-editor-steps.styles";
 import { useTestEditorSteps } from "./use-test-editor-steps.hook";
+
+const STEP_EMPTY = createTestStepFromText("");
 
 export function TestEditorSteps() {
   const {
@@ -30,7 +34,7 @@ export function TestEditorSteps() {
     handleAddingStepEditorChange,
     handleAddingStepEditorGoPrevious,
     handleAddingStepEditorGoNext,
-    handleAddingStepDeleteClick,
+    handleAddingStepEditorDeleteClick,
     handleAddingStepEditorBlur,
     handleAddingStepEditorInput,
   } = useTestEditorSteps();
@@ -67,14 +71,16 @@ export function TestEditorSteps() {
 
             <Styled.StepsListItem
               key="adding-step-trigger"
-              $counter={steps.length + (addingStep ? 2 : 1)}
+              $counter={steps.length + 1}
             >
-              <StepAdder
-                ref={stepAdderRef}
-                onFocus={handleStepAdderFocus}
-                onBlur={handleStepAdderInput}
-                onGoPrevious={handleStepEditorGoLast}
-                onInput={handleAddingStepEditorInput}
+              <StepEditor
+                step={addingStep}
+                stepIndex={steps.length}
+                onChange={handleAddingStepEditorChange}
+                onGoPrevious={handleAddingStepEditorGoPrevious}
+                onGoNext={handleAddingStepEditorGoNext}
+                onDeleteClick={handleAddingStepEditorDeleteClick}
+                placeholder="Add new step"
               />
             </Styled.StepsListItem>
           </Styled.StepsList>

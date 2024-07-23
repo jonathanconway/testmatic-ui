@@ -7,3 +7,6 @@ export function isNotNil<T>(item?: T | undefined | null | false): item is T {
 }
 
 export type FirstParameter<T extends (...args: any) => any> = Parameters<T>[0];
+
+export type Override<TBase, TOverride> = Omit<TBase, keyof TOverride> &
+  TOverride;

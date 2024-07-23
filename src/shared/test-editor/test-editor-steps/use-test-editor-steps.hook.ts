@@ -16,7 +16,7 @@ import { useEditingTest } from "../use-editing-test.hook";
 import { TestEditorStepsIds } from "./test-editor-steps.const";
 
 interface UseTestEditorStepsState {
-  readonly addingStep?: Step;
+  readonly addingStep: Step;
 }
 
 export function useTestEditorSteps() {
@@ -24,7 +24,9 @@ export function useTestEditorSteps() {
   const stepAdderRef = useRef<HTMLTextAreaElement>(null);
   const afterFocusRef = useRef<HTMLDivElement>(null);
 
-  const [state, setState] = useState<UseTestEditorStepsState>({});
+  const [state, setState] = useState<UseTestEditorStepsState>({
+    addingStep: createTestStepFromText(""),
+  });
 
   const { test } = useEditingTest();
 
@@ -177,7 +179,8 @@ export function useTestEditorSteps() {
   const addingStep = state.addingStep;
 
   const handleAddingStepEditorChange = async (step: Step, event: any) => {
-    // console.log("handleAddingStepEditorChange", step);
+    console.log("handleAddingStepEditorChange", step);
+
     // if (!step.text) {
     //   setState({
     //     addingStep: undefined,
@@ -189,6 +192,10 @@ export function useTestEditorSteps() {
     //   return;
     // }
 
+    if (step.text === "") {
+      return;
+    }
+
     const addNewStepResult = await addNewStep(step.text);
 
     if (isError(addNewStepResult)) {
@@ -199,7 +206,7 @@ export function useTestEditorSteps() {
     }
 
     setState({
-      addingStep: undefined,
+      addingStep: createTestStepFromText(""),
     });
 
     setTimeout(() => {
@@ -208,14 +215,14 @@ export function useTestEditorSteps() {
       });
     });
 
-    focusLastStepInput();
+    // focusLastStepInput();
   };
 
   const handleAddingStepEditorGoPrevious = () => {};
 
   const handleAddingStepEditorGoNext = () => {};
 
-  const handleAddingStepDeleteClick = () => {};
+  const handleAddingStepEditorDeleteClick = () => {};
 
   const handleAddingStepEditorBlur = async () => {};
 
@@ -268,9 +275,9 @@ export function useTestEditorSteps() {
     handleAddingStepEditorChange,
     handleAddingStepEditorGoPrevious,
     handleAddingStepEditorGoNext,
-    handleAddingStepDeleteClick,
     handleAddingStepEditorBlur,
     handleAddingStepEditorInput,
+    handleAddingStepEditorDeleteClick,
 
     handleClickAddStep,
     handleCloseClick,
