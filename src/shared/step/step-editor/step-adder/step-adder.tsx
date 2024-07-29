@@ -1,11 +1,18 @@
-import { HTMLProps, KeyboardEvent, LegacyRef, forwardRef } from "react";
+import { noop } from "lodash";
+import { HTMLProps, KeyboardEvent } from "react";
+import { Step } from "testmatic";
 
 import { Box } from "../../../box";
-import { Stack } from "../../../layout";
+import { timeout } from "../../../utils";
+import { StepEditorIds } from "../step-editor";
+import { StepEditorInput } from "../step-editor-input";
 
 import * as Styled from "./step-adder.styles";
 
-export interface StepAdderProps extends HTMLProps<HTMLTextAreaElement> {
+export interface StepAdderProps
+  extends Omit<HTMLProps<HTMLTextAreaElement>, "step"> {
+  readonly step: Step;
+  readonly stepIndex: number;
   readonly onGoPrevious: VoidFunction;
 }
 
@@ -13,34 +20,54 @@ export const StepAdderIds = {
   Input: "step-adder-input",
 };
 
-export const StepAdder = forwardRef(
-  (props: StepAdderProps, ref?: LegacyRef<HTMLTextAreaElement>) => {
-    const { onGoPrevious, ...restProps } = props;
+export function StepAdder(props: StepAdderProps) {
+  const { step, stepIndex, ref, onKeyDown, ...restProps } = props;
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-      switch (event.key) {
-        case "ArrowUp":
-          handleKeyDownArrowUp();
-          break;
-      }
-    };
+  const handleStepInputKeyDown = async (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    console.log("step-adder handleStepInputKeyDown");
+    switch (event.key) {
+      case "ArrowUp":
+        handleKeyDownArrowUp();
+        break;
 
-    const handleKeyDownArrowUp = () => {
-      props.onGoPrevious();
-    };
+      case "Tab":
+        if (!event.shiftKey) {
+          await timeout();
 
-    return (
-      <Stack direction="row" width="100%" gap="0.5rem" margin="1px">
-        <Styled.TextArea
-          id={StepAdderIds.Input}
-          placeholder="Add new step"
-          ref={ref}
-          onKeyDown={handleKeyDown}
-          rows={1}
+          const deleteButtonClassName = `${StepEditorIds.DeleteButton}-${props.stepIndex}`;
+
+          const deleteButtonElement = window.document.getElementById(
+            deleteButtonClassName,
+          );
+
+          deleteButtonElement?.focus();
+        }
+        return;
+    }
+  };
+
+  const handleKeyDownArrowUp = () => {
+    props.onGoPrevious();
+  };
+
+  return (
+    <Styled.Container>
+      <Styled.MainContainer>
+        <StepEditorInput
           {...restProps}
+          step={props.step}
+          isVisible
+          onKeyDown={handleStepInputKeyDown}
+          // onFocus={noop}
+          // onBlur={noop}
+          onGoNext={noop}
+          placeholder="Add new step"
         />
-        <Box width="1rem">{/* Spacer for action button */}</Box>
-      </Stack>
-    );
-  },
-);
+      </Styled.MainContainer>
+
+      <Box width="1rem"></Box>
+    </Styled.Container>
+  );
+}

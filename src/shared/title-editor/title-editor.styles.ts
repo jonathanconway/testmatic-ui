@@ -7,11 +7,6 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   flex: 1;
-
-  // todo: there must be a cleaner way to do this
-  textarea {
-    padding: 2.5px 5px;
-  }
 `;
 
 export const Input = styled.input`

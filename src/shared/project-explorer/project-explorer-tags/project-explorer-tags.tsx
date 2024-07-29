@@ -2,10 +2,11 @@ import { Button } from "../../button";
 import { IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Link } from "../../link";
-import { TAG_NEW_NAME, tagEditorRoute } from "../../tag-editor";
+import { tagEditorRoute } from "../../tag-editor";
 import { Tooltip } from "../../tooltip";
 import * as Styled from "../project-explorer.styles";
 
+import { ProjectExplorerTagsIds } from "./project-explorer-tags.const";
 import { useProjectExplorerTags } from "./use-project-explorer-tags.hook";
 
 export function ProjectExplorerTags() {
@@ -13,25 +14,13 @@ export function ProjectExplorerTags() {
     useProjectExplorerTags();
 
   return (
-    <Styled.ProjectExplorerSection>
+    <Styled.ProjectExplorerSection id={ProjectExplorerTagsIds.Section}>
       <Styled.ProjectExplorerSubheading>
         Tags
         <Button onClick={handleTagAddClick}>Add</Button>
       </Styled.ProjectExplorerSubheading>
-      <div>
-        {tagName === TAG_NEW_NAME && (
-          <Styled.ProjectExplorerItem
-            key={TAG_NEW_NAME}
-            $selected
-            title="New tag"
-          >
-            <Styled.ProjectExplorerItemMain>
-              <span>✨ </span>
-              <span>New tag</span>
-            </Styled.ProjectExplorerItemMain>
-          </Styled.ProjectExplorerItem>
-        )}
 
+      <div>
         {project?.tags.map((tag, index) => (
           <Styled.ProjectExplorerItem
             key={tag.name + index}

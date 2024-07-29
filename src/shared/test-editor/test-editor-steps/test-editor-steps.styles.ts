@@ -43,6 +43,5 @@ export const StepsListItem = styled.li<{ readonly $counter: number }>`
     content: "${({ $counter }) => $counter}. ";
     counter-increment: item;
     width: 1.5em;
-    margin-right: 0.5rem;
   }
 `;

@@ -5,7 +5,7 @@ import { IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Stack } from "../../layout";
 import { Tooltip } from "../../tooltip";
-import { isElementOutsideContainer } from "../is-element-outside-container";
+import { getIsElementOutsideContainer } from "../is-element-outside-container";
 import { usePopoverClickOutside } from "../use-popover-click-outside.hook";
 
 import * as Styled from "./popover-window.styles";
@@ -44,7 +44,7 @@ export function PopoverWindow(props: PopoverWindowProps) {
   useEffect(() => {
     function handleWindowFocusIn(event: FocusEvent) {
       if (
-        isElementOutsideContainer(
+        getIsElementOutsideContainer(
           event.target as HTMLElement,
           containerRef.current,
         )

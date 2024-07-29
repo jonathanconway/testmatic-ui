@@ -2,30 +2,31 @@ import { Link } from "react-router-dom";
 
 import { AppWorkspace } from "../app";
 import { Box } from "../box";
-import { Button } from "../button";
 import { Heading } from "../heading";
 import { IconNames } from "../icon";
 import { IconButton } from "../icon-button";
 import { Header, Stack } from "../layout";
 import { testEditorRoute } from "../test-editor";
 import { Text } from "../text";
-import { InlineExpandingTextBox } from "../text-box";
+import { ExpandingTextBox } from "../text-box";
 import { TitleEditor } from "../title-editor";
 import { Tooltip } from "../tooltip";
 
 import * as Styled from "./tag-editor.styles";
 import { useTagEditor } from "./use-tag-editor.hook";
 
+export const TagEditorIds = {
+  TitleContainer: "tag-editor-title-container",
+};
+
 export function TagEditor() {
   const {
     tag,
     tagReferencedTests,
-    isNewTag,
-    isCreateButtonDisabled,
+
     handleCloseClick,
     handleChangeTitle,
     handleChangeDescription,
-    handleClickSave,
   } = useTagEditor();
 
   if (!tag) {
@@ -41,12 +42,12 @@ export function TagEditor() {
               <Stack direction="row" spacing={1} alignItems="center">
                 <span>Tag:</span>
 
-                <Box flex={1}>
+                <Box flex={1} id={TagEditorIds.TitleContainer} key={tag.title}>
                   <TitleEditor
-                    value={tag.title}
-                    autoFocus={isNewTag}
-                    autoSelect={isNewTag}
-                    onChange={handleChangeTitle}
+                    defaultValue={tag.title}
+                    outdent
+                    hoverBorder
+                    onBlur={handleChangeTitle}
                   />
                 </Box>
               </Stack>
@@ -54,15 +55,6 @@ export function TagEditor() {
           }
           actionsSlot={
             <Stack direction="row" spacing={1}>
-              {isNewTag && (
-                <Button
-                  disabled={isCreateButtonDisabled}
-                  onClick={handleClickSave}
-                >
-                  Create
-                </Button>
-              )}
-
               <Tooltip contents="Close">
                 <IconButton
                   icon={IconNames.Close}
@@ -76,10 +68,12 @@ export function TagEditor() {
 
         <Stack spacing={2} height="100%">
           <Text>
-            <InlineExpandingTextBox
-              value={tag.description}
-              onChange={handleChangeDescription}
+            <ExpandingTextBox
+              defaultValue={tag.description}
               placeholder="Description (optional)"
+              outdent
+              hoverBorder
+              onBlur={handleChangeDescription}
             />
           </Text>
 

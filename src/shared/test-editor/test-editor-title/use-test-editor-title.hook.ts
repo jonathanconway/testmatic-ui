@@ -1,52 +1,36 @@
 import { isError } from "lodash";
-import { SyntheticEvent } from "react";
+import { FocusEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { testCreateNameFromTitle } from "testmatic";
 
-import { getStorageFns } from "../../../hooks";
+import { useStorage } from "../../../hooks";
 import {
   showErrorNotification,
   showSuccessNotification,
 } from "../../notification";
 import { timeout } from "../../utils";
-import { Ids } from "../test-editor.const";
 import { testEditorRoute } from "../test-editor.routes";
 import { useEditingTest } from "../use-editing-test.hook";
 
-interface UseTestEditorTitleResult {
-  readonly title?: string;
-  readonly isNewTest: boolean;
-  readonly handleTitleChange: (
-    event: SyntheticEvent<HTMLTextAreaElement>,
-  ) => Promise<void>;
-}
+import { TestEditorTitleIds } from "./test-editor-title.const";
 
-export function useTestEditorTitle(): UseTestEditorTitleResult {
-  const { test, isNewTest } = useEditingTest();
+export function useTestEditorTitle() {
+  const { test } = useEditingTest();
 
-  const storageFns = getStorageFns();
+  const { updateTestTitle } = useStorage();
 
   const navigateTo = useNavigate();
 
   const title = test?.title;
 
-  const handleTitleChange = async (
-    event: SyntheticEvent<HTMLTextAreaElement>,
-  ) => {
-    if (!test) {
+  const handleTitleChange = async (event: FocusEvent<HTMLTextAreaElement>) => {
+    const newTitle = event.target.value;
+
+    if (title === newTitle) {
       return;
     }
 
-    const title = event.currentTarget.value;
-
-    if (title === test.title) {
-      return;
-    }
-
-    const updateTestTitleResult = await storageFns.updateTestTitle(
-      test.name,
-      title,
-    );
+    const updateTestTitleResult = await updateTestTitle(title, newTitle);
 
     if (isError(updateTestTitleResult)) {
       showErrorNotification(updateTestTitleResult);
@@ -54,20 +38,18 @@ export function useTestEditorTitle(): UseTestEditorTitleResult {
 
     await timeout();
 
-    navigateTo(testEditorRoute(testCreateNameFromTitle(title)));
+    navigateTo(testEditorRoute(testCreateNameFromTitle(newTitle)));
 
     await timeout();
 
     showSuccessNotification(undefined, {
-      anchorElement: document.body.querySelector<HTMLElement>(
-        `#${Ids.TitleEditor}`,
-      ),
+      anchorElement: document.getElementById(TestEditorTitleIds.TitleEditor),
     });
   };
 
   return {
-    handleTitleChange,
     title,
-    isNewTest,
+
+    handleTitleChange,
   };
 }

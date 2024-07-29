@@ -23,7 +23,8 @@ export function RunEditorHeading() {
 
         <Stack direction="row" alignItems="center" minWidth={170} width={170}>
           <TitleEditor
-            value={formatDateTimeString(runDateTime)}
+            defaultValue={formatDateTimeString(runDateTime)}
+            hoverBorder
             onChange={handleChangeRunDateTime}
           />
         </Stack>

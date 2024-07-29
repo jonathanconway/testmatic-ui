@@ -1,5 +1,7 @@
 import { getProjectFromLocalStorage } from "../../../../shared";
+import { GetProjectFn } from "../../../project";
+import { resultOkWithData } from "../../../result";
 
-export function getProject() {
-  return getProjectFromLocalStorage();
-}
+export const getProject: GetProjectFn = async () => {
+  return resultOkWithData(getProjectFromLocalStorage());
+};

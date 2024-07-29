@@ -8,29 +8,29 @@ import {
 
 import { Popover } from "../popover";
 
-import * as Styled from "./menu.styles";
+import * as Styled from "./popup-menu.styles";
 
-interface MenuProps {
+interface PopupMenuProps {
   readonly anchor: ReactNode;
-  readonly options: readonly MenuOption[];
+  readonly options: readonly PopupMenuOption[];
 
-  readonly onSelect?: (option: MenuOption) => void;
+  readonly onSelect?: (option: PopupMenuOption) => void;
 }
 
-interface MenuOption {
+interface PopupMenuOption {
   readonly label: string | ReactNode;
   readonly key: string;
   readonly onClick?: MouseEventHandler<HTMLElement>;
 }
 
-interface MenuState {
+interface PopupMenuState {
   readonly isOpen: boolean;
 }
 
-export function Menu(props: MenuProps) {
+export function PopupMenu(props: PopupMenuProps) {
   const anchorContainerRef = useRef<HTMLSpanElement>(null);
 
-  const [state, setState] = useState<MenuState>({
+  const [state, setState] = useState<PopupMenuState>({
     isOpen: false,
   });
 
@@ -42,7 +42,7 @@ export function Menu(props: MenuProps) {
     setState({ isOpen: false });
   };
 
-  const handleClickOption = (option: MenuOption) => {
+  const handleClickOption = (option: PopupMenuOption) => {
     return (event: MouseEvent<HTMLElement>) => {
       setState({ isOpen: false });
 

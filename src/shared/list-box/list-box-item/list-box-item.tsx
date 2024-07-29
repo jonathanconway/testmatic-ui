@@ -21,24 +21,29 @@ export function ListBoxItem(props: ListBoxItemProps) {
       </Box>
 
       <Stack direction="row" spacing="0.25rem" alignItems="center">
-        <Tooltip contents="Edit">
-          <IconButton
-            icon={IconNames.Edit}
-            size="small"
-            onClick={props.onEditClick}
-          >
-            {ICON_SYMBOLS.edit}
-          </IconButton>
-        </Tooltip>
-        <Tooltip contents="Delete">
-          <IconButton
-            icon={IconNames.Delete}
-            size="small"
-            onClick={props.onDeleteClick}
-          >
-            {ICON_SYMBOLS.delete}
-          </IconButton>
-        </Tooltip>
+        {props.onEditClick && (
+          <Tooltip contents="Edit">
+            <IconButton
+              icon={IconNames.Edit}
+              size="small"
+              onClick={props.onEditClick}
+            >
+              {ICON_SYMBOLS.edit}
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {props.onDeleteClick && (
+          <Tooltip contents="Delete">
+            <IconButton
+              icon={IconNames.Delete}
+              size="small"
+              onClick={props.onDeleteClick}
+            >
+              {ICON_SYMBOLS.delete}
+            </IconButton>
+          </Tooltip>
+        )}
       </Stack>
     </Stack>
   );

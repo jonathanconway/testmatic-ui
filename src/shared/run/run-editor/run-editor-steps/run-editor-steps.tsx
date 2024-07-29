@@ -8,7 +8,8 @@ import * as Styled from "./run-editor-steps.styles";
 import { useRunEditorSteps } from "./use-run-editor-steps.hook";
 
 export function RunEditorSteps() {
-  const { steps, completed, handleClickStepCompleted } = useRunEditorSteps();
+  const { steps, completed, stepsContainerRef, handleClickStepCompleted } =
+    useRunEditorSteps();
 
   return (
     <Styled.Container>
@@ -17,7 +18,7 @@ export function RunEditorSteps() {
           <Heading level={3}>Steps</Heading>
         </Styled.StepsHeader>
 
-        <Styled.StepsMain>
+        <Styled.StepsMain ref={stepsContainerRef}>
           <Styled.StepsList>
             {steps.map((step, stepIndex) => (
               <Styled.StepsListItem

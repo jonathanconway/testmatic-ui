@@ -1,9 +1,8 @@
 import { isError } from "lodash";
 import { SyntheticEvent } from "react";
-// import React, { MouseEvent } from "react";
 import { RunResult } from "testmatic";
 
-import { getStorageFns } from "../../../../hooks";
+import { useStorage } from "../../../../hooks";
 import {
   showErrorNotification,
   showSuccessNotification,
@@ -15,7 +14,7 @@ export function useRunEditorResult() {
 
   const runResult = run?.result;
 
-  const { updateTestRunResult } = getStorageFns();
+  const { updateTestRunResult } = useStorage();
 
   const handleRunResultClick =
     (updatedRunResult?: RunResult) =>

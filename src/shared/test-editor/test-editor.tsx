@@ -1,12 +1,11 @@
 import { AppWorkspace } from "../app";
 import { Box } from "../box";
-import { Button } from "../button";
-import { Heading } from "../heading";
+import { IconNames } from "../icon";
+import { IconButton } from "../icon-button";
 import { Header, Stack } from "../layout";
-import { Text } from "../text";
-import { InlineExpandingTextBox } from "../text-box/inline-expanding-text-box";
 import { Tooltip } from "../tooltip";
 
+import { TestEditorDescription } from "./test-editor-description";
 import { TestEditorLinks } from "./test-editor-links";
 import { TestEditorRuns } from "./test-editor-runs";
 import { TestEditorSteps } from "./test-editor-steps";
@@ -15,42 +14,21 @@ import { TestEditorTitle } from "./test-editor-title";
 import { useTestEditor } from "./use-test-editor.hook";
 
 export function TestEditor() {
-  const { test, handleChangeDescription, handleCloseClick } = useTestEditor();
-
-  if (!test) {
-    return null;
-  }
+  const { test, handleCloseClick } = useTestEditor();
 
   return (
-    <AppWorkspace>
+    <AppWorkspace key={test?.name}>
       <Stack spacing={2} flex={1}>
         <Header
-          headingSlot={
-            <Heading level={2}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <span>Test:</span>
-                <Box flex={1}>
-                  <TestEditorTitle />
-                </Box>
-              </Stack>
-            </Heading>
-          }
+          headingSlot={<TestEditorTitle />}
           actionsSlot={
-            <Stack direction="row" spacing={1}>
-              <Tooltip contents="Close">
-                <Button onClick={handleCloseClick}>✕</Button>
-              </Tooltip>
-            </Stack>
+            <Tooltip contents="Close">
+              <IconButton icon={IconNames.Close} onClick={handleCloseClick} />
+            </Tooltip>
           }
         />
 
-        <Text>
-          <InlineExpandingTextBox
-            value={test.description}
-            onChange={handleChangeDescription}
-            placeholder="Description (optional)"
-          />
-        </Text>
+        <TestEditorDescription />
 
         <Stack direction="row" spacing={4} flex={1}>
           <Box width="60%">

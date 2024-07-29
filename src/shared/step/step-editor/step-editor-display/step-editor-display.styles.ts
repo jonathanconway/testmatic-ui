@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { ZIndexes } from "../../../z-indexes";
+
 export const StepDisplay = styled.div<{
   readonly $isVisible: boolean;
 }>`
@@ -22,7 +24,7 @@ export const StepTokenTag = styled.span`
     position: relative;
     color: darkgreen;
     text-decoration: none;
-    z-index: 5;
+    z-index: ${ZIndexes.StepEditorDisplayStepTokenTag};
 
     &:active,
     &:focus,

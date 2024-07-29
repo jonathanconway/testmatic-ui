@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
-
 import { AddRemoveListBox } from "../../add-remove-list-box";
 import { Box } from "../../box";
 import { Heading } from "../../heading";
-import { Icon, IconNames } from "../../icon";
+import { IconNames } from "../../icon";
+import { Item } from "../../item";
 import { Stack } from "../../layout";
 import { ListBoxItem } from "../../list-box";
 import { RunResultIcon, runEditorRoute } from "../../run";
@@ -18,7 +17,7 @@ export function TestEditorRuns() {
   return (
     <Box flex={1}>
       <AddRemoveListBox
-        headerContent={<Heading level={3}>Runs</Heading>}
+        renderHeaderContent={() => <Heading level={3}>Runs</Heading>}
         onAddItem={handleAddItem}
       >
         {runs.map((run) => (
@@ -28,17 +27,14 @@ export function TestEditorRuns() {
             onDeleteClick={handleDeleteItem(run)}
           >
             <Stack direction="row" gap={0.5} alignItems="center" mr={1}>
-              <Icon icon={IconNames.Run} />
-              <Box flex={1}>
-                <Link
-                  to={runEditorRoute({
-                    testName,
-                    runDateTime: run.dateTime,
-                  })}
-                >
-                  {formatDateTimeString(run.dateTime)}
-                </Link>
-              </Box>
+              <Item
+                icon={IconNames.Run}
+                title={formatDateTimeString(run.dateTime)}
+                linkHref={runEditorRoute({
+                  testName,
+                  runDateTime: run.dateTime,
+                })}
+              />
 
               <RunResultIcon runResult={run.result} />
             </Stack>

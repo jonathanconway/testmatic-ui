@@ -1,68 +1,80 @@
-import { isError } from "lodash";
-import {
-  Tag,
-  isAlreadyExistsError,
-  projectAddTestTag,
-  projectDeleteTestTag,
-  projectGetOrCreateTagByName,
-} from "testmatic";
+import { snakeCase } from "lodash";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { Tag } from "testmatic";
 
 import { useProject } from "../../../hooks";
-import { showErrorNotification } from "../../notification";
+import { ResultTypes } from "../../../hooks/result";
+import { showSuccessOrErrorNotification } from "../../notification";
 import { useEditingTest } from "../use-editing-test.hook";
 
+interface UseTestEditorTagsState {
+  readonly addInputValue: string;
+}
+
 export function useTestEditorTags() {
+  const tagsContainerRef = useRef<HTMLDivElement>(null);
+
   const { test } = useEditingTest();
 
-  const { project, saveProject } = useProject();
+  const { addTagToTest, deleteTagFromTest } = useProject();
+
+  const [state, setState] = useState<UseTestEditorTagsState>({
+    addInputValue: "",
+  });
 
   const tags = test?.tags ?? [];
 
-  const handleAddItem = (newItem: string) => {
-    if (!project || !test) {
-      return;
-    }
+  const handleItemDeleteClick = (tag: Tag) => () => {
+    const deleteTagFromTestResult = deleteTagFromTest(test.name, tag.name);
 
-    const tag = projectGetOrCreateTagByName(project?.tagsByName ?? {})(newItem);
-
-    const updatedProject = projectAddTestTag({
-      project,
-      tag,
-      lookupTestNameOrTitle: test.name,
+    showSuccessOrErrorNotification(deleteTagFromTestResult, {
+      anchorElement: tagsContainerRef.current,
     });
-
-    if (isAlreadyExistsError(updatedProject)) {
-      showErrorNotification(updatedProject);
-      return;
-    }
-
-    saveProject(updatedProject);
   };
 
-  const handleItemDeleteClick = (tag: Tag) => () => {
-    if (!project || !test) {
-      return;
-    }
+  const addInputValue = state.addInputValue;
 
-    const projectDeleteTestTagResult = projectDeleteTestTag({
-      project,
-      test,
-      tag,
+  const handleAddInputInput = (event: FormEvent<HTMLInputElement>) => {
+    const addInputValue = (event as ChangeEvent<HTMLInputElement>).target.value;
+
+    setState({ addInputValue });
+  };
+
+  const handleAddInputSelectItem = (suggestion: string) => {
+    setState({ addInputValue: suggestion });
+  };
+
+  const isAddButtonEnabled = Boolean(addInputValue);
+
+  const handleAddButtonClick = async () => {
+    const value = state.addInputValue;
+    const newOrLookupTagName = snakeCase(value);
+
+    const addTagToTestResult = await addTagToTest(
+      test.name,
+      newOrLookupTagName,
+    );
+
+    showSuccessOrErrorNotification(addTagToTestResult, {
+      anchorElement: tagsContainerRef.current,
     });
 
-    if (isError(projectDeleteTestTagResult)) {
-      showErrorNotification(projectDeleteTestTagResult);
-      return;
+    if (addTagToTestResult.type === ResultTypes.Ok) {
+      setState({
+        ...state,
+        addInputValue: "",
+      });
     }
-
-    const updatedProject = projectDeleteTestTagResult;
-
-    saveProject(updatedProject);
   };
 
   return {
+    tagsContainerRef,
     tags,
-    handleAddItem,
+    addInputValue,
+    isAddButtonEnabled,
+    handleAddButtonClick,
+    handleAddInputInput,
+    handleAddInputSelectItem,
     handleItemDeleteClick,
   };
 }

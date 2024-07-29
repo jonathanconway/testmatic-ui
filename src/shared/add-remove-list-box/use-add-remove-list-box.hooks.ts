@@ -23,9 +23,7 @@ export function useAddRemoveListBox(params: UseAddRemoveListBoxParams) {
 
   const addButtonRef = useRef<HTMLButtonElement>(null);
 
-  const isInlineAddInputRendered = Boolean(
-    !params.headerContent && !params.renderAddItemPopupContent,
-  );
+  const isInlineAddInputRendered = Boolean(!params.renderAddItemPopupContent);
 
   const isAddButtonEnabled = isInlineAddInputRendered
     ? state.addInputValue.trim() !== ""

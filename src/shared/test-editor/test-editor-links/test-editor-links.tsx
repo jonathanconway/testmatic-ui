@@ -13,7 +13,7 @@ export function TestEditorLinks() {
   return (
     <Stack spacing={1} flex={1}>
       <AddRemoveListBox
-        headerContent={<Heading level={3}>Links</Heading>}
+        renderHeaderContent={() => <Heading level={3}>Links</Heading>}
         renderAddItemPopupContent={({ close }) => (
           <LinksBoxAddLink close={close} />
         )}

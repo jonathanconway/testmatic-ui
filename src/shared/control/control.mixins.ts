@@ -5,11 +5,18 @@ export const controlBorder = css`
   border-radius: 0.25rem;
 `;
 
+export const controlPadding = css`
+  padding: 0.25rem;
+`;
+
+export const controlFont = css`
+  font-size: 0.85rem;
+`;
+
 export const controlBase = css`
   ${controlBorder}
-
-  padding: 0.25rem;
-  font-size: 0.85rem;
+  ${controlPadding}
+  ${controlFont}
 `;
 
 export const controlSingleLineHeightRem = 1.625;

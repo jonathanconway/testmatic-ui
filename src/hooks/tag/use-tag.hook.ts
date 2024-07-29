@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 
 import { TagEditorRouteParams } from "../../shared";
 import { useProject } from "../project";
-import { getStorageFns } from "../storage";
+import { useStorage } from "../storage";
 
 export function useTag() {
   const { tagName = "" } = useParams<TagEditorRouteParams>();
@@ -11,14 +11,17 @@ export function useTag() {
 
   const tag = tagName ? project.tagsByName[tagName] : undefined;
 
-  const storageFns = getStorageFns();
+  const { updateTagTitle, updateTagDescription } = useStorage();
+
+  const updateTitle = (newTitle: string) => updateTagTitle(tagName, newTitle);
 
   const updateDescription = (newDescription: string) =>
-    storageFns.updateTagDescription(tagName, newDescription);
+    updateTagDescription(tagName, newDescription);
 
   return {
-    test: tag,
+    tag,
 
+    updateTitle,
     updateDescription,
   };
 }

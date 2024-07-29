@@ -8,7 +8,7 @@ function isDescendentOf(element: HTMLElement, parent: HTMLElement) {
   return false;
 }
 
-export function isElementOutsideContainer(
+export function getIsElementOutsideContainer(
   element?: HTMLElement | null,
   containerElement?: HTMLDivElement | null,
 ) {

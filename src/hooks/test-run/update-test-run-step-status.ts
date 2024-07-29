@@ -2,7 +2,7 @@ import { NotFoundError } from "testmatic";
 
 import { ResultError, ResultOk } from "../result";
 
-export type UpdateTestRunStepStatusFn = (
+export type UpdateTestRunStepIsCompletedFn = (
   lookupTestName: string,
   lookupRunDateTime: string,
   lookupRunStepIndex: number,

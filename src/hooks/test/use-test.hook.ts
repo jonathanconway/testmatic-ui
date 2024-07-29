@@ -1,16 +1,17 @@
 import { useProject } from "../../hooks";
-import { TEST_NEW, TEST_NEW_NAME } from "../../shared";
 import { useStorage } from "../storage";
 
 export function useTest(testName = "") {
   const { project } = useProject();
 
-  const test = (() => {
-    if (testName === TEST_NEW_NAME) {
-      return TEST_NEW;
-    }
-    return project.testsByName[testName];
-  })();
+  const test = project.testsByName[testName];
+
+  // const test = (() => {
+  //   if (testName === TEST_NEW_NAME) {
+  //     return TEST_NEW;
+  //   }
+  //   return project.testsByName[testName];
+  // })();
 
   const { updateTestTitle, updateTestDescription } = useStorage();
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { isElementOutsideContainer } from "./is-element-outside-container";
+import { getIsElementOutsideContainer } from "./is-element-outside-container";
 
 interface UsePopoverClickOutsideParams {
   readonly containerRef: React.RefObject<HTMLDivElement>;
@@ -11,7 +11,7 @@ export function usePopoverClickOutside(params: UsePopoverClickOutsideParams) {
   useEffect(() => {
     function handleWindowMouseDown(event: MouseEvent) {
       if (
-        isElementOutsideContainer(
+        getIsElementOutsideContainer(
           event.target as HTMLElement,
           params.containerRef.current,
         )

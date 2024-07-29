@@ -1,11 +1,8 @@
 import {
-  FormEventHandler,
-  ForwardedRef,
+  FocusEvent,
   HTMLProps,
   KeyboardEvent,
   MouseEventHandler,
-  SyntheticEvent,
-  forwardRef,
   useRef,
   useState,
 } from "react";
@@ -22,126 +19,112 @@ import { focusStepEditorDisplayLastLink } from "./step-editor-display";
 import { StepEditorInput } from "./step-editor-input";
 import * as Styled from "./step-editor.styles";
 
-// todo : clean this up somehow
 export interface StepEditorProps
-  extends Omit<HTMLProps<HTMLDivElement>, "onChange" | "step" | "onInput"> {
+  extends Omit<HTMLProps<HTMLTextAreaElement>, "step"> {
   readonly step: Step;
   readonly stepIndex: number;
 
-  readonly onChange: (
-    step: Step,
-    event: SyntheticEvent<HTMLTextAreaElement>,
-  ) => void | Promise<void>;
   readonly onGoPrevious: VoidFunction;
   readonly onGoNext: VoidFunction;
   readonly onDeleteClick: MouseEventHandler;
-
-  readonly onInput?: FormEventHandler<HTMLTextAreaElement>;
 }
 
 interface StepEditorState {
   readonly isEditing: boolean;
 }
 
-export const StepEditorClassNames = {
-  StepEditor: "step-editor",
-  StepEditorDeleteButton: "step-editor-delete-button",
+export const StepEditorIds = {
+  DeleteButton: "step-editor-delete-button",
 };
 
-export const StepEditor = forwardRef(
-  (props: StepEditorProps, ref: ForwardedRef<HTMLTextAreaElement>) => {
-    const deleteButtonRef = useRef<HTMLButtonElement>(null);
+export function StepEditor(props: StepEditorProps) {
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
-    const {
-      step,
-      stepIndex,
+  const {
+    step,
+    stepIndex,
 
-      onChange,
-      onGoPrevious,
-      onGoNext,
-      onDeleteClick,
-      onInput,
+    onBlur,
+    onFocus,
+    onDeleteClick,
 
-      ...restProps
-    } = props;
+    ...restProps
+  } = props;
 
-    const [state, setState] = useState<StepEditorState>({ isEditing: false });
+  const [state, setState] = useState<StepEditorState>({ isEditing: false });
 
-    const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    const handleStepInputKeyDown = async (
-      event: KeyboardEvent<HTMLTextAreaElement>,
-    ) => {
-      console.log("handleStepInputKeyDown");
+  const handleStepInputKeyDown = (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    switch (event.key) {
+      case "Tab":
+        handleStepInputKeyDownTab(event);
+    }
+  };
 
-      switch (event.key) {
-        case "Tab":
-          if (!event.shiftKey) {
-            await timeout();
+  const handleStepInputKeyDownTab = async (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    if (event.shiftKey) {
+      // Wait for props.onCancel() handler to have run
+      await timeout();
 
-            const deleteButtonClassName = `.${StepEditorClassNames.StepEditorDeleteButton}-${props.stepIndex}`;
+      focusStepEditorDisplayLastLink(containerRef.current);
+    } else {
+      await timeout();
 
-            const deleteButtonElement =
-              window.document.querySelector<HTMLButtonElement>(
-                deleteButtonClassName,
-              );
+      const deleteButtonClassName = `${StepEditorIds.DeleteButton}-${props.stepIndex}`;
 
-            deleteButtonElement?.focus();
-          }
-          return;
-      }
-      if (event.key === "Tab" && event.shiftKey) {
-        // Wait for props.onCancel() handler to have run
-        await timeout();
+      const deleteButtonElement = window.document.getElementById(
+        deleteButtonClassName,
+      );
 
-        focusStepEditorDisplayLastLink(containerRef.current);
-      }
-    };
+      deleteButtonElement?.focus();
+    }
+  };
 
-    const handleStepInputFocus = () => {
-      setState({ isEditing: true });
-    };
+  const handleStepInputFocus = (event: FocusEvent<HTMLTextAreaElement>) => {
+    setState({ isEditing: true });
 
-    const handleStepInputBlur = () => {
-      console.log("handleStepInputBlur");
-      setState({ isEditing: false });
-    };
+    props.onFocus?.(event);
+  };
 
-    return (
-      <Styled.Container {...restProps} ref={containerRef}>
-        <Styled.MainContainer>
-          <Styled.StepEditorDisplay
-            step={props.step}
-            isVisible={!state.isEditing}
+  const handleStepInputBlur = (event: FocusEvent<HTMLTextAreaElement>) => {
+    setState({ isEditing: false });
+
+    props.onBlur?.(event);
+  };
+
+  return (
+    <Styled.Container ref={containerRef}>
+      <Styled.MainContainer>
+        <Styled.StepEditorDisplay
+          step={props.step}
+          isVisible={!state.isEditing}
+        />
+
+        <StepEditorInput
+          step={props.step}
+          isVisible={state.isEditing}
+          {...restProps}
+          onKeyDown={handleStepInputKeyDown}
+          onFocus={handleStepInputFocus}
+          onBlur={handleStepInputBlur}
+        />
+      </Styled.MainContainer>
+      <Box width="1rem">
+        <Tooltip contents="Delete step">
+          <IconButton
+            id={`${StepEditorIds.DeleteButton}-${props.stepIndex}`}
+            ref={deleteButtonRef}
+            icon={IconNames.Delete}
+            size="small"
+            onClick={props.onDeleteClick}
           />
-
-          <StepEditorInput
-            ref={ref}
-            step={props.step}
-            isVisible={state.isEditing}
-            onKeyDown={handleStepInputKeyDown}
-            onFocus={handleStepInputFocus}
-            onBlur={handleStepInputBlur}
-            onChange={props.onChange}
-            onGoPrevious={props.onGoPrevious}
-            onGoNext={props.onGoNext}
-            onInput={props.onInput}
-            placeholder={props.placeholder}
-          />
-        </Styled.MainContainer>
-
-        <Box width="1rem">
-          <Tooltip contents="Delete step">
-            <IconButton
-              className={`${StepEditorClassNames.StepEditorDeleteButton}-${props.stepIndex}`}
-              ref={deleteButtonRef}
-              icon={IconNames.Delete}
-              size="small"
-              onClick={props.onDeleteClick}
-            />
-          </Tooltip>
-        </Box>
-      </Styled.Container>
-    );
-  },
-);
+        </Tooltip>
+      </Box>
+    </Styled.Container>
+  );
+}

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 
 import { TestEditorRouteParams } from "../../shared";
 import { useProject } from "../project";
-import { getStorageFns } from "../storage";
+import { useStorage } from "../storage";
 
 export function useTestStep() {
   const { testName = "" } = useParams<TestEditorRouteParams>();
@@ -11,16 +11,16 @@ export function useTestStep() {
 
   const test = testName ? project.testsByName[testName] : undefined;
 
-  const storageFns = getStorageFns();
+  const { addNewTestStep, updateTestStep, deleteTestStep } = useStorage();
 
   const addNewStep = (newStepText: string) =>
-    storageFns.addNewTestStep(testName, newStepText);
+    addNewTestStep(testName, newStepText);
 
   const updateStep = (lookupStepIndex: number, newStepText: string) =>
-    storageFns.updateTestStep(testName, lookupStepIndex, newStepText);
+    updateTestStep(testName, lookupStepIndex, newStepText);
 
   const deleteStep = (lookupStepIndex: number) =>
-    storageFns.deleteTestStep(testName, lookupStepIndex);
+    deleteTestStep(testName, lookupStepIndex);
 
   return {
     test,

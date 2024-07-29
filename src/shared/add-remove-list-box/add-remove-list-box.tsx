@@ -13,10 +13,18 @@ export interface AddRemoveListBoxAddItemPopupContentProps {
   readonly close: VoidFunction;
 }
 
+export interface AddRemoveListBoxHeaderContentProps {
+  readonly onAddInputInput: (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
+}
+
 export interface AddRemoveListBoxProps extends StackProps {
   readonly items?: readonly string[];
 
-  readonly headerContent?: ReactNode;
+  readonly renderHeaderContent?: (
+    props: AddRemoveListBoxHeaderContentProps,
+  ) => ReactNode;
 
   readonly renderAddItemPopupContent?: (
     params: AddRemoveListBoxAddItemPopupContentProps,
@@ -32,7 +40,6 @@ export function AddRemoveListBox(props: AddRemoveListBoxProps) {
     addInputValue,
     addButtonRef,
     isAddButtonEnabled,
-    isInlineAddInputRendered,
     isAddItemPopupOpen,
     handleAddInputInput,
     handleAddButtonClick,
@@ -41,8 +48,8 @@ export function AddRemoveListBox(props: AddRemoveListBoxProps) {
 
   const {
     items,
-    headerContent,
 
+    renderHeaderContent,
     renderAddItemPopupContent,
 
     onAddItem,
@@ -54,10 +61,14 @@ export function AddRemoveListBox(props: AddRemoveListBoxProps) {
   return (
     <Stack spacing={0.5} overflow="scroll" height="100%" {...restProps}>
       <Stack spacing={0.5} direction="row" justifyContent="space-evenly">
-        {isInlineAddInputRendered ? (
-          <TextBox value={addInputValue} onInput={handleAddInputInput} />
+        {props.renderHeaderContent ? (
+          <Styled.HeaderContainer>
+            {props.renderHeaderContent({
+              onAddInputInput: handleAddInputInput,
+            })}
+          </Styled.HeaderContainer>
         ) : (
-          <Styled.HeaderContainer>{props.headerContent}</Styled.HeaderContainer>
+          <TextBox value={addInputValue} onInput={handleAddInputInput} />
         )}
 
         <Button

@@ -5,7 +5,7 @@ import { Icon, IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Stack } from "../../layout";
 import { Link } from "../../link";
-import { Menu } from "../../menu";
+import { PopupMenu } from "../../popup-menu";
 import { testEditorRoute } from "../../test-editor";
 import { TextOverflow } from "../../text-overflow";
 import { Tooltip } from "../../tooltip";
@@ -75,7 +75,7 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
             />
           </Tooltip>
 
-          <Menu
+          <PopupMenu
             anchor={
               <Tooltip contents="Test actions">
                 <IconButton

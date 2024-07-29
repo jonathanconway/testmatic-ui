@@ -1,9 +1,17 @@
 import { isError } from "lodash";
 
-export type ResultType = "ok" | "error";
+import { TypeOfConst } from "../shared";
+
+export const ResultTypes = {
+  Ok: "ok",
+  Error: "error",
+} as const;
+
+export type ResultType = TypeOfConst<typeof ResultTypes>;
 
 export interface Result<TResultType extends ResultType> {
   readonly type: TResultType;
+  readonly message?: string;
 }
 
 export interface ResultOk extends Result<"ok"> {

@@ -1,52 +1,31 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  HTMLProps,
-  LegacyRef,
-  forwardRef,
-  useRef,
-  useState,
-} from "react";
-
-import { useTextBoxAutoSelect } from "../use-text-box-auto-select.hook";
+import { HTMLProps, LegacyRef, forwardRef } from "react";
 
 import * as Styled from "./expanding-text-box.styles";
+import { useExpandingTextBox } from "./use-expanding-text-box.hook";
 
 interface ExpandingTextBoxProps extends HTMLProps<HTMLTextAreaElement> {
-  readonly autoSelect?: boolean;
-}
-
-interface ExpandingTextBoxState {
-  readonly value?: string | number | readonly string[] | undefined;
+  readonly outdent?: boolean;
+  readonly hoverBorder?: boolean;
 }
 
 export const ExpandingTextBox = forwardRef(
   (props: ExpandingTextBoxProps, ref: LegacyRef<HTMLTextAreaElement>) => {
-    const { autoSelect, ...restProps } = props;
+    const { outdent, hoverBorder, ...restProps } = props;
 
-    const [state, setState] = useState<ExpandingTextBoxState>({
-      value: props.value,
-    });
-
-    const handleInput = (event: FormEvent<HTMLTextAreaElement>) => {
-      const { value } = (event as ChangeEvent<HTMLTextAreaElement>).target;
-      setState({ value });
-      props.onInput?.(event);
-    };
-
-    const inputRefLocal = useRef<HTMLTextAreaElement>(null);
-
-    const inputRef = ref ?? (inputRefLocal as any);
-
-    useTextBoxAutoSelect({
-      inputRef,
-      autoSelect,
-    });
+    const { isEmpty, sizerValue, handleInput } = useExpandingTextBox(props);
 
     return (
-      <Styled.TextAreaContainer>
-        <Styled.TextArea ref={inputRef} {...restProps} onInput={handleInput} />
-        <Styled.Sizer>{state.value || <>&nbsp;</>}</Styled.Sizer>
+      <Styled.TextAreaContainer $outdent={props.outdent}>
+        <Styled.TextArea
+          {...restProps}
+          ref={ref}
+          onInput={handleInput}
+          $isEmpty={isEmpty}
+          $hoverBorder={props.hoverBorder}
+          $outdent={props.outdent}
+        />
+
+        <Styled.Sizer dangerouslySetInnerHTML={{ __html: sizerValue }} />
       </Styled.TextAreaContainer>
     );
   },

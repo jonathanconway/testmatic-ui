@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
+import { NotificationSize } from "./notification-size";
 import { NotificationType, NotificationTypes } from "./notification-type";
 
-type Size = "small" | "normal";
-
-interface NotificationBoxAttrs {
-  readonly $size: Size;
+export interface NotificationBoxAttrs {
+  readonly $size: NotificationSize;
   readonly $type: NotificationType;
 }
 

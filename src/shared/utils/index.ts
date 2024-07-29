@@ -3,6 +3,7 @@ export * from "./component";
 export * from "./error";
 export * from "./date";
 export * from "./dom";
+export * from "./filtering";
 export * from "./item";
 export * from "./string";
 export * from "./timeout";

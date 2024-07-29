@@ -1,18 +1,27 @@
+import { Box } from "../../box";
+import { Heading } from "../../heading";
+import { Stack } from "../../layout";
 import { TitleEditor } from "../../title-editor";
-import { Ids } from "../test-editor.const";
 
+import { TestEditorTitleIds } from "./test-editor-title.const";
 import { useTestEditorTitle } from "./use-test-editor-title.hook";
 
 export function TestEditorTitle() {
-  const { title, isNewTest, handleTitleChange } = useTestEditorTitle();
+  const { title, handleTitleChange } = useTestEditorTitle();
 
   return (
-    <TitleEditor
-      id={Ids.TitleEditor}
-      defaultValue={title}
-      autoFocus={isNewTest}
-      autoSelect={isNewTest}
-      onBlur={handleTitleChange}
-    />
+    <Heading level={2}>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <span>Test:</span>
+        <Box flex={1} key={title}>
+          <TitleEditor
+            id={TestEditorTitleIds.TitleEditor}
+            defaultValue={title}
+            hoverBorder
+            onBlur={handleTitleChange}
+          />
+        </Box>
+      </Stack>
+    </Heading>
   );
 }

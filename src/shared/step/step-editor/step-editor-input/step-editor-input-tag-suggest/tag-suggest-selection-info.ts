@@ -13,11 +13,14 @@ export function getInputTagSelectionInfo({
   selectionEnd,
 }: {
   readonly value: string;
-  readonly selectionStart: number;
-  readonly selectionEnd: number;
+  readonly selectionStart: number | null;
+  readonly selectionEnd: number | null;
 }): Maybe<InputTagSelectionInfo> {
-  const valueBeforeSelection = value.substring(0, selectionStart);
-  const valueAfterSelection = value.substring(selectionEnd);
+  const selectionStartOrDefault = selectionStart ?? 0;
+  const selectionEndOrDefault = selectionEnd ?? 0;
+
+  const valueBeforeSelection = value.substring(0, selectionStartOrDefault);
+  const valueAfterSelection = value.substring(selectionEndOrDefault);
 
   const lastIndexOfOpenBracketBeforeSelection =
     valueBeforeSelection.lastIndexOf("(");
@@ -49,17 +52,17 @@ export function getInputTagSelectionInfo({
   const openBracketIndex = lastIndexOfOpenBracketBeforeSelection + 1;
 
   const closeBracketIndex = firstIndexOfBracketAfterSelection
-    ? selectionEnd + firstIndexOfBracketAfterSelection - 1
+    ? selectionEndOrDefault + firstIndexOfBracketAfterSelection - 1
     : value.length;
 
   const valueBetweenBrackets = value.substring(
     openBracketIndex,
-    closeBracketIndex
+    closeBracketIndex,
   );
 
   const valueBetweenBracketsBeforeCursor = value.substring(
     openBracketIndex,
-    selectionStart
+    selectionStartOrDefault,
   );
 
   return {

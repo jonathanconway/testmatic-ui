@@ -1,36 +1,64 @@
-import { isError } from "lodash";
+import { isError, snakeCase } from "lodash";
 import { useNavigate, useParams } from "react-router-dom";
+import { createTag } from "testmatic";
 
 import { useProject } from "../../../hooks";
 import { homeRoute } from "../../../screens";
-import { showSuccessOrErrorNotification } from "../../notification";
-import { tagEditorNewTagRoute } from "../../tag-editor";
+import { getDuplicateItemTitle } from "../../item";
+import {
+  showErrorNotification,
+  showSuccessOrErrorNotification,
+} from "../../notification";
+import { TAG_NEW, tagEditorRoute } from "../../tag-editor";
+import { timeout } from "../../utils";
+
+import { ProjectExplorerTagsIds } from "./project-explorer-tags.const";
 
 export function useProjectExplorerTags() {
-  const { project, deleteTag } = useProject();
+  const { project, deleteTag, addNewTag } = useProject();
 
   const navigate = useNavigate();
 
   const { tagName } = useParams();
 
-  const handleTagAddClick = () => {
-    navigate(tagEditorNewTagRoute());
-  };
+  const handleTagAddClick = async () => {
+    const tagTitles = project.tags.map((tag) => tag.title);
+    const title = getDuplicateItemTitle(tagTitles, TAG_NEW.title);
 
-  const handleTagDeleteClick = (lookupTagName: string) => async () => {
-    if (!project) {
+    const newTag = createTag({
+      ...TAG_NEW,
+      title,
+      name: snakeCase(title),
+    });
+
+    if (isError(newTag)) {
+      showErrorNotification(newTag);
       return;
     }
 
-    const deleteTagResult = deleteTag(lookupTagName);
+    await addNewTag(newTag);
 
-    showSuccessOrErrorNotification(deleteTagResult);
+    navigate(tagEditorRoute(newTag.name));
+  };
+
+  const handleTagDeleteClick = (lookupTagName: string) => async () => {
+    const deleteTagResult = await deleteTag(lookupTagName);
+
+    await timeout(100);
+
+    showSuccessOrErrorNotification(deleteTagResult, {
+      anchorElement: window.document.getElementById(
+        ProjectExplorerTagsIds.Section,
+      ),
+    });
 
     if (isError(deleteTagResult)) {
       return;
     }
 
-    navigate(homeRoute());
+    if (tagName) {
+      navigate(homeRoute());
+    }
   };
 
   return {

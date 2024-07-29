@@ -1,49 +1,33 @@
 import {
   FocusEvent,
   FormEvent,
-  FormEventHandler,
   HTMLProps,
   KeyboardEvent,
-  KeyboardEventHandler,
-  LegacyRef,
-  SyntheticEvent,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { Step, Tag, createTestStepFromText } from "testmatic";
+import { Step, Tag } from "testmatic";
 
 import { Popover } from "../../../popover";
 import { ExpandingTextBox } from "../../../text-box";
 import "../../../utils";
-import { Override } from "../../../utils";
+import { timeout } from "../../../utils";
 
 import { useTagSuggestController } from "./step-editor-input-tag-suggest";
 import { TagSuggest } from "./step-editor-input-tag-suggest/tag-suggest";
 import * as Styled from "./step-editor-input.styles";
 
-// todo: fix to inherit events from text area dom element type
-type StepEditorInputProps = Override<
-  HTMLProps<HTMLTextAreaElement>,
-  {
-    readonly step: Step;
-    readonly ref?: LegacyRef<HTMLTextAreaElement>;
-    readonly isVisible: boolean;
-    readonly isAdding?: boolean;
+interface StepEditorInputProps
+  extends Omit<HTMLProps<HTMLTextAreaElement>, "step"> {
+  readonly step: Step;
+  readonly isVisible: boolean;
+  readonly isAdding?: boolean;
 
-    readonly onKeyDown: KeyboardEventHandler;
-    readonly onFocus?: VoidFunction;
-    readonly onChange: (
-      step: Step,
-      event: SyntheticEvent<HTMLTextAreaElement>,
-    ) => void | Promise<void>;
-    readonly onBlur: VoidFunction;
-    readonly onGoPrevious: VoidFunction;
-    readonly onGoNext: VoidFunction;
-    readonly onInput?: FormEventHandler<HTMLTextAreaElement>;
-  }
->;
+  readonly onGoPrevious: VoidFunction;
+  readonly onGoNext: VoidFunction;
+}
 
 export interface StepEditorInputState {
   readonly showTagSuggest: boolean;
@@ -53,7 +37,7 @@ export interface StepEditorInputState {
 }
 
 export const StepInputClassNames = {
-  StepInputTextArea: "step-input-textarea",
+  TextArea: "step-input-text-area",
 } as const;
 
 export function StepEditorInput(props: StepEditorInputProps) {
@@ -95,7 +79,7 @@ export function StepEditorInput(props: StepEditorInputProps) {
     }
 
     if (!tagSuggestController.tagSuggest.isOpen) {
-      props.onKeyDown(event);
+      props.onKeyDown?.(event);
     }
   };
 
@@ -106,7 +90,7 @@ export function StepEditorInput(props: StepEditorInputProps) {
 
     event.preventDefault();
 
-    handleKeyDownEnterOrTab(event);
+    props.onGoNext();
   };
 
   const handleKeyDownTab = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -114,21 +98,11 @@ export function StepEditorInput(props: StepEditorInputProps) {
       event.preventDefault();
       return;
     }
-
-    // if (state.isDirty) {
-    // event.preventDefault();
-    // handleKeyDownEnterOrTab(event);
-    // }
   };
 
-  const handleKeyDownEnterOrTab = (
+  const handleKeyDownEscape = async (
     event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
-    // triggerOnChangeIfDirty(event);
-    // props.onGoNext();
-  };
-
-  const handleKeyDownEscape = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
 
     if (tagSuggestController.tagSuggest.isOpen) {
@@ -141,9 +115,9 @@ export function StepEditorInput(props: StepEditorInputProps) {
       showTagSuggest: false,
     });
 
-    setTimeout(() => {
-      textAreaRef?.current?.blur();
-    });
+    await timeout();
+
+    textAreaRef?.current?.blur();
   };
 
   const handleKeyDownArrowUp = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -152,8 +126,6 @@ export function StepEditorInput(props: StepEditorInputProps) {
     }
 
     event.preventDefault();
-
-    // triggerOnChangeIfDirty(event);
 
     props.onGoPrevious();
   };
@@ -166,8 +138,6 @@ export function StepEditorInput(props: StepEditorInputProps) {
     }
 
     event.preventDefault();
-
-    // triggerOnChangeIfDirty(event);
 
     props.onGoNext();
   };
@@ -206,19 +176,6 @@ export function StepEditorInput(props: StepEditorInputProps) {
     tagSuggestController.input.handleSelect(event);
   };
 
-  const handleFocus = (event: FocusEvent<HTMLTextAreaElement>) => {
-    props.onFocus?.();
-  };
-
-  const triggerOnChangeIfDirty = useCallback(
-    (event: SyntheticEvent<HTMLTextAreaElement>) => {
-      if (state.isDirty) {
-        props.onChange(createTestStepFromText(state.value), event);
-      }
-    },
-    [props, state.isDirty, state.value],
-  );
-
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLTextAreaElement>) => {
       tagSuggestController.input.handleBlur();
@@ -229,36 +186,32 @@ export function StepEditorInput(props: StepEditorInputProps) {
         return;
       }
 
-      triggerOnChangeIfDirty(event);
-
-      props.onBlur();
+      props.onBlur?.(event);
     },
-    [
-      tagSuggestController.input,
-      tagSuggestController.tagSuggest.isOpen,
-      triggerOnChangeIfDirty,
-      props,
-    ],
+    [tagSuggestController.input, tagSuggestController.tagSuggest.isOpen, props],
   );
 
   const selectionMeasurerAnchorRef = useRef<HTMLSpanElement>(null);
 
+  const { step, isVisible, isAdding, onGoPrevious, onGoNext, ...restProps } =
+    props;
+
   return (
-    <Styled.Container
-      $isVisible={props.isVisible}
-      title={state.value || "(empty)"}
-    >
+    <Styled.Container $isVisible={props.isVisible}>
       <ExpandingTextBox
+        {...restProps}
         ref={textAreaRef}
-        className={StepInputClassNames.StepInputTextArea}
+        className={StepInputClassNames.TextArea}
         value={state.value}
         placeholder={props.placeholder}
+        hoverBorder
+        rows={1}
         onInput={handleInput}
         onKeyDown={handleKeyDown}
         onSelect={handleSelect}
-        onFocus={handleFocus}
         onBlur={handleBlur}
       />
+
       <Styled.SelectionMeasurer>
         {tagSuggestController.tagSuggest.selectionMeasurerValue}
         <Styled.SelectionMeasurerAnchor ref={selectionMeasurerAnchorRef} />

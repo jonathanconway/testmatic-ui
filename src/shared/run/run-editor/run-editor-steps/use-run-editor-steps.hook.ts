@@ -1,10 +1,15 @@
-import { getStorageFns } from "../../../../hooks";
+import { useRef } from "react";
+
+import { useStorage } from "../../../../hooks";
+import { showSuccessOrErrorNotification } from "../../../notification";
 import { useEditingRun } from "../use-editing-run.hook";
 
 export function useRunEditorSteps() {
+  const stepsContainerRef = useRef<HTMLDivElement>(null);
+
   const { test, run } = useEditingRun();
 
-  const { updateTestRunStepIsCompleted } = getStorageFns();
+  const { updateTestRunStepIsCompleted } = useStorage();
 
   const handleClickStepCompleted = (stepIndex: number) => {
     const lookupTestName = test?.name;
@@ -16,12 +21,23 @@ export function useRunEditorSteps() {
       return;
     }
 
-    updateTestRunStepIsCompleted(
+    const updateTestRunStepIsCompletedResult = updateTestRunStepIsCompleted(
       lookupTestName,
       lookupRunDateTime,
       lookupStepIndex,
       stepIsCompleted,
     );
+
+    showSuccessOrErrorNotification(updateTestRunStepIsCompletedResult, {
+      anchorElement: getStepListItemElementAtIndex(stepIndex),
+    });
+  };
+
+  const getStepListItemElementAtIndex = (stepIndex: number) => {
+    const stepListItemElements = Array.from(
+      stepsContainerRef.current?.querySelectorAll("li") ?? [],
+    );
+    return stepListItemElements[stepIndex];
   };
 
   const steps = run?.steps ?? [];
@@ -33,6 +49,7 @@ export function useRunEditorSteps() {
   return {
     steps,
     completed,
+    stepsContainerRef,
 
     handleClickStepCompleted,
   };

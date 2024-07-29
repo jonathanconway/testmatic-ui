@@ -2,6 +2,7 @@ import {
   FormEvent,
   KeyboardEvent,
   MutableRefObject,
+  SyntheticEvent,
   useRef,
   useState,
 } from "react";
@@ -20,7 +21,9 @@ interface UseTagSuggestControllerParams {
   readonly input: {
     readonly value: string;
     readonly onChange: (newValue: string) => void;
-    readonly ref: MutableRefObject<HTMLTextAreaElement | null>;
+    readonly ref: MutableRefObject<
+      HTMLTextAreaElement | HTMLInputElement | null
+    >;
   };
 }
 
@@ -37,7 +40,9 @@ export function useTagSuggestController(params: UseTagSuggestControllerParams) {
 
   /************** keyboard  **************/
 
-  const handleInputKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleInputKeyDown = (
+    event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     switch (event.key) {
       case "Escape":
         handleKeyDownEscape();
@@ -63,24 +68,31 @@ export function useTagSuggestController(params: UseTagSuggestControllerParams) {
     }
   };
 
-  const handleKeyDownTab = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDownTab = (
+    event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     handleKeyDownTabOrEnter(event);
   };
 
-  const handleKeyDownEnter = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDownEnter = (
+    event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     handleKeyDownTabOrEnter(event);
   };
 
   const handleKeyDownTabOrEnter = (
-    event: KeyboardEvent<HTMLTextAreaElement>,
+    event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
+    console.log("handleKeyDownTabOrEnter", { tagSuggestIsOpen });
     if (tagSuggestIsOpen) {
       event.preventDefault();
       handleTagSuggestSelectTag(tagSuggestHighlightedTag);
     }
   };
 
-  const handleKeyDownArrowUp = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDownArrowUp = (
+    event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     if (!project) {
       return;
     }
@@ -97,7 +109,7 @@ export function useTagSuggestController(params: UseTagSuggestControllerParams) {
   };
 
   const handleKeyDownArrowDown = (
-    event: KeyboardEvent<HTMLTextAreaElement>,
+    event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     if (!project) {
       return;
@@ -107,9 +119,12 @@ export function useTagSuggestController(params: UseTagSuggestControllerParams) {
 
     const { tags } = project;
 
-    const newHighlightedTag = tagSuggestHighlightedTag
-      ? tags[tags.indexOf(tagSuggestHighlightedTag) + 1] ?? tags[0]
+    const currentHighlightedTag = tagSuggestHighlightedTag
+      ? tagSuggestHighlightedTag
       : tags[0];
+
+    const newHighlightedTag =
+      tags[tags.indexOf(currentHighlightedTag) + 1] ?? tags[0];
 
     setTagSuggestHighlightedTag(newHighlightedTag);
   };
@@ -121,8 +136,10 @@ export function useTagSuggestController(params: UseTagSuggestControllerParams) {
 
   const inputLastEvent = useRef<Maybe<"input" | "select">>();
 
-  const handleInputSelect = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    const target = event.target as HTMLTextAreaElement;
+  const handleInputSelect = (
+    event: SyntheticEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    const target = event.target as HTMLTextAreaElement | HTMLInputElement;
 
     const newInputTagSelectionInfo = getInputTagSelectionInfo(target);
 
@@ -158,7 +175,9 @@ export function useTagSuggestController(params: UseTagSuggestControllerParams) {
     }
   };
 
-  const handleInputInput = (event: FormEvent<HTMLTextAreaElement>) => {
+  const handleInputInput = (
+    event: FormEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
     inputLastEvent.current = "input";
 
     const newInputTagSelectionInfo = getInputTagSelectionInfo(

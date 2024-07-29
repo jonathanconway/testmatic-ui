@@ -1,5 +1,5 @@
 import { isError } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Test,
@@ -7,8 +7,9 @@ import {
   testCreateNameFromTitle,
 } from "testmatic";
 
-import { getDuplicateTestTitle, useProject } from "../../../hooks";
+import { useProject } from "../../../hooks";
 import { homeRoute } from "../../../screens";
+import { getDuplicateItemTitle } from "../../item";
 import {
   showErrorNotification,
   showSuccessOrErrorNotification,
@@ -42,6 +43,11 @@ export function useProjectExplorerTestItem(
   const navigate = useNavigate();
 
   const { testName, runDateTime } = useParams<RunEditorRouteParams>();
+
+  const testTitles = useMemo(
+    () => project.tests.map((test) => test.title),
+    [project.tests],
+  );
 
   const isSelected =
     params.test.name === selected.testName && !selected.runDateTime;
@@ -96,7 +102,7 @@ export function useProjectExplorerTestItem(
   const handleTestDuplicateClick = (lookupTestName: string) => async () => {
     const sourceTest = project.testsByName[lookupTestName];
 
-    const title = getDuplicateTestTitle(project, sourceTest.title);
+    const title = getDuplicateItemTitle(testTitles, sourceTest.title);
 
     const newTest = {
       ...sourceTest,

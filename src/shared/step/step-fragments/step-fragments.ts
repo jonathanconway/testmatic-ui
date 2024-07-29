@@ -15,21 +15,21 @@ export interface StepFragmentTag extends StepFragmentBase {
 
 export type StepFragment = StepFragmentText | StepFragmentTag;
 
-export function stepFragments(step?: Step): readonly StepFragment[] {
+export function parseStepFragments(step?: Step): readonly StepFragment[] {
   if (!step) {
     return [];
   }
 
-  const tagsByName = Object.fromEntries(
-    step.tags.map((tag) => [tag.title.toLowerCase().trim(), tag])
+  const tagsByTitle = Object.fromEntries(
+    step.tags.map((tag) => [tag.title.toLowerCase().trim(), tag]),
   );
 
   const tokens = step.text.split("(").flatMap((item) => item.split(")"));
 
   const fragments = tokens.map((value) =>
-    tagsByName[value.toLowerCase().trim()]
-      ? { type: "tag", value, tag: tagsByName[value] }
-      : { type: "text", value }
+    tagsByTitle[value]
+      ? { type: "tag", value, tag: tagsByTitle[value] }
+      : { type: "text", value },
   ) as readonly StepFragment[];
 
   return fragments;

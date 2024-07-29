@@ -1,7 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 
 import "./index.css";
 import { queryClient } from "./query-client";
@@ -9,11 +9,12 @@ import reportWebVitals from "./reportWebVitals";
 import { HOME_ROUTE } from "./screens";
 import { NotificationProvider } from "./shared";
 
-const router = createBrowserRouter([HOME_ROUTE]);
+const router = createHashRouter([HOME_ROUTE]);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
+
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

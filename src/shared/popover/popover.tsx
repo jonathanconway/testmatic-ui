@@ -1,4 +1,11 @@
-import { HTMLProps, ReactNode, useEffect, useRef } from "react";
+import {
+  HTMLProps,
+  ReactNode,
+  RefObject,
+  forwardRef,
+  useEffect,
+  useRef,
+} from "react";
 
 import * as Styled from "./popover.styles";
 import { usePopoverClickOutside } from "./use-popover-click-outside.hook";
@@ -10,8 +17,10 @@ export interface PopoverProps extends HTMLProps<HTMLDivElement> {
   readonly onClose?: VoidFunction;
 }
 
-export function Popover(props: PopoverProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export const Popover = forwardRef((props: PopoverProps, ref) => {
+  const containerNewRef = useRef<HTMLDivElement>(null);
+  const containerPassedRef = ref as RefObject<HTMLDivElement>;
+  const containerRef = containerPassedRef ?? containerNewRef;
 
   usePopoverClickOutside({
     containerRef,
@@ -35,7 +44,6 @@ export function Popover(props: PopoverProps) {
 
   return (
     <Styled.Popper
-      // popperRef={() => containerRef}
       open={props.isOpen}
       anchorEl={props.anchorElement}
       popperOptions={{ strategy: "absolute", placement: "bottom-start" }}
@@ -43,4 +51,4 @@ export function Popover(props: PopoverProps) {
       <div ref={containerRef}>{props.children}</div>
     </Styled.Popper>
   );
-}
+});

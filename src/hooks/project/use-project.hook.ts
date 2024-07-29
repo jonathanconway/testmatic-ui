@@ -4,7 +4,14 @@ import { useProjectHttp } from "../../shared/project/project-http";
 import { useStorage } from "../storage";
 
 export function useProject() {
-  const { addNewTest, deleteTest, addNewTag, deleteTag } = useStorage();
+  const {
+    addNewTest,
+    deleteTest,
+    addNewTag,
+    deleteTag,
+    addTagToTest,
+    deleteTagFromTest,
+  } = useStorage();
 
   // todo: move these to the hooks folder
   const projectLocalStorage = useProjectLocalStorage({ enabled: isSurge });
@@ -25,5 +32,8 @@ export function useProject() {
 
     addNewTag,
     deleteTag,
+
+    addTagToTest,
+    deleteTagFromTest,
   };
 }

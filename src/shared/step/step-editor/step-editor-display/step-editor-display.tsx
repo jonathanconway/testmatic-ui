@@ -6,7 +6,7 @@ import { useProject } from "../../../../hooks";
 import { TagTooltipContents } from "../../../tag";
 import { tagEditorRoute } from "../../../tag-editor";
 import { Tooltip } from "../../../tooltip";
-import { stepFragments } from "../../step-fragments";
+import { parseStepFragments } from "../../step-fragments";
 
 import * as Styled from "./step-editor-display.styles";
 
@@ -20,11 +20,14 @@ export function StepEditorDisplay(props: StepEditorDisplayProps) {
   const { step, isVisible, ...restProps } = props;
 
   const { project } = useProject();
+
   // todo: fix full tag lookup issue
+
+  const stepFragments = parseStepFragments(props.step);
 
   return (
     <Styled.StepDisplay $isVisible={props.isVisible ?? true} {...restProps}>
-      {stepFragments(props.step).map((token, index) => {
+      {stepFragments.map((token, index) => {
         switch (token.type) {
           case "text":
             return (
