@@ -1,5 +1,5 @@
+import { UpdateTestDescriptionFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { UpdateTestDescriptionFn } from "../../../test";
 
 import { testPatch } from "./test-patch.http";
 

@@ -1,7 +1,7 @@
 import { projectDeleteTest } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { DeleteTestFn } from "../../../test";
+import { DeleteTestFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const deleteTest: DeleteTestFn = async (lookupTestName: string) => {

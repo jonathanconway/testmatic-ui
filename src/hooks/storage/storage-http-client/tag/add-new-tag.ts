@@ -1,7 +1,7 @@
 import { Tag } from "testmatic";
 
+import { AddNewTagFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { AddNewTagFn } from "../../../tag";
 
 import { tagPost } from "./tag-post.http";
 

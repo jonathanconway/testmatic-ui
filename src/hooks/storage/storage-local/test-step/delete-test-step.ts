@@ -5,8 +5,8 @@ import {
   getProjectFromLocalStorage,
   saveProjectToLocalStorage,
 } from "../../../../shared";
+import { DeleteTestStepFn } from "../../../entities";
 import { resultError, resultOk } from "../../../result";
-import { DeleteTestStepFn } from "../../../test-step";
 
 export const deleteTestStep: DeleteTestStepFn = async (
   lookupTestName: string,

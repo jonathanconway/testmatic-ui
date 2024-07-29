@@ -1,7 +1,7 @@
 import { projectUpdateTag } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { UpdateTagDescriptionFn } from "../../../tag";
+import { UpdateTagDescriptionFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const updateTagDescription: UpdateTagDescriptionFn = async (

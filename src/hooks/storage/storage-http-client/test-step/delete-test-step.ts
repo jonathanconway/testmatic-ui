@@ -1,5 +1,5 @@
+import { DeleteTestStepFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { DeleteTestStepFn } from "../../../test-step";
 
 import { testStepDelete } from "./test-step-delete.http";
 

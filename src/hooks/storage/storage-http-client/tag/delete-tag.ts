@@ -1,5 +1,5 @@
+import { DeleteTagFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { DeleteTagFn } from "../../../tag";
 
 import { tagDelete } from "./tag-delete.http";
 

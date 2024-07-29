@@ -1,23 +1,21 @@
 import { isSurge } from "../../env";
-import { GetProjectFn } from "../project";
-import { AddNewTagFn, DeleteTagFn, UpdateTagDescriptionFn } from "../tag";
+import { GetProjectFn } from "../entities";
 import {
+  AddNewTagFn,
   AddNewTestFn,
+  AddNewTestStepFn,
   AddTagToTestFn,
+  DeleteTagFn,
   DeleteTagFromTestFn,
   DeleteTestFn,
+  DeleteTestStepFn,
+  UpdateTagDescriptionFn,
   UpdateTestDescriptionFn,
-  UpdateTestTitleFn,
-} from "../test";
-import {
   UpdateTestRunResultFn,
   UpdateTestRunStepIsCompletedFn,
-} from "../test-run";
-import {
-  AddNewTestStepFn,
-  DeleteTestStepFn,
   UpdateTestStepFn,
-} from "../test-step";
+  UpdateTestTitleFn,
+} from "../entities";
 
 import * as httpClientStorageFns from "./storage-http-client";
 import * as localStorageFns from "./storage-local";

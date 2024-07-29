@@ -1,7 +1,7 @@
 import { projectUpdateTestRunStepCompleted } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { UpdateTestRunStepIsCompletedFn } from "../../../test-run";
+import { UpdateTestRunStepIsCompletedFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../../storage-local";
 
 export const updateTestRunStepIsCompleted: UpdateTestRunStepIsCompletedFn =

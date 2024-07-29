@@ -1,7 +1,7 @@
 import { RunResult } from "testmatic";
 
+import { UpdateTestRunResultFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { UpdateTestRunResultFn } from "../../../test-run";
 
 import { testRunStepResultPatch } from "./test-run-result-patch.http";
 

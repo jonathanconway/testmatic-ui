@@ -10,7 +10,7 @@ import {
 } from "react";
 import { Step, Tag } from "testmatic";
 
-import { Popover } from "../../../popover";
+import { Popup } from "../../../popup";
 import { ExpandingTextBox } from "../../../text-box";
 import "../../../utils";
 import { timeout } from "../../../utils";
@@ -217,7 +217,7 @@ export function StepEditorInput(props: StepEditorInputProps) {
         <Styled.SelectionMeasurerAnchor ref={selectionMeasurerAnchorRef} />
       </Styled.SelectionMeasurer>
 
-      <Popover
+      <Popup
         anchorElement={selectionMeasurerAnchorRef.current}
         isOpen={tagSuggestController.tagSuggest.isOpen}
       >
@@ -227,7 +227,7 @@ export function StepEditorInput(props: StepEditorInputProps) {
           onClose={tagSuggestController.tagSuggest.handleClose}
           onSelectTag={tagSuggestController.tagSuggest.handleSelectTag}
         />
-      </Popover>
+      </Popup>
     </Styled.Container>
   );
 }

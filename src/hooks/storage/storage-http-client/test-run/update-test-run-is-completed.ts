@@ -1,5 +1,5 @@
+import { UpdateTestRunStepIsCompletedFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { UpdateTestRunStepIsCompletedFn } from "../../../test-run";
 
 import { testRunStepIsCompletedPatch } from "./test-run-step-is-completed-patch.http";
 

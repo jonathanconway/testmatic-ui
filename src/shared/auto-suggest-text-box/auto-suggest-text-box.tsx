@@ -1,6 +1,6 @@
 import { HTMLProps, ReactNode } from "react";
 
-import { Popover } from "../popover";
+import { Popup } from "../popup";
 import { TextBox } from "../text-box";
 
 import * as Styled from "./auto-suggest-text-box.styles";
@@ -30,7 +30,7 @@ export function AutoSuggestTextBox(props: AutoSuggestTextBoxProps) {
         onBlur={input.handleBlur}
       />
 
-      <Popover anchorElement={input.ref.current} isOpen={popup.isOpen}>
+      <Popup anchorElement={input.ref.current} isOpen={popup.isOpen}>
         <Styled.AutoSuggestItems>
           {suggestions.filteredSuggestions?.map(
             (suggestion, suggestionIndex) => (
@@ -46,7 +46,7 @@ export function AutoSuggestTextBox(props: AutoSuggestTextBoxProps) {
             ),
           )}
         </Styled.AutoSuggestItems>
-      </Popover>
+      </Popup>
     </>
   );
 }

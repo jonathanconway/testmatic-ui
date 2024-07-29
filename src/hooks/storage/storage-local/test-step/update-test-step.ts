@@ -5,8 +5,8 @@ import {
   getProjectFromLocalStorage,
   saveProjectToLocalStorage,
 } from "../../../../shared";
+import { UpdateTestStepFn } from "../../../entities";
 import { resultError, resultOk } from "../../../result";
-import { UpdateTestStepFn } from "../../../test-step";
 
 export const updateTestStep: UpdateTestStepFn = async (
   lookupTestName: string,

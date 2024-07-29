@@ -1,5 +1,5 @@
+import { UpdateTagTitleFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { UpdateTagTitleFn } from "../../../tag";
 
 import { tagPatch } from "./tag-patch.http";
 

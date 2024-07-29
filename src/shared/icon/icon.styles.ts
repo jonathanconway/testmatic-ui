@@ -8,7 +8,6 @@ export const Container = styled.span<{
   align-items: center;
   justify-content: center;
   line-height: 1.25rem;
-  width: 1.25rem;
   height: 1.25rem;
   font-size: 0.8rem;
 

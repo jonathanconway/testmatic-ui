@@ -4,11 +4,11 @@ export const AutoSuggestItems = styled.div`
   border: solid 1px silver;
   background-color: white;
   border-radius: 0.25rem;
-  margin-top: 5px;
+  margin-top: 4px;
 `;
 
 export const AutoSuggestItem = styled.div<{ readonly $highlighted: boolean }>`
-  padding: 0.125rem;
+  padding: 0.125rem 0.5rem;
   font-size: 0.85rem;
   cursor: pointer;
   white-space: nowrap;

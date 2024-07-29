@@ -1,5 +1,5 @@
+import { UpdateTestStepFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { UpdateTestStepFn } from "../../../test-step/update-test-step";
 
 import { testStepPatch } from "./test-step-patch.http";
 

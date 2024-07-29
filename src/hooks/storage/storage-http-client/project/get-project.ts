@@ -6,7 +6,7 @@ import {
   USE_GET_PROJECT_QUERY_KEY,
   getProject as getProjectHttp,
 } from "../../../../shared/project/project-http/use-get-project.hook";
-import { GetProjectFn } from "../../../project";
+import { GetProjectFn } from "../../../entities";
 import { resultOkWithData } from "../../../result";
 
 export const getProject: GetProjectFn = async () => {

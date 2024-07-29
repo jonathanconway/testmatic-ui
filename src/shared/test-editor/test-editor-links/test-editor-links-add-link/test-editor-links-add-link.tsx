@@ -1,7 +1,7 @@
 import { AddRemoveListBoxAddItemPopupContentProps } from "../../../add-remove-list-box";
 import { Button } from "../../../button";
 import { Stack } from "../../../layout";
-import { PopoverWindow } from "../../../popover";
+import { PopupWindow } from "../../../popup";
 import { Label } from "../../../text";
 import { TextBox } from "../../../text-box";
 import { RequiredChip, ValidationError } from "../../../validation";
@@ -23,7 +23,7 @@ export function LinksBoxAddLink(props: LinksBoxAddLinkProps) {
   } = useTestEditorLinksAddLink(props);
 
   return (
-    <PopoverWindow
+    <PopupWindow
       title="Add link"
       style={{ width: "250px" }}
       onClose={props.close}
@@ -59,6 +59,6 @@ export function LinksBoxAddLink(props: LinksBoxAddLinkProps) {
           <Button onClick={handleSubmitClick}>Save</Button>
         </Stack>
       </Stack>
-    </PopoverWindow>
+    </PopupWindow>
   );
 }

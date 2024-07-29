@@ -1,7 +1,7 @@
 import { Test } from "testmatic";
 
+import { AddNewTestFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { AddNewTestFn } from "../../../test";
 
 import { testPost } from "./test-post.http";
 

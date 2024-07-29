@@ -1,5 +1,5 @@
+import { AddTagToTestFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { AddTagToTestFn } from "../../../test";
 
 import { testTagPost } from "./test-tag-post.http";
 

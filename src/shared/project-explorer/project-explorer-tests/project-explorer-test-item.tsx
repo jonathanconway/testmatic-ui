@@ -5,6 +5,7 @@ import { Icon, IconNames } from "../../icon";
 import { IconButton } from "../../icon-button";
 import { Stack } from "../../layout";
 import { Link } from "../../link";
+import { MenuItem } from "../../menu";
 import { PopupMenu } from "../../popup-menu";
 import { testEditorRoute } from "../../test-editor";
 import { TextOverflow } from "../../text-overflow";
@@ -85,14 +86,13 @@ export function ProjectExplorerTestItem(props: ProjectExplorerTestItemProps) {
                 />
               </Tooltip>
             }
-            options={[
-              {
-                key: "duplicate",
-                label: "Duplicate",
-                onClick: handleTestDuplicateClick(props.test.name),
-              },
-            ]}
-          />
+          >
+            <MenuItem
+              key="duplicate"
+              title="Duplicate"
+              onClick={handleTestDuplicateClick(props.test.name)}
+            />
+          </PopupMenu>
 
           <Tooltip contents="Delete test">
             <IconButton

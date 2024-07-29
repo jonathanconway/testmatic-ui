@@ -1,10 +1,11 @@
+import { ReactNode } from "react";
+
 import { Stack } from "../layout";
 import { Label } from "../text";
 import { ValidationError } from "../validation";
-import { ReactNode } from "react";
 
 interface FieldProps {
-  readonly labelText: string;
+  readonly label: ReactNode;
   readonly input?: ReactNode;
   readonly validationErrorMessage?: string;
 }
@@ -12,7 +13,7 @@ interface FieldProps {
 export function Field(props: FieldProps) {
   return (
     <Stack spacing={1}>
-      <Label>{props.labelText}</Label>
+      <Label>{props.label}</Label>
 
       {props.input}
 

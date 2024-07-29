@@ -1,7 +1,7 @@
 import { createTagFromName, projectAddTestTag } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { AddTagToTestFn } from "../../../test";
+import { AddTagToTestFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const addTagToTest: AddTagToTestFn = async (

@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Button } from "../button";
 import { Stack, StackProps } from "../layout";
 import { ListBox, ListBoxItem } from "../list-box";
-import { Popover } from "../popover";
+import { Popup } from "../popup";
 import { TextBox } from "../text-box";
 
 import * as Styled from "./add-remove-list-box.styles";
@@ -81,14 +81,14 @@ export function AddRemoveListBox(props: AddRemoveListBoxProps) {
         </Button>
 
         {props.renderAddItemPopupContent && (
-          <Popover
+          <Popup
             isOpen={isAddItemPopupOpen}
             anchorElement={addButtonRef.current}
           >
             {props.renderAddItemPopupContent({
               close: handleAddItemPopupClose,
             })}
-          </Popover>
+          </Popup>
         )}
       </Stack>
 

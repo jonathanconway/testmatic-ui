@@ -1,7 +1,7 @@
 import { projectDeleteTestTag } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { DeleteTagFromTestFn } from "../../../test";
+import { DeleteTagFromTestFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const deleteTagFromTest: DeleteTagFromTestFn = async (

@@ -1,6 +1,6 @@
 import { testTagDelete } from "../../../../shared/client";
+import { DeleteTagFromTestFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { DeleteTagFromTestFn } from "../../../test";
 
 export const deleteTagFromTest: DeleteTagFromTestFn = async (
   lookupTestName,

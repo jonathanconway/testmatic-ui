@@ -1,7 +1,7 @@
 import { RunResult, projectUpdateTestRunResult } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { UpdateTestRunResultFn } from "../../../test-run";
+import { UpdateTestRunResultFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../../storage-local";
 
 export const updateTestRunResult: UpdateTestRunResultFn = async (

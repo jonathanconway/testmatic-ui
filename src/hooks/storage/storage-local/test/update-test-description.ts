@@ -1,7 +1,7 @@
 import { projectUpdateTest } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { UpdateTestDescriptionFn } from "../../../test";
+import { UpdateTestDescriptionFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const updateTestDescription: UpdateTestDescriptionFn = async (

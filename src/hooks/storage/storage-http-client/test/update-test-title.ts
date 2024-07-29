@@ -1,5 +1,5 @@
+import { UpdateTestTitleFn } from "../../../entities";
 import { responseToResult } from "../../../response";
-import { UpdateTestTitleFn } from "../../../test";
 
 import { testPatch } from "./test-patch.http";
 

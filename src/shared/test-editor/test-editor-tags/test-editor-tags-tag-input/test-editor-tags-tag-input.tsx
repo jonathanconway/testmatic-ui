@@ -2,9 +2,8 @@ import { HTMLProps } from "react";
 
 import { useProject } from "../../../../hooks";
 import { AutoSuggestTextBox } from "../../../auto-suggest-text-box";
-import { Icon, IconNames } from "../../../icon";
-import { Stack } from "../../../layout";
-import { Text } from "../../../text";
+import { IconNames } from "../../../icon";
+import { Item } from "../../../item";
 import { useEditingTest } from "../../use-editing-test.hook";
 
 interface TestEditorTagsTagInputProps extends HTMLProps<HTMLInputElement> {
@@ -31,12 +30,7 @@ export function TestEditorTagsTagInput(props: TestEditorTagsTagInputProps) {
       {...restProps}
       items={items}
       onSelectItem={props.onSelectItem}
-      renderSuggestion={(item) => (
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          <Icon icon={IconNames.Tag} />
-          <Text>{item}</Text>
-        </Stack>
-      )}
+      renderSuggestion={(item) => <Item icon={IconNames.Tag} title={item} />}
     />
   );
 }

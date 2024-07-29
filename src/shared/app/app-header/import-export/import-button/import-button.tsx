@@ -1,7 +1,7 @@
-import { PopoverButton } from "../../../../popover";
+import { PopupButton } from "../../../../popup";
 
-import { ImportPopover } from "./import-popover";
+import { ImportPopup } from "./import-popup";
 
 export function ImportButton() {
-  return <PopoverButton renderPopover={ImportPopover}>Import</PopoverButton>;
+  return <PopupButton renderPopup={ImportPopup}>Import</PopupButton>;
 }

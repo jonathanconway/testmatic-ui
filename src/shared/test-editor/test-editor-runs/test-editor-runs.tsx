@@ -26,7 +26,7 @@ export function TestEditorRuns() {
             value={run.dateTime}
             onDeleteClick={handleDeleteItem(run)}
           >
-            <Stack direction="row" gap={0.5} alignItems="center" mr={1}>
+            <Stack direction="row" gap={1} alignItems="center" mr={1}>
               <Item
                 icon={IconNames.Run}
                 title={formatDateTimeString(run.dateTime)}
