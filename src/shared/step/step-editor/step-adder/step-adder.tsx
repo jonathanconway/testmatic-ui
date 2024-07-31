@@ -3,9 +3,8 @@ import { HTMLProps, KeyboardEvent } from "react";
 import { Step } from "testmatic";
 
 import { Box } from "../../../box";
-import { timeout } from "../../../utils";
-import { StepEditorIds } from "../step-editor";
-import { StepEditorInput } from "../step-editor-input";
+import { getLastElementByClassName, timeout } from "../../../utils";
+import { StepEditorInput, StepInputClassNames } from "../step-editor-input";
 
 import * as Styled from "./step-adder.styles";
 
@@ -16,36 +15,39 @@ export interface StepAdderProps
   readonly onGoPrevious: VoidFunction;
 }
 
-export const StepAdderIds = {
-  Input: "step-adder-input",
-};
-
 export function StepAdder(props: StepAdderProps) {
   const { step, stepIndex, ref, onKeyDown, ...restProps } = props;
 
   const handleStepInputKeyDown = async (
     event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
-    console.log("step-adder handleStepInputKeyDown");
     switch (event.key) {
       case "ArrowUp":
         handleKeyDownArrowUp();
         break;
 
       case "Tab":
-        if (!event.shiftKey) {
-          await timeout();
-
-          const deleteButtonClassName = `${StepEditorIds.DeleteButton}-${props.stepIndex}`;
-
-          const deleteButtonElement = window.document.getElementById(
-            deleteButtonClassName,
-          );
-
-          deleteButtonElement?.focus();
-        }
-        return;
+        handleKeyDownTab(event);
+        break;
     }
+  };
+
+  const handleKeyDownTab = async (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    if (event.shiftKey) {
+      return;
+    }
+
+    if ((event.target as HTMLTextAreaElement).value.trim() === "") {
+      return;
+    }
+
+    // Wait for blur event to be processed, so current item can be saved.
+    await timeout(200);
+
+    // After save, focus the next step adder.
+    getLastElementByClassName(StepInputClassNames.TextArea)?.focus();
   };
 
   const handleKeyDownArrowUp = () => {
@@ -60,14 +62,16 @@ export function StepAdder(props: StepAdderProps) {
           step={props.step}
           isVisible
           onKeyDown={handleStepInputKeyDown}
-          // onFocus={noop}
-          // onBlur={noop}
           onGoNext={noop}
           placeholder="Add new step"
         />
       </Styled.MainContainer>
 
-      <Box width="1rem"></Box>
+      {/*
+        @tabIndex - Capture focus on tab out for a smooth transition, after save,
+        to focus the next step adder.
+      */}
+      <Box width="1rem" tabIndex={0}></Box>
     </Styled.Container>
   );
 }

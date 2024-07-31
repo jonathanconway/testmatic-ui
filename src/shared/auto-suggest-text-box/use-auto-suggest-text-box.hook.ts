@@ -1,3 +1,4 @@
+import { last } from "lodash";
 import {
   ChangeEvent,
   FormEvent,
@@ -108,7 +109,7 @@ export function useAutoSuggestTextBox(params: UseAutoSuggestTextBoxParams) {
       const highlightedSuggestion =
         state.filteredSuggestions[
           state.filteredSuggestions.indexOf(currentHighlightedSuggestion) - 1
-        ] ?? state.filteredSuggestions.slice(-1)[0];
+        ] ?? last(state.filteredSuggestions);
 
       setState({
         ...state,

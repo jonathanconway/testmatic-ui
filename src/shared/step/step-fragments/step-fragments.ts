@@ -15,6 +15,7 @@ export interface StepFragmentTag extends StepFragmentBase {
 
 export type StepFragment = StepFragmentText | StepFragmentTag;
 
+// todo : fix to allow for trailing (, ).
 export function parseStepFragments(step?: Step): readonly StepFragment[] {
   if (!step) {
     return [];

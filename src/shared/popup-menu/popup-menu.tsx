@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 import { Menu } from "../menu";
 import { Popup } from "../popup";
@@ -6,6 +6,7 @@ import { Popup } from "../popup";
 import * as Styled from "./popup-menu.styles";
 
 interface PopupMenuProps {
+  readonly isOpen?: boolean;
   readonly anchor: ReactNode;
   readonly children: ReactNode;
 }
@@ -18,8 +19,14 @@ export function PopupMenu(props: PopupMenuProps) {
   const anchorContainerRef = useRef<HTMLSpanElement>(null);
 
   const [state, setState] = useState<PopupMenuState>({
-    isOpen: false,
+    isOpen: props.isOpen ?? false,
   });
+
+  useEffect(() => {
+    setState({
+      isOpen: props.isOpen ?? false,
+    });
+  }, [props.isOpen]);
 
   const handleAnchorClick = () => {
     setState({ isOpen: true });
@@ -35,9 +42,8 @@ export function PopupMenu(props: PopupMenuProps) {
 
   return (
     <>
-      <span ref={anchorContainerRef} />
-
       <Styled.AnchorContainer onClick={handleAnchorClick}>
+        <span ref={anchorContainerRef} />
         {props.anchor}
       </Styled.AnchorContainer>
 

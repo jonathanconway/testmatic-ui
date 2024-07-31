@@ -2,7 +2,9 @@
 to: <%= h.dir() %>/<%= h.name() %>/<%= h.name() %>.tsx
 ---
 
-export function <%= h.namePascal() %>() {
+interface <%= h.namePascal() %>Props {}
+
+export function <%= h.namePascal() %>(props: <%= h.namePascal() %>Props) {
   return (
     <></>
   );

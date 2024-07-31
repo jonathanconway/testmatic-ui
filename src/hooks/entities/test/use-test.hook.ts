@@ -1,10 +1,12 @@
+import { Test } from "testmatic";
+
 import { useProject } from "../../../hooks";
 import { useStorage } from "../../storage";
 
 export function useTest(testName = "") {
   const { project } = useProject();
 
-  const test = project.testsByName[testName];
+  const test: Test | undefined = project.testsByName[testName];
 
   // const test = (() => {
   //   if (testName === TEST_NEW_NAME) {

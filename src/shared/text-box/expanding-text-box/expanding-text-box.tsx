@@ -12,7 +12,8 @@ export const ExpandingTextBox = forwardRef(
   (props: ExpandingTextBoxProps, ref: LegacyRef<HTMLTextAreaElement>) => {
     const { outdent, hoverBorder, ...restProps } = props;
 
-    const { isEmpty, sizerValue, handleInput } = useExpandingTextBox(props);
+    const { isEmpty, sizerValue, handleInput, handleKeyDown } =
+      useExpandingTextBox(props);
 
     return (
       <Styled.TextAreaContainer $outdent={props.outdent}>
@@ -20,6 +21,7 @@ export const ExpandingTextBox = forwardRef(
           {...restProps}
           ref={ref}
           onInput={handleInput}
+          onKeyDown={handleKeyDown}
           $isEmpty={isEmpty}
           $hoverBorder={props.hoverBorder}
           $outdent={props.outdent}

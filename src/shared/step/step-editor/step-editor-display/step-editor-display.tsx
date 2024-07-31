@@ -54,9 +54,3 @@ export function StepEditorDisplay(props: StepEditorDisplayProps) {
     </Styled.StepDisplay>
   );
 }
-
-export function focusStepEditorDisplayLastLink(container?: HTMLElement | null) {
-  const links = Array.from(container?.querySelectorAll("a") ?? []);
-  const lastLink = links?.slice(-1)?.[0];
-  lastLink?.focus();
-}

@@ -10,3 +10,10 @@ export type FirstParameter<T extends (...args: any) => any> = Parameters<T>[0];
 
 export type Override<TBase, TOverride> = Omit<TBase, keyof TOverride> &
   TOverride;
+
+export function getOrUndefined<T>(
+  input: object,
+  checker: (checkerInput: object) => boolean,
+): T | undefined {
+  return checker(input) ? (input as T) : undefined;
+}

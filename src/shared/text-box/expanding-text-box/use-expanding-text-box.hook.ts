@@ -1,4 +1,13 @@
-import { ChangeEvent, FormEvent, HTMLProps, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  HTMLProps,
+  KeyboardEvent,
+  useEffect,
+  useState,
+} from "react";
+
+import { KeyCodes } from "../../../hooks/keyboard";
 
 import { addHTMLLineBreaksToPlainText } from "./expanding-text-box.utils";
 
@@ -20,11 +29,35 @@ export function useExpandingTextBox(params: UseExpandingTextBoxParams) {
   }, [params.value, params.defaultValue]);
 
   const handleInput = (event: FormEvent<HTMLTextAreaElement>) => {
-    const value = (event as ChangeEvent<HTMLTextAreaElement>).target.value;
+    const target = (event as ChangeEvent<HTMLTextAreaElement>).target;
+
+    const value = handleInputDisallowLinebreak(target);
 
     setState({ value });
 
     params.onInput?.(event);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    handleKeyDownDisallowLinebreak(event);
+  };
+
+  // Disallow line breaks handlers
+
+  const handleInputDisallowLinebreak = (target: HTMLTextAreaElement) => {
+    const value = target.value;
+
+    // Disallow line-breaks when rows=1
+    if (params.rows === 1 && params.rows === 1) {
+      return value.replaceAllRecursive(/\n/g, "");
+    }
+  };
+
+  const handleKeyDownDisallowLinebreak = (event: KeyboardEvent) => {
+    // Disallow line-breaks when rows=1
+    if (params.rows === 1 && event.key === KeyCodes.Enter) {
+      (event.target as HTMLTextAreaElement).blur();
+    }
   };
 
   const isEmpty = !state.value || String(state.value).trim() === "";
@@ -36,5 +69,6 @@ export function useExpandingTextBox(params: UseExpandingTextBoxParams) {
     sizerValue,
 
     handleInput,
+    handleKeyDown,
   };
 }

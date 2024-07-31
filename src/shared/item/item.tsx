@@ -1,6 +1,5 @@
 import { HTMLProps } from "react";
 
-import { Box } from "../box";
 import { Icon, IconName } from "../icon";
 import { Stack } from "../layout";
 import { Link } from "../link";

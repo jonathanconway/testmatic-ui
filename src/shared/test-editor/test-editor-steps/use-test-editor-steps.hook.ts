@@ -57,8 +57,8 @@ export function useTestEditorSteps() {
 
   const getStepTextAreas = () => {
     return Array.from(
-      stepsContainerRef.current?.querySelectorAll(
-        `.${StepInputClassNames.TextArea}`,
+      stepsContainerRef.current?.getElementsByClassName(
+        StepInputClassNames.TextArea,
       ) ?? [],
     ).filter(isNotNil) as HTMLTextAreaElement[];
   };
@@ -93,8 +93,8 @@ export function useTestEditorSteps() {
   const handleStepEditorBlur =
     (editingStepIndex: number) =>
     async (event: FormEvent<HTMLTextAreaElement>) => {
-      const editingStepText = (event as ChangeEvent<HTMLTextAreaElement>).target
-        .value;
+      const target = (event as ChangeEvent<HTMLTextAreaElement>).target;
+      const editingStepText = target.value.trim();
 
       if (editingStepText === steps[editingStepIndex].text) {
         return;

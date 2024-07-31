@@ -1,22 +1,21 @@
-import { ItemProps } from "../../item";
+import { Item, ItemProps } from "../../item";
 
 import * as Styled from "./menu-item.styles";
 
 export interface MenuItemProps extends ItemProps {
   readonly key?: string;
+  readonly isHighlighted?: boolean;
 }
 
 export function MenuItem(props: MenuItemProps) {
-  const { icon, title, linkHref, ...restProps } = props;
+  const { icon, title, linkHref, isHighlighted, ...restProps } = props;
 
   return (
     <Styled.MenuItem
-      icon={props.icon}
-      title={props.title}
-      linkHref={props.linkHref}
+      $isHighlighted={Boolean(props.isHighlighted)}
       {...restProps}
     >
-      {props.title}
+      <Item title={props.title} linkHref={props.linkHref} icon={props.icon} />
     </Styled.MenuItem>
   );
 }

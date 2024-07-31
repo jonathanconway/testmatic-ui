@@ -6,7 +6,7 @@ import { Stack } from "../../layout";
 import { ListBox, ListBoxItem } from "../../list-box";
 import { tagEditorRoute } from "../../tag-editor";
 
-import { TestEditorTagsTagInput } from "./test-editor-tags-tag-input";
+import { TestEditorTagsInput } from "./test-editor-tags-input";
 import { useTestEditorTags } from "./use-test-editor-tags.hook";
 
 export function TestEditorTags() {
@@ -27,7 +27,7 @@ export function TestEditorTags() {
 
       <Stack spacing={0.5} overflow="scroll" height="100%">
         <Stack spacing={0.5} direction="row" justifyContent="space-evenly">
-          <TestEditorTagsTagInput
+          <TestEditorTagsInput
             value={addInputValue}
             onInput={handleAddInputInput}
             onSelectItem={handleAddInputSelectItem}

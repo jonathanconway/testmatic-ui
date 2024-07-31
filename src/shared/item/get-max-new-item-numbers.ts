@@ -1,4 +1,4 @@
-import { orderBy } from "lodash";
+import { last, orderBy } from "lodash";
 import { isNotNil } from "testmatic";
 
 // todo : Maybe this file needs a different name and location?
@@ -26,7 +26,7 @@ function getItemTitleNumber(itemTitle: string) {
     return undefined;
   }
 
-  const itemTitlePartsLast = itemTitleParts.slice(-1)[0];
+  const itemTitlePartsLast = last(itemTitleParts);
 
   if (!isNaN(Number(itemTitlePartsLast))) {
     return Number(itemTitlePartsLast);

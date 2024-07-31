@@ -6,6 +6,7 @@
     "email": "jon@conwy.co",
     "url": "https://conwy.co"
   },
+  "homepage": "https://testmatic-docs.surge.sh",
   "description": "Web UI for Testmatic – a rapid-entry test case manager.",
   "bin": {
     "testmatic-ui": "./build-js/cli/cli-exec.js"

@@ -1,13 +1,15 @@
-import { Maybe } from "../../../../utils";
+import { Tag } from "testmatic";
 
-export interface InputTagSelectionInfo {
+import { Maybe } from "../../../utils";
+
+export interface StepEditorInputSelectionInfo {
   readonly openBracketIndex: number;
   readonly closeBracketIndex: number;
   readonly valueBetweenBrackets: string;
   readonly valueBetweenBracketsBeforeCursor: string;
 }
 
-export function getInputTagSelectionInfo({
+export function getStepEditorInputSelectionInfo({
   value,
   selectionStart,
   selectionEnd,
@@ -15,7 +17,7 @@ export function getInputTagSelectionInfo({
   readonly value: string;
   readonly selectionStart: number | null;
   readonly selectionEnd: number | null;
-}): Maybe<InputTagSelectionInfo> {
+}): Maybe<StepEditorInputSelectionInfo> {
   const selectionStartOrDefault = selectionStart ?? 0;
   const selectionEndOrDefault = selectionEnd ?? 0;
 
@@ -71,4 +73,27 @@ export function getInputTagSelectionInfo({
     valueBetweenBrackets,
     valueBetweenBracketsBeforeCursor,
   };
+}
+
+export function getStepEditorInputValueWithTagInserted({
+  tag,
+  currentValue,
+  selectionInfo,
+}: {
+  readonly tag: Tag;
+  readonly currentValue: string;
+  readonly selectionInfo: StepEditorInputSelectionInfo;
+}) {
+  const insertion = `(${tag.title.toLowerCase()})`;
+  const beforeInsertion = currentValue.substring(
+    0,
+    selectionInfo.openBracketIndex - 1,
+  );
+  const afterInsertion = currentValue.substring(
+    selectionInfo.closeBracketIndex + 1,
+  );
+
+  const value = `${beforeInsertion}${insertion}${afterInsertion}`;
+
+  return value;
 }
