@@ -1,7 +1,10 @@
 import { useRef } from "react";
 
 import { useStorage } from "../../../../hooks";
-import { showSuccessOrErrorNotification } from "../../../notification";
+import {
+  NotificationFormats,
+  showSuccessOrErrorNotification,
+} from "../../../notification";
 import { useEditingRun } from "../use-editing-run.hook";
 
 export function useRunEditorSteps() {
@@ -11,7 +14,7 @@ export function useRunEditorSteps() {
 
   const { updateTestRunStepIsCompleted } = useStorage();
 
-  const handleClickStepCompleted = (stepIndex: number) => {
+  const handleClickStepCompleted = async (stepIndex: number) => {
     const lookupTestName = test?.name;
     const lookupRunDateTime = run?.dateTime;
     const lookupStepIndex = stepIndex;
@@ -21,15 +24,16 @@ export function useRunEditorSteps() {
       return;
     }
 
-    const updateTestRunStepIsCompletedResult = updateTestRunStepIsCompleted(
+    const result = await updateTestRunStepIsCompleted(
       lookupTestName,
       lookupRunDateTime,
       lookupStepIndex,
       stepIsCompleted,
     );
 
-    showSuccessOrErrorNotification(updateTestRunStepIsCompletedResult, {
+    showSuccessOrErrorNotification(result, {
       anchorElement: getStepListItemElementAtIndex(stepIndex),
+      format: NotificationFormats.Icon,
     });
   };
 

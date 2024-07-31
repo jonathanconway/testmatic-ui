@@ -24,7 +24,7 @@ export function ProjectExplorerTestRunItem(
 ) {
   const { selected } = useProjectExplorer();
 
-  const { handleDeleteRunClick } = useProjectExplorerTestRunItem();
+  const { handleDeleteRunClick } = useProjectExplorerTestRunItem(props);
 
   return (
     <Styled.ProjectExplorerItemNested
@@ -38,6 +38,7 @@ export function ProjectExplorerTestRunItem(
         alignItems="center"
         flex={1}
         gap={0.5}
+        ml={1}
         width="100%"
       >
         <Icon icon={IconNames.Run} size="small" cursor="default" />

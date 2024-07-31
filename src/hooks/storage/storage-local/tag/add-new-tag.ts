@@ -9,5 +9,8 @@ export const addNewTag: AddNewTagFn = async (newTag: Tag) => {
 
   const projectAddTagResult = projectAddTag({ project, newTag });
 
-  return saveProjectToLocalStorageOrForwardError(projectAddTagResult);
+  return saveProjectToLocalStorageOrForwardError(
+    projectAddTagResult,
+    "Added new tag",
+  );
 };

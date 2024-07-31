@@ -8,6 +8,7 @@ import { ListBoxItem } from "../../list-box";
 import { RunResultIcon, runEditorRoute } from "../../run";
 import { formatDateTimeString } from "../../utils";
 
+import { TestEditorRunsIds } from "./test-editor-runs.const";
 import { useTestEditorRuns } from "./use-test-editor-runs.hook";
 
 export function TestEditorRuns() {
@@ -15,7 +16,7 @@ export function TestEditorRuns() {
     useTestEditorRuns();
 
   return (
-    <Box flex={1}>
+    <Box id={TestEditorRunsIds.Container} flex={1}>
       <AddRemoveListBox
         renderHeaderContent={() => <Heading level={3}>Runs</Heading>}
         onAddItem={handleAddItem}

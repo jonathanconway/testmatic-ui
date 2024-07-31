@@ -1,23 +1,24 @@
 import { isError } from "lodash";
-import {
-  Run,
-  createRunNow,
-  projectAddTestRun,
-  projectDeleteRun,
-} from "testmatic";
+import { Run, createRunNow } from "testmatic";
 
-import { useProject } from "../../../hooks";
-import { showErrorNotification } from "../../notification";
+import { useStorage } from "../../../hooks";
+import {
+  showErrorNotification,
+  showSuccessOrErrorNotification,
+} from "../../notification";
+import { getElementById } from "../../utils";
 import { useEditingTest } from "../use-editing-test.hook";
 
+import { TestEditorRunsIds } from "./test-editor-runs.const";
+
 export function useTestEditorRuns() {
-  const { project, saveProject } = useProject();
+  const { addNewTestRun, deleteTestRun } = useStorage();
 
   const { test, runs } = useEditingTest();
 
   const testName = test?.name ?? "";
 
-  function handleAddItem() {
+  async function handleAddItem() {
     if (!test) {
       return;
     }
@@ -33,44 +34,31 @@ export function useTestEditorRuns() {
 
     const newRun = createRunNowResult;
 
-    const projectAddTestRunResult = projectAddTestRun({
-      project,
-      lookupTestNameOrTitle: test.name,
-      newRun,
+    const result = await addNewTestRun(test.name, newRun);
+
+    showSuccessOrErrorNotification(result, {
+      anchorElement: getElementById(TestEditorRunsIds.Container),
     });
-
-    if (isError(projectAddTestRunResult)) {
-      showErrorNotification(projectAddTestRunResult);
-      return;
-    }
-
-    saveProject(projectAddTestRunResult);
   }
 
   function handleDeleteItem(runToDelete: Run) {
-    return function () {
+    return async function () {
       if (!test) {
         return;
       }
 
-      const updatedProject = projectDeleteRun({
-        project,
-        lookupTestNameOrTitle: test.name,
-        runToDelete,
+      const result = await deleteTestRun(test.name, runToDelete.dateTime);
+
+      showSuccessOrErrorNotification(result, {
+        anchorElement: getElementById(TestEditorRunsIds.Container),
       });
-
-      if (isError(updatedProject)) {
-        showErrorNotification(updatedProject);
-        return;
-      }
-
-      saveProject(updatedProject);
     };
   }
 
   return {
     testName,
     runs,
+
     handleAddItem,
     handleDeleteItem,
   };

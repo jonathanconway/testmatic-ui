@@ -12,5 +12,5 @@ export const deleteTag: DeleteTagFn = async (lookupTagName: string) => {
     lookupTagNameOrTitle: lookupTagName,
   });
 
-  return saveProjectToLocalStorageOrForwardError(updatedProject);
+  return saveProjectToLocalStorageOrForwardError(updatedProject, "Deleted tag");
 };

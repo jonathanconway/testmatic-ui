@@ -1,14 +1,10 @@
-import { isError } from "lodash";
 import { FocusEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { testCreateNameFromTitle } from "testmatic";
 
 import { useStorage } from "../../../hooks";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "../../notification";
-import { timeout } from "../../utils";
+import { showSuccessOrErrorNotification } from "../../notification";
+import { getElementById, timeout } from "../../utils";
 import { testEditorRoute } from "../test-editor.routes";
 import { useEditingTest } from "../use-editing-test.hook";
 
@@ -30,20 +26,16 @@ export function useTestEditorTitle() {
       return;
     }
 
-    const updateTestTitleResult = await updateTestTitle(title, newTitle);
-
-    if (isError(updateTestTitleResult)) {
-      showErrorNotification(updateTestTitleResult);
-    }
+    const result = await updateTestTitle(title, newTitle);
 
     await timeout();
 
     navigateTo(testEditorRoute(testCreateNameFromTitle(newTitle)));
 
-    await timeout();
+    const anchorElement = getElementById(TestEditorTitleIds.TitleEditor);
 
-    showSuccessNotification(undefined, {
-      anchorElement: document.getElementById(TestEditorTitleIds.TitleEditor),
+    showSuccessOrErrorNotification(result, {
+      anchorElement,
     });
   };
 

@@ -1,8 +1,13 @@
 import { ChangeEvent, ReactNode, useRef, useState } from "react";
 
+import { AddRemoveListBoxHeaderContentProps } from "./add-remove-list-box";
+
 interface UseAddRemoveListBoxParams {
   readonly headerContent?: ReactNode;
 
+  readonly renderHeaderContent?: (
+    props: AddRemoveListBoxHeaderContentProps,
+  ) => ReactNode;
   readonly renderAddItemPopupContent?: (params: {
     readonly close: VoidFunction;
   }) => ReactNode;
@@ -25,7 +30,7 @@ export function useAddRemoveListBox(params: UseAddRemoveListBoxParams) {
 
   const isInlineAddInputRendered = Boolean(!params.renderAddItemPopupContent);
 
-  const isAddButtonEnabled = isInlineAddInputRendered
+  const isAddButtonEnabled = !params.renderHeaderContent
     ? state.addInputValue.trim() !== ""
     : true;
 

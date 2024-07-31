@@ -18,8 +18,8 @@ export interface ResultOk extends Result<"ok"> {
   readonly type: "ok";
 }
 
-export function resultOk(): ResultOk {
-  return { type: "ok" };
+export function resultOk(message?: string): ResultOk {
+  return { type: "ok", message };
 }
 export interface ResultOkWithData<TData extends object = object>
   extends Result<"ok"> {
@@ -29,8 +29,9 @@ export interface ResultOkWithData<TData extends object = object>
 
 export function resultOkWithData<T extends object = object>(
   data: T,
+  message?: string,
 ): ResultOkWithData<T> {
-  return { type: "ok", data };
+  return { type: "ok", data, message };
 }
 
 export interface ResultError<TError extends object = object>

@@ -16,5 +16,8 @@ export const deleteTagFromTest: DeleteTagFromTestFn = async (
     lookupTagNameOrTitle,
   });
 
-  return saveProjectToLocalStorageOrForwardError(updatedProject);
+  return saveProjectToLocalStorageOrForwardError(
+    updatedProject,
+    "Removed tag from test",
+  );
 };

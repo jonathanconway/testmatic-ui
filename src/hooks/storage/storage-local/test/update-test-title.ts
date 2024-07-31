@@ -16,5 +16,6 @@ export const updateTestTitle: UpdateTestTitleFn = async (
       lookupTestNameOrTitle: lookupTestName,
       newTestTitle,
     }),
+    "Updated test title",
   );
 };

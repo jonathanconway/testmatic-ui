@@ -1,12 +1,8 @@
-import { isError } from "lodash";
 import { SyntheticEvent } from "react";
 import { RunResult } from "testmatic";
 
 import { useStorage } from "../../../../hooks";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "../../../notification";
+import { showSuccessOrErrorNotification } from "../../../notification";
 import { useEditingRun } from "../use-editing-run.hook";
 
 export function useRunEditorResult() {
@@ -23,24 +19,26 @@ export function useRunEditorResult() {
         return;
       }
 
-      const updateTestRunResultResult = updateTestRunResult(
+      if (runResult === updatedRunResult) {
+        return;
+      }
+
+      const anchorElement = event.currentTarget;
+
+      const result = await updateTestRunResult(
         test?.name,
         runDateTime,
         updatedRunResult,
       );
 
-      if (isError(updateTestRunResultResult)) {
-        showErrorNotification(updateTestRunResultResult);
-        return;
-      }
-
-      showSuccessNotification(undefined, {
-        anchorElement: event.currentTarget,
+      showSuccessOrErrorNotification(result, {
+        anchorElement,
       });
     };
 
   return {
     runResult,
+
     handleRunResultClick,
   };
 }

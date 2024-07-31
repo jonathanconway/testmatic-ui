@@ -18,5 +18,6 @@ export const updateTestDescription: UpdateTestDescriptionFn = async (
         description: newTestDescription,
       },
     }),
+    "Updated test description",
   );
 };

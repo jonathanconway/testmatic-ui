@@ -42,17 +42,17 @@ export function useProjectExplorerTags() {
   };
 
   const handleTagDeleteClick = (lookupTagName: string) => async () => {
-    const deleteTagResult = await deleteTag(lookupTagName);
+    const result = await deleteTag(lookupTagName);
 
     await timeout(100);
 
-    showSuccessOrErrorNotification(deleteTagResult, {
+    showSuccessOrErrorNotification(result, {
       anchorElement: window.document.getElementById(
         ProjectExplorerTagsIds.Section,
       ),
     });
 
-    if (isError(deleteTagResult)) {
+    if (isError(result)) {
       return;
     }
 

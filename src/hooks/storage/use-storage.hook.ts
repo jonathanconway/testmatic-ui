@@ -1,5 +1,5 @@
 import { isSurge } from "../../env";
-import { GetProjectFn } from "../entities";
+import { AddNewTestRunFn, DeleteTestRunFn, GetProjectFn } from "../entities";
 import {
   AddNewTagFn,
   AddNewTestFn,
@@ -50,6 +50,8 @@ interface UseStorageResult {
   readonly deleteTagFromTest: DeleteTagFromTestFn;
 
   // Test -> Run
+  readonly addNewTestRun: AddNewTestRunFn;
+  readonly deleteTestRun: DeleteTestRunFn;
   readonly updateTestRunStepIsCompleted: UpdateTestRunStepIsCompletedFn;
   readonly updateTestRunResult: UpdateTestRunResultFn;
 }

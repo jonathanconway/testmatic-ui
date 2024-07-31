@@ -1,4 +1,3 @@
-import { isError } from "lodash";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Step, createTestStepFromText } from "testmatic";
@@ -6,11 +5,11 @@ import { Step, createTestStepFromText } from "testmatic";
 import { useTestStep } from "../../../hooks";
 import { homeRoute } from "../../../screens";
 import {
-  showErrorNotification,
-  showSuccessNotification,
+  NotificationFormats,
+  showSuccessOrErrorNotification,
 } from "../../notification";
 import { StepInputClassNames } from "../../step";
-import { isNotNil, timeout, timeoutCall } from "../../utils";
+import { isNotNil, timeoutCall } from "../../utils";
 import { useEditingTest } from "../use-editing-test.hook";
 
 interface UseTestEditorStepsState {
@@ -102,38 +101,24 @@ export function useTestEditorSteps() {
 
       const editingStep = createTestStepFromText(editingStepText);
 
-      const updateStepResult = await updateStep(
-        editingStepIndex,
-        editingStep.text,
-      );
-
-      if (isError(updateStepResult)) {
-        showErrorNotification(updateStepResult);
-        return;
-      }
-
-      // Wait for some DOM tasks to complete, which would otherwise disrupt the notification
-      await timeout(250);
-
       const anchorElement = getStepTextAreaAt(editingStepIndex).parentElement;
 
-      showSuccessNotification("Updated", {
+      const result = await updateStep(editingStepIndex, editingStep.text);
+
+      showSuccessOrErrorNotification(result, {
         anchorElement,
+        format: NotificationFormats.Icon,
       });
     };
 
-  const handleStepEditorDeleteClick = (deleteStepIndex: number) => () => {
-    const deleteStepResult = deleteStep(deleteStepIndex);
+  const handleStepEditorDeleteClick = (deleteStepIndex: number) => async () => {
+    const anchorElement = stepsContainerRef.current;
 
-    if (isError(deleteStepResult)) {
-      showErrorNotification(deleteStepResult);
-      return;
-    }
+    const result = await deleteStep(deleteStepIndex);
 
-    setTimeout(() => {
-      showSuccessNotification("Deleted", {
-        anchorElement: stepsContainerRef.current,
-      });
+    showSuccessOrErrorNotification(result, {
+      anchorElement,
+      format: NotificationFormats.Icon,
     });
   };
 
@@ -154,26 +139,23 @@ export function useTestEditorSteps() {
       return;
     }
 
-    const addNewStepResult = await addNewStep(editingStepText);
+    const anchorElement = stepsContainerRef.current;
 
-    if (isError(addNewStepResult)) {
-      showErrorNotification(addNewStepResult, {
-        anchorElement: stepsContainerRef.current,
-      });
-      return;
-    }
+    const result = await addNewStep(editingStepText);
+
+    showSuccessOrErrorNotification(result, {
+      anchorElement,
+      format: NotificationFormats.Icon,
+      offset: {
+        top: 35,
+      },
+    });
 
     setState((previousState) => ({
       ...previousState,
       addingStep: createTestStepFromText(""),
       isAddingStep: false,
     }));
-
-    await timeout();
-
-    showSuccessNotification("Added step", {
-      anchorElement: await getLastStepInput(),
-    });
   };
 
   const handleAddingStepEditorGoPrevious = () => {

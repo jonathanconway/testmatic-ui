@@ -1,5 +1,9 @@
 import { Snackbar as MUISnackbar } from "@mui/material";
 
+import { Icon } from "../icon";
+
+import { NotificationFormats } from "./notification-format";
+import { NotificationTypeIcons } from "./notification-type-icon";
 import * as Styled from "./notification.styles";
 import { ShowNotificationParams } from "./show-notification";
 import { useNotification } from "./use-notification.hook";
@@ -23,7 +27,13 @@ export function Notification(props: NotificationProps) {
       style={anchorRelativePosition}
     >
       <Styled.NotificationBox $size={size} $type={type} onClick={props.onClose}>
-        {props.message}
+        {props.format === NotificationFormats.Icon && (
+          <Icon icon={NotificationTypeIcons[type]} />
+        )}
+
+        {(props.format === NotificationFormats.Message || !props.format) && (
+          <>{props.message}</>
+        )}
       </Styled.NotificationBox>
     </MUISnackbar>
   );

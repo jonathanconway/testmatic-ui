@@ -26,8 +26,10 @@ export function RunEditorResult() {
             isSelected={currentRunResult === runResult}
             onClick={handleRunResultClick(runResult)}
           >
-            <span>{sentenceCase(runResult)}</span>
-            <Icon icon={runResult} />
+            <Stack>
+              <Icon icon={runResult} />
+              <span>{sentenceCase(runResult)}</span>
+            </Stack>
           </ToggleButton>
         ))}
       </ToggleButtons>

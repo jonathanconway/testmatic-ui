@@ -20,5 +20,8 @@ export const addTagToTest: AddTagToTestFn = async (
     newTag,
   });
 
-  return saveProjectToLocalStorageOrForwardError(updatedProject);
+  return saveProjectToLocalStorageOrForwardError(
+    updatedProject,
+    "Added tag to test",
+  );
 };

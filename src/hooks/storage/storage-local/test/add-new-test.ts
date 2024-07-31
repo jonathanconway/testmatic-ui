@@ -9,5 +9,8 @@ export const addNewTest: AddNewTestFn = async (newTest: Test) => {
 
   const projectAddTestResult = projectAddTest({ project, newTest });
 
-  return saveProjectToLocalStorageOrForwardError(projectAddTestResult);
+  return saveProjectToLocalStorageOrForwardError(
+    projectAddTestResult,
+    "Added new test",
+  );
 };

@@ -40,11 +40,11 @@ export function useTagEditor() {
       return;
     }
 
-    const updateTitleResult = await updateTitle(title);
+    const result = await updateTitle(title);
 
     await timeout(100);
 
-    if (isError(updateTitleResult)) {
+    if (isError(result)) {
       setTimeout(() => {
         event.target.value = tag.title;
       }, 100);
@@ -55,7 +55,7 @@ export function useTagEditor() {
 
     await timeout(100);
 
-    showSuccessOrErrorNotification(updateTitleResult, {
+    showSuccessOrErrorNotification(result, {
       anchorElement: window.document.getElementById(
         TagEditorIds.TitleContainer,
       ),
@@ -74,11 +74,11 @@ export function useTagEditor() {
       return;
     }
 
-    const updateDescriptionResult = updateDescription(description);
+    const result = await updateDescription(description);
 
     await timeout(100);
 
-    showSuccessOrErrorNotification(updateDescriptionResult, {
+    showSuccessOrErrorNotification(result, {
       anchorElement: event.target.parentElement,
     });
   };

@@ -83,16 +83,16 @@ export function useProjectExplorerTestItem(
   );
 
   const handleTestDeleteClick = (lookupTestName: string) => async () => {
-    const deleteTestResult = await deleteTest(lookupTestName);
+    const result = await deleteTest(lookupTestName);
 
-    showSuccessOrErrorNotification(deleteTestResult, {
+    showSuccessOrErrorNotification(result, {
       message: "Deleted",
       anchorElement: window.document.querySelector<HTMLElement>(
         `#${ProjectExplorerTestsIds.Section}`,
       ),
     });
 
-    if (isError(deleteTestResult)) {
+    if (isError(result)) {
       return;
     }
 
@@ -117,14 +117,14 @@ export function useProjectExplorerTestItem(
       return;
     }
 
-    const addNewTestResult = await addNewTest(newTest);
+    const result = await addNewTest(newTest);
 
-    showSuccessOrErrorNotification(addNewTestResult, {
+    showSuccessOrErrorNotification(result, {
       message: "Duplicated",
       anchorElement: testActionsRef.current,
     });
 
-    if (isError(addNewTestResult)) {
+    if (isError(result)) {
       return;
     }
 

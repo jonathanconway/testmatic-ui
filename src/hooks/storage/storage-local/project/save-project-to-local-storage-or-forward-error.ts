@@ -7,11 +7,12 @@ import { ResultError, ResultOk, resultError, resultOk } from "../../../result";
 export async function saveProjectToLocalStorageOrForwardError<
   TError extends Error,
   T extends ProjectView | TError,
->(project: T): Promise<ResultOk | ResultError<TError>> {
+>(project: T, message?: string): Promise<ResultOk | ResultError<TError>> {
   if (isError(project)) {
     return resultError(project as TError) as ResultError<TError>;
   }
 
   saveProjectToLocalStorage(project);
-  return resultOk();
+
+  return resultOk(message);
 }

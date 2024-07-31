@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import { NotificationFormat } from "./notification-format";
 import { NotificationType } from "./notification-type";
 
 export interface ShowNotificationParams {
@@ -8,6 +9,13 @@ export interface ShowNotificationParams {
   readonly anchorElement?: HTMLElement | null;
   readonly anchorDOMRect?: DOMRect | null;
   readonly duration?: number;
+  readonly format?: NotificationFormat;
+  readonly offset?: NotificationOffset;
+}
+
+interface NotificationOffset {
+  readonly top?: number;
+  readonly left?: number;
 }
 
 export class ShowNotificationEvent extends Event {

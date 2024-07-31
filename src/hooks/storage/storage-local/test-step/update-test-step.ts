@@ -1,12 +1,8 @@
-import { isError } from "lodash";
 import { projectUpdateTestStep } from "testmatic";
 
-import {
-  getProjectFromLocalStorage,
-  saveProjectToLocalStorage,
-} from "../../../../shared";
+import { getProjectFromLocalStorage } from "../../../../shared";
 import { UpdateTestStepFn } from "../../../entities";
-import { resultError, resultOk } from "../../../result";
+import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const updateTestStep: UpdateTestStepFn = async (
   lookupTestName: string,
@@ -15,20 +11,15 @@ export const updateTestStep: UpdateTestStepFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const projectUpdateTestStepResult = projectUpdateTestStep({
+  const updatedProject = projectUpdateTestStep({
     project,
     lookupTestNameOrTitle: lookupTestName,
     lookupStepIndex,
     updatedStepText,
   });
 
-  if (isError(projectUpdateTestStepResult)) {
-    return resultError(projectUpdateTestStepResult);
-  }
-
-  const updatedProject = projectUpdateTestStepResult;
-
-  saveProjectToLocalStorage(updatedProject);
-
-  return resultOk();
+  return saveProjectToLocalStorageOrForwardError(
+    updatedProject,
+    "Updated test step",
+  );
 };

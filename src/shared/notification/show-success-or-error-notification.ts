@@ -1,4 +1,4 @@
-import { isError } from "lodash";
+import { get, isError } from "lodash";
 
 import { Result } from "../../hooks/result";
 
@@ -26,5 +26,6 @@ export function showSuccessOrErrorNotification<
     return;
   }
 
-  showSuccessNotification(undefined, options);
+  const inputMessage = get(input, "message") as string | undefined;
+  showSuccessNotification(inputMessage, options);
 }

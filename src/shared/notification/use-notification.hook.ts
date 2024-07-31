@@ -32,9 +32,16 @@ export function useNotification(
       (params.anchorDOMRect as DOMRect);
     const anchorElementTop = anchorElementRect.top - bodyRect.top;
 
+    const left = anchorElementRect.left + (params.offset?.left ?? 0);
+    const top =
+      anchorElementTop +
+      (params.anchorElement?.offsetHeight ?? 15) +
+      10 +
+      (params.offset?.top ?? 0);
+
     return {
-      left: anchorElementRect.left,
-      top: anchorElementTop + (params.anchorElement?.offsetHeight ?? 15) + 10,
+      left,
+      top,
       height: "1rem",
     };
   }, [params.anchorDOMRect, params.anchorElement]);

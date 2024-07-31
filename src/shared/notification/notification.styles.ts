@@ -15,6 +15,7 @@ export const NotificationBox = styled.div<NotificationBoxAttrs>`
   box-shadow: 1px 2px 15px 1px #dedede;
   font-size: 0.85rem;
   cursor: default;
+  white-space: nowrap;
 
   ${notificationBoxTypeStyles}
 `;

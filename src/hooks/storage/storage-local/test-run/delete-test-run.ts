@@ -1,23 +1,23 @@
-import { projectDeleteTestStep } from "testmatic";
+import { projectDeleteRun } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
-import { DeleteTestStepFn } from "../../../entities";
+import { DeleteTestRunFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../project";
 
-export const deleteTestStep: DeleteTestStepFn = async (
+export const deleteTestRun: DeleteTestRunFn = async (
   lookupTestName: string,
-  lookupStepIndex: number,
+  lookupRunDateTime: string,
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const updatedProject = projectDeleteTestStep({
+  const updatedProject = projectDeleteRun({
     project,
     lookupTestNameOrTitle: lookupTestName,
-    lookupStepIndex,
+    lookupRunDateTime,
   });
 
   return saveProjectToLocalStorageOrForwardError(
     updatedProject,
-    "Deleted test step",
+    "Deleted test run",
   );
 };

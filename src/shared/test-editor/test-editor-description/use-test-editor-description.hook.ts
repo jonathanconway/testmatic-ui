@@ -17,22 +17,17 @@ export function useTestEditorDescription() {
   const handleDescriptionBlur = async (
     event: ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    // const description = event.target.innerText;
-    // console.log("handleChangeDescription", { description }, test.description);
     const description = event.target.value;
 
     if (description === test.description) {
       return;
     }
 
-    const updateTestDescriptionResult = updateTestDescription(
-      test.name,
-      description,
-    );
+    const result = await updateTestDescription(test.name, description);
 
     await timeout(100);
 
-    showSuccessOrErrorNotification(updateTestDescriptionResult, {
+    showSuccessOrErrorNotification(result, {
       anchorElement: window.document.getElementById(
         TestEditorDescriptionIds.DescriptionEditor,
       ),

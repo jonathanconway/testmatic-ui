@@ -15,6 +15,10 @@ export function querySelectorParent(
   return querySelectorParent(element.parentElement, selector);
 }
 
+export function getElementById(id: string) {
+  return document.getElementById(id) as HTMLElement;
+}
+
 export function getElementsByClassName(className: string) {
   return Array.from(
     document.getElementsByClassName(className),
@@ -24,13 +28,3 @@ export function getElementsByClassName(className: string) {
 export function getLastElementByClassName(className: string) {
   return last(getElementsByClassName(className));
 }
-
-// export function querySelectorAllLast(
-//   selector: string,
-//   container?: HTMLElement | null,
-// ) {
-//   const elements = Array.from(
-//     container?.querySelectorAll(selector) ?? [],
-//   ) as HTMLElement[];
-//   return last(elements);
-// }

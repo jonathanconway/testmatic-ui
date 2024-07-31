@@ -24,10 +24,10 @@ export function useTestEditorTags() {
 
   const tags = test?.tags ?? [];
 
-  const handleItemDeleteClick = (tag: Tag) => () => {
-    const deleteTagFromTestResult = deleteTagFromTest(test.name, tag.name);
+  const handleItemDeleteClick = (tag: Tag) => async () => {
+    const result = await deleteTagFromTest(test.name, tag.name);
 
-    showSuccessOrErrorNotification(deleteTagFromTestResult, {
+    showSuccessOrErrorNotification(result, {
       anchorElement: tagsContainerRef.current,
     });
   };
@@ -50,16 +50,13 @@ export function useTestEditorTags() {
     const value = state.addInputValue;
     const newOrLookupTagName = snakeCase(value);
 
-    const addTagToTestResult = await addTagToTest(
-      test.name,
-      newOrLookupTagName,
-    );
+    const result = await addTagToTest(test.name, newOrLookupTagName);
 
-    showSuccessOrErrorNotification(addTagToTestResult, {
+    showSuccessOrErrorNotification(result, {
       anchorElement: tagsContainerRef.current,
     });
 
-    if (addTagToTestResult.type === ResultTypes.Ok) {
+    if (result.type === ResultTypes.Ok) {
       setState({
         ...state,
         addInputValue: "",

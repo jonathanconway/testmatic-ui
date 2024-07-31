@@ -38,8 +38,10 @@ export function useExpandingTextBox(params: UseExpandingTextBoxParams) {
     params.onInput?.(event);
   };
 
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     handleKeyDownDisallowLinebreak(event);
+
+    params.onKeyDown?.(event);
   };
 
   // Disallow line breaks handlers
@@ -51,6 +53,7 @@ export function useExpandingTextBox(params: UseExpandingTextBoxParams) {
     if (params.rows === 1 && params.rows === 1) {
       return value.replaceAllRecursive(/\n/g, "");
     }
+    return value;
   };
 
   const handleKeyDownDisallowLinebreak = (event: KeyboardEvent) => {

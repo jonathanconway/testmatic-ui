@@ -18,5 +18,8 @@ export const updateTestRunResult: UpdateTestRunResultFn = async (
     updateRunResult,
   });
 
-  return saveProjectToLocalStorageOrForwardError(updatedProject);
+  return saveProjectToLocalStorageOrForwardError(
+    updatedProject,
+    "Updated run result",
+  );
 };

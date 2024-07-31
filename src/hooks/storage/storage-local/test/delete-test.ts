@@ -11,5 +11,8 @@ export const deleteTest: DeleteTestFn = async (lookupTestName: string) => {
 
   const updatedProject = projectDeleteTest({ project, testToDelete });
 
-  return saveProjectToLocalStorageOrForwardError(updatedProject);
+  return saveProjectToLocalStorageOrForwardError(
+    updatedProject,
+    "Deleted test",
+  );
 };

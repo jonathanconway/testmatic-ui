@@ -23,5 +23,8 @@ export const updateTagTitle: UpdateTagTitleFn = async (
     updatedTag,
   });
 
-  return saveProjectToLocalStorageOrForwardError(updatedProject);
+  return saveProjectToLocalStorageOrForwardError(
+    updatedProject,
+    "Updated tag title",
+  );
 };

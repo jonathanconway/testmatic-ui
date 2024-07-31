@@ -21,5 +21,8 @@ export const updateTestRunStepIsCompleted: UpdateTestRunStepIsCompletedFn =
       updatedStepIsCompleted,
     });
 
-    return saveProjectToLocalStorageOrForwardError(updatedProject);
+    return saveProjectToLocalStorageOrForwardError(
+      updatedProject,
+      "Updated run step status",
+    );
   };
