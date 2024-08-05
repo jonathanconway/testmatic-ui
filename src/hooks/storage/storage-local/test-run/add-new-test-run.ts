@@ -1,4 +1,4 @@
-import { Run, projectAddTestRun } from "testmatic";
+import { Run, projectAddTestRun, throwIfResultWithDataError } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddNewTestRunFn } from "../../../entities";
@@ -10,11 +10,13 @@ export const addNewTestRun: AddNewTestRunFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const updatedProject = projectAddTestRun({
-    project,
-    lookupTestNameOrTitle: lookupTestName,
-    newRun,
-  });
+  const { data: updatedProject } = throwIfResultWithDataError(
+    projectAddTestRun({
+      project,
+      lookupTestNameOrTitle: lookupTestName,
+      newRun,
+    }),
+  );
 
   return saveProjectToLocalStorageOrForwardError(
     updatedProject,

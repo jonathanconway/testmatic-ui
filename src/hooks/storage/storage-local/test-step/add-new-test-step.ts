@@ -1,11 +1,15 @@
-import { createTestStepFromText, projectAddTestStep } from "testmatic";
+import {
+  createTestStepFromText,
+  projectAddNewTestStep,
+  throwIfResultWithDataError,
+} from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddNewTestStepFn } from "../../../entities";
 import { saveProjectToLocalStorageOrForwardError } from "../project";
 
 export const addNewTestStep: AddNewTestStepFn = async (
-  lookupTestName: string,
+  lookupTestNameOrTitle: string,
   newTestStepText: string,
   lookupBeforeStepIndex?: number,
 ) => {
@@ -13,12 +17,14 @@ export const addNewTestStep: AddNewTestStepFn = async (
 
   const newStep = createTestStepFromText(newTestStepText);
 
-  const updatedProject = projectAddTestStep({
-    project,
-    lookupTestNameOrTitle: lookupTestName,
-    newStep,
-    lookupBeforeStepIndex,
-  });
+  const { data: updatedProject } = throwIfResultWithDataError(
+    projectAddNewTestStep({
+      project,
+      lookupTestNameOrTitle,
+      newStep,
+      lookupBeforeStepIndex,
+    }),
+  );
 
   return saveProjectToLocalStorageOrForwardError(
     updatedProject,

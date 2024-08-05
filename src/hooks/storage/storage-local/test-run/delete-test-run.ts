@@ -1,4 +1,4 @@
-import { projectDeleteRun } from "testmatic";
+import { projectDeleteRun, throwIfResultWithDataError } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { DeleteTestRunFn } from "../../../entities";
@@ -10,11 +10,13 @@ export const deleteTestRun: DeleteTestRunFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const updatedProject = projectDeleteRun({
-    project,
-    lookupTestNameOrTitle: lookupTestName,
-    lookupRunDateTime,
-  });
+  const { data: updatedProject } = throwIfResultWithDataError(
+    projectDeleteRun({
+      project,
+      lookupTestNameOrTitle: lookupTestName,
+      lookupRunDateTime,
+    }),
+  );
 
   return saveProjectToLocalStorageOrForwardError(
     updatedProject,

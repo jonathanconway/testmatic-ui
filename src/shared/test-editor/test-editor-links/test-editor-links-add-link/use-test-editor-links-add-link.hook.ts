@@ -3,6 +3,7 @@ import {
   createLink,
   isAlreadyExistsError,
   projectAddTestLink,
+  throwIfResultWithDataError,
 } from "testmatic";
 
 import { useProject } from "../../../../hooks";
@@ -102,11 +103,13 @@ export function useTestEditorLinksAddLink(
       title: state.values.title,
     });
 
-    const updatedProject = projectAddTestLink({
-      project,
-      newLink,
-      lookupTestNameOrTitle: test.name,
-    });
+    const { data: updatedProject } = throwIfResultWithDataError(
+      projectAddTestLink({
+        project,
+        newLink,
+        lookupTestNameOrTitle: test.name,
+      }),
+    );
 
     if (isAlreadyExistsError(updatedProject)) {
       return;

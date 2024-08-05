@@ -1,4 +1,4 @@
-import { projectUpdateTag } from "testmatic";
+import { projectUpdateTag, throwIfResultWithDataError } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { UpdateTagTitleFn } from "../../../entities";
@@ -17,11 +17,13 @@ export const updateTagTitle: UpdateTagTitleFn = async (
     title: newTagTitle,
   };
 
-  const updatedProject = projectUpdateTag({
-    project,
-    lookupTagNameOrTitle: lookupTagName,
-    updatedTag,
-  });
+  const { data: updatedProject } = throwIfResultWithDataError(
+    projectUpdateTag({
+      project,
+      lookupTagNameOrTitle: lookupTagName,
+      updatedTag,
+    }),
+  );
 
   return saveProjectToLocalStorageOrForwardError(
     updatedProject,

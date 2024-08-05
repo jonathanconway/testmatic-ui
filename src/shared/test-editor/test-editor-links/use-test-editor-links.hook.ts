@@ -1,4 +1,8 @@
-import { Link, projectDeleteTestLink } from "testmatic";
+import {
+  Link,
+  projectDeleteTestLink,
+  throwIfResultWithDataError,
+} from "testmatic";
 
 import { useProject } from "../../../hooks";
 import { useEditingTest } from "../use-editing-test.hook";
@@ -15,11 +19,17 @@ export function useTestLinks() {
       return;
     }
 
-    const updatedProject = projectDeleteTestLink({
-      project,
-      test,
-      linkToDelete,
-    });
+    const lookupTestNameOrTitle = test.name;
+
+    const lookupTestLinkHref = linkToDelete.href;
+
+    const { data: updatedProject } = throwIfResultWithDataError(
+      projectDeleteTestLink({
+        project,
+        lookupTestNameOrTitle,
+        lookupTestLinkHref,
+      }),
+    );
 
     saveProject(updatedProject);
   }

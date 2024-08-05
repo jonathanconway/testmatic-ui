@@ -1,4 +1,8 @@
-import { createTagFromName, projectAddTestTag } from "testmatic";
+import {
+  createTagFromName,
+  projectAddTestTag,
+  throwIfResultWithDataError,
+} from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddTagToTestFn } from "../../../entities";
@@ -14,11 +18,13 @@ export const addTagToTest: AddTagToTestFn = async (
     project.tagsByName[newOrLookupTagName] ??
     createTagFromName(newOrLookupTagName);
 
-  const updatedProject = projectAddTestTag({
-    project,
-    lookupTestNameOrTitle: lookupTestName,
-    newTag,
-  });
+  const { data: updatedProject } = throwIfResultWithDataError(
+    projectAddTestTag({
+      project,
+      lookupTestNameOrTitle: lookupTestName,
+      newTag,
+    }),
+  );
 
   return saveProjectToLocalStorageOrForwardError(
     updatedProject,
