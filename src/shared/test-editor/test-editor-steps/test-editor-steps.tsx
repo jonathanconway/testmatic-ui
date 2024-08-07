@@ -1,32 +1,36 @@
+import { noop } from "lodash";
+
 import { Button } from "../../button";
 import { Heading } from "../../heading";
 import { Stack } from "../../layout";
 import { StepAdder, StepAdderHint, StepEditor } from "../../step";
 
+import { TestEditorStepsIds } from "./test-editor-steps.const";
 import * as Styled from "./test-editor-steps.styles";
 import { useTestEditorSteps } from "./use-test-editor-steps.hook";
 
 export function TestEditorSteps() {
   const {
-    stepsContainerRef,
-    steps,
+    editing: {
+      steps,
+      handleStepEditorBlur,
+      handleStepEditorGoPrevious,
+      handleStepEditorGoNext,
+      handleStepEditorDeleteClick,
+    },
 
-    handleClickAddStep,
-
-    handleStepEditorBlur,
-    handleStepEditorGoPrevious,
-    handleStepEditorGoNext,
-    handleStepEditorDeleteClick,
-
-    isAddingStep,
-    addingStep,
-    handleAddingStepEditorBlur,
-    handleAddingStepEditorGoPrevious,
+    adding: {
+      isAddingStep,
+      addingStep,
+      handleAddingStepEditorBlur,
+      handleAddingStepEditorGoPrevious,
+      handleClickAddStep,
+    },
   } = useTestEditorSteps();
 
   return (
-    <Styled.Container>
-      <Stack spacing={1} ref={stepsContainerRef}>
+    <Styled.Container id={TestEditorStepsIds.Container}>
+      <Stack spacing={1}>
         <Styled.StepsHeader>
           <Heading level={3}>Steps </Heading>
           <Button onClick={handleClickAddStep}>Add step</Button>
@@ -59,6 +63,7 @@ export function TestEditorSteps() {
                 stepIndex={steps.length}
                 onBlur={handleAddingStepEditorBlur}
                 onGoPrevious={handleAddingStepEditorGoPrevious}
+                onGoNext={noop}
               />
             </Styled.StepsListItem>
 

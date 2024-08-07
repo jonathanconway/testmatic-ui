@@ -1,7 +1,6 @@
 import { last } from "lodash";
 import { KeyboardEvent } from "react";
 
-import { useProject } from "../../../../hooks";
 import "../../../utils";
 
 import { useStepEditorAutoCompleteTag } from "./use-step-editor-auto-complete-tag.hook";
@@ -11,8 +10,6 @@ export function useStepEditorInputSuggestOpen(
   common: ReturnType<typeof useStepEditorInputCommon>,
 ) {
   const { state, setSuggestIsOpen, setState } = common;
-
-  const { project } = useProject();
 
   const { autoCompleteTag } = useStepEditorAutoCompleteTag(common);
 
@@ -33,37 +30,39 @@ export function useStepEditorInputSuggestOpen(
   };
 
   const handleKeyDownArrowUpSuggestOpen = () => {
-    const { tags } = project;
+    const currentHighlightedSuggestion =
+      state.suggest.highlightedSuggestion ?? state.suggest.suggestions[0];
 
-    const newHighlightedTag = state.suggest.highlightedSuggestion
-      ? tags[tags.indexOf(state.suggest.highlightedSuggestion) - 1] ??
-        last(tags)
-      : tags[0];
+    const suggestions = state.suggest.suggestions;
+
+    const highlightedSuggestion =
+      suggestions[suggestions.indexOf(currentHighlightedSuggestion) - 1] ??
+      last(suggestions);
 
     setState({
       ...state,
       suggest: {
         ...state.suggest,
-        highlightedSuggestion: newHighlightedTag,
+        highlightedSuggestion,
       },
     });
   };
 
   const handleKeyDownArrowDownSuggestOpen = () => {
-    const { tags } = project;
+    const currentHighlightedSuggestion =
+      state.suggest.highlightedSuggestion ?? state.suggest.suggestions[0];
 
-    const currentHighlightedTag = state.suggest.highlightedSuggestion
-      ? state.suggest.highlightedSuggestion
-      : tags[0];
+    const suggestions = state.suggest.suggestions;
 
-    const newHighlightedTag =
-      tags[tags.indexOf(currentHighlightedTag) + 1] ?? tags[0];
+    const highlightedSuggestion =
+      suggestions[suggestions.indexOf(currentHighlightedSuggestion) + 1] ??
+      suggestions[0];
 
     setState({
       ...state,
       suggest: {
         ...state.suggest,
-        highlightedSuggestion: newHighlightedTag,
+        highlightedSuggestion,
       },
     });
   };

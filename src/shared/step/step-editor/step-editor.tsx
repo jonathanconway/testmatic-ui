@@ -25,14 +25,7 @@ export const StepEditorIds = {
 };
 
 export function StepEditor(props: StepEditorProps) {
-  const {
-    step,
-    stepIndex,
-    onGoPrevious,
-    onGoNext,
-    onDeleteClick,
-    ...restProps
-  } = props;
+  const { stepIndex, onDeleteClick, ...restProps } = props;
 
   const { containerRef, isEditing, handleStepInputFocus, handleStepInputBlur } =
     useStepEditor(props);
@@ -44,10 +37,7 @@ export function StepEditor(props: StepEditorProps) {
 
         <StepEditorInput
           {...restProps}
-          step={props.step}
           isVisible={isEditing}
-          onGoNext={props.onGoNext}
-          onGoPrevious={props.onGoPrevious}
           onFocus={handleStepInputFocus}
           onBlur={handleStepInputBlur}
         />

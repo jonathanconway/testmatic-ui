@@ -32,10 +32,10 @@ export function useTestEditorTitle() {
 
     navigateTo(testEditorRoute(testCreateNameFromTitle(newTitle)));
 
-    const anchorElement = getElementById(TestEditorTitleIds.TitleEditor);
+    await timeout(100);
 
     showSuccessOrErrorNotification(result, {
-      anchorElement,
+      anchorElement: getElementById(TestEditorTitleIds.TitleEditor),
     });
   };
 

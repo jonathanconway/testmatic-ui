@@ -1,7 +1,7 @@
-import { noop } from "lodash";
 import { HTMLProps, KeyboardEvent } from "react";
 import { Step } from "testmatic";
 
+import { KeyCodes } from "../../../../hooks";
 import { Box } from "../../../box";
 import { getLastElementByClassName, timeout } from "../../../utils";
 import { StepEditorInput, StepInputClassNames } from "../step-editor-input";
@@ -12,7 +12,9 @@ export interface StepAdderProps
   extends Omit<HTMLProps<HTMLTextAreaElement>, "step"> {
   readonly step: Step;
   readonly stepIndex: number;
+
   readonly onGoPrevious: VoidFunction;
+  readonly onGoNext: VoidFunction;
 }
 
 export function StepAdder(props: StepAdderProps) {
@@ -22,17 +24,27 @@ export function StepAdder(props: StepAdderProps) {
     event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     switch (event.key) {
-      case "ArrowUp":
-        handleKeyDownArrowUp();
+      case KeyCodes.Enter:
+        handleKeyDownEnter(event);
         break;
 
-      case "Tab":
+      case KeyCodes.Tab:
         handleKeyDownTab(event);
         break;
     }
   };
 
   const handleKeyDownTab = async (
+    event: KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    handleKeyDownTabOrEnter(event);
+  };
+
+  const handleKeyDownEnter = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    handleKeyDownTabOrEnter(event);
+  };
+
+  const handleKeyDownTabOrEnter = async (
     event: KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (event.shiftKey) {
@@ -50,10 +62,6 @@ export function StepAdder(props: StepAdderProps) {
     getLastElementByClassName(StepInputClassNames.TextArea)?.focus();
   };
 
-  const handleKeyDownArrowUp = () => {
-    props.onGoPrevious();
-  };
-
   return (
     <Styled.Container>
       <Styled.MainContainer>
@@ -62,7 +70,6 @@ export function StepAdder(props: StepAdderProps) {
           step={props.step}
           isVisible
           onKeyDown={handleStepInputKeyDown}
-          onGoNext={noop}
           placeholder="Add new step"
         />
       </Styled.MainContainer>

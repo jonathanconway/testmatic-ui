@@ -1,7 +1,7 @@
 import { ChangeEvent, FocusEvent, KeyboardEvent } from "react";
 import { Tag } from "testmatic";
 
-import { useProject } from "../../../../hooks";
+import { KeyCodes, useProject } from "../../../../hooks";
 import { cleanTextForFiltering, timeout } from "../../../utils";
 
 import {
@@ -60,19 +60,19 @@ export function useStepEditorInputInput(
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     switch (event.key) {
-      case "Enter":
+      case KeyCodes.Enter:
         handleKeyDownEnter(event);
         break;
-      case "Tab":
+      case KeyCodes.Tab:
         handleKeyDownTab(event);
         break;
-      case "Escape":
+      case KeyCodes.Escape:
         handleKeyDownEscape(event);
         break;
-      case "ArrowUp":
+      case KeyCodes.ArrowUp:
         handleKeyDownArrowUp(event);
         break;
-      case "ArrowDown":
+      case KeyCodes.ArrowDown:
         handleKeyDownArrowDown(event);
         break;
     }

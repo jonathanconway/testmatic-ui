@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 
+import { KeyCodes } from "../../hooks";
 import { cleanTextForFiltering, timeout } from "../utils";
 
 export interface UseAutoSuggestTextBoxParams
@@ -59,20 +60,20 @@ export function useAutoSuggestTextBox(params: UseAutoSuggestTextBoxParams) {
 
   const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     switch (event.key) {
-      case "Escape":
+      case KeyCodes.Escape:
         handleKeyDownEscape();
         break;
-      case "Tab":
+      case KeyCodes.Tab:
         handleKeyDownTab(event);
         break;
-      case "Enter":
+      case KeyCodes.Enter:
         handleKeyDownEnter(event);
         break;
-      case "ArrowUp":
-        handleKeyDownArrowUp(event);
+      case KeyCodes.ArrowUp:
+        handleKeyDownArrowUp();
         break;
-      case "ArrowDown":
-        handleKeyDownArrowDown(event);
+      case KeyCodes.ArrowDown:
+        handleKeyDownArrowDown();
         break;
     }
   };
@@ -98,9 +99,7 @@ export function useAutoSuggestTextBox(params: UseAutoSuggestTextBoxParams) {
     }
   };
 
-  const handleKeyDownArrowUp = (event: KeyboardEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
+  const handleKeyDownArrowUp = () => {
     if (state.isOpen) {
       const currentHighlightedSuggestion = state.highlightedSuggestion
         ? state.highlightedSuggestion
@@ -120,9 +119,7 @@ export function useAutoSuggestTextBox(params: UseAutoSuggestTextBoxParams) {
     }
   };
 
-  const handleKeyDownArrowDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
+  const handleKeyDownArrowDown = () => {
     if (state.isOpen) {
       const currentHighlightedSuggestion = state.highlightedSuggestion
         ? state.highlightedSuggestion

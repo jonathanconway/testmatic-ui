@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
 
+import { timeout } from "../utils";
+
 import { Notification } from "./notification";
 import {
   ShowNotificationEvent,
   ShowNotificationParams,
 } from "./show-notification";
 
+type NotificationProvider = ShowNotificationParams & {
+  readonly isOpen: boolean;
+};
+
 export function NotificationProvider() {
-  const [state, setState] = useState<ShowNotificationParams>();
+  const [state, setState] = useState<NotificationProvider>({
+    isOpen: false,
+  });
 
   useEffect(() => {
-    const listener = (event: ShowNotificationEvent) => {
-      setState(event.params);
+    const listener = async (event: ShowNotificationEvent) => {
+      // Close then re-open, in case notification is rapidly re-triggered.
+      setState({
+        isOpen: false,
+      });
+
+      await timeout();
+
+      setState(() => ({
+        isOpen: true,
+        ...event.params,
+      }));
     };
 
     window.addEventListener(ShowNotificationEvent.type, listener);
@@ -22,7 +40,9 @@ export function NotificationProvider() {
   }, []);
 
   const handleClose = () => {
-    setState(undefined);
+    setState({
+      isOpen: false,
+    });
   };
 
   if (!state) {
