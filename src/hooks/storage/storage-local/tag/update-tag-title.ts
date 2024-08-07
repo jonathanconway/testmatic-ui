@@ -1,8 +1,8 @@
-import { projectUpdateTag, throwIfResultWithDataError } from "testmatic";
+import { projectUpdateTag } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { UpdateTagTitleFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const updateTagTitle: UpdateTagTitleFn = async (
   lookupTagName: string,
@@ -17,16 +17,14 @@ export const updateTagTitle: UpdateTagTitleFn = async (
     title: newTagTitle,
   };
 
-  const { data: updatedProject } = throwIfResultWithDataError(
-    projectUpdateTag({
-      project,
-      lookupTagNameOrTitle: lookupTagName,
-      updatedTag,
-    }),
-  );
+  const result = projectUpdateTag({
+    project,
+    lookupTagNameOrTitle: lookupTagName,
+    updatedTag,
+  });
 
-  return saveProjectToLocalStorageOrForwardError(
-    updatedProject,
+  return saveResultProjectToLocalStorageOrForwardError(
+    result,
     "Updated tag title",
   );
 };

@@ -1,8 +1,8 @@
-import { projectUpdateTestStep, throwIfResultWithDataError } from "testmatic";
+import { projectUpdateTestStep } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { UpdateTestStepFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const updateTestStep: UpdateTestStepFn = async (
   lookupTestName: string,
@@ -11,17 +11,15 @@ export const updateTestStep: UpdateTestStepFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const { data: updatedProject } = throwIfResultWithDataError(
-    projectUpdateTestStep({
-      project,
-      lookupTestNameOrTitle: lookupTestName,
-      lookupStepIndex,
-      updatedStepText,
-    }),
-  );
+  const result = projectUpdateTestStep({
+    project,
+    lookupTestNameOrTitle: lookupTestName,
+    lookupStepIndex,
+    updatedStepText,
+  });
 
-  return saveProjectToLocalStorageOrForwardError(
-    updatedProject,
+  return saveResultProjectToLocalStorageOrForwardError(
+    result,
     "Updated test step",
   );
 };

@@ -1,8 +1,8 @@
-import { projectDeleteTestTag, throwIfResultWithDataError } from "testmatic";
+import { projectDeleteTestTag } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { DeleteTagFromTestFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const deleteTagFromTest: DeleteTagFromTestFn = async (
   lookupTestNameOrTitle: string,
@@ -10,16 +10,14 @@ export const deleteTagFromTest: DeleteTagFromTestFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const { data: updatedProject } = throwIfResultWithDataError(
-    projectDeleteTestTag({
-      project,
-      lookupTestNameOrTitle,
-      lookupTagNameOrTitle,
-    }),
-  );
+  const result = projectDeleteTestTag({
+    project,
+    lookupTestNameOrTitle,
+    lookupTagNameOrTitle,
+  });
 
-  return saveProjectToLocalStorageOrForwardError(
-    updatedProject,
+  return saveResultProjectToLocalStorageOrForwardError(
+    result,
     "Removed tag from test",
   );
 };

@@ -1,12 +1,8 @@
-import {
-  createTagFromName,
-  projectAddTestTag,
-  throwIfResultWithDataError,
-} from "testmatic";
+import { createTagFromName, projectAddTestTag } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddTagToTestFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const addTagToTest: AddTagToTestFn = async (
   lookupTestName: string,
@@ -18,16 +14,14 @@ export const addTagToTest: AddTagToTestFn = async (
     project.tagsByName[newOrLookupTagName] ??
     createTagFromName(newOrLookupTagName);
 
-  const { data: updatedProject } = throwIfResultWithDataError(
-    projectAddTestTag({
-      project,
-      lookupTestNameOrTitle: lookupTestName,
-      newTag,
-    }),
-  );
+  const result = projectAddTestTag({
+    project,
+    lookupTestNameOrTitle: lookupTestName,
+    newTag,
+  });
 
-  return saveProjectToLocalStorageOrForwardError(
-    updatedProject,
+  return saveResultProjectToLocalStorageOrForwardError(
+    result,
     "Added tag to test",
   );
 };

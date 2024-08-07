@@ -8,12 +8,12 @@ import {
   ShowNotificationParams,
 } from "./show-notification";
 
-type NotificationProvider = ShowNotificationParams & {
+type NotificationProviderState = ShowNotificationParams & {
   readonly isOpen: boolean;
 };
 
 export function NotificationProvider() {
-  const [state, setState] = useState<NotificationProvider>({
+  const [state, setState] = useState<NotificationProviderState>({
     isOpen: false,
   });
 

@@ -1,8 +1,8 @@
-import { Run, projectAddTestRun, throwIfResultWithDataError } from "testmatic";
+import { Run, projectAddTestRun } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddNewTestRunFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const addNewTestRun: AddNewTestRunFn = async (
   lookupTestName: string,
@@ -10,16 +10,14 @@ export const addNewTestRun: AddNewTestRunFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const { data: updatedProject } = throwIfResultWithDataError(
-    projectAddTestRun({
-      project,
-      lookupTestNameOrTitle: lookupTestName,
-      newRun,
-    }),
-  );
+  const result = projectAddTestRun({
+    project,
+    lookupTestNameOrTitle: lookupTestName,
+    newRun,
+  });
 
-  return saveProjectToLocalStorageOrForwardError(
-    updatedProject,
+  return saveResultProjectToLocalStorageOrForwardError(
+    result,
     "Added new test run",
   );
 };

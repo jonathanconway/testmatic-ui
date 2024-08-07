@@ -1,18 +1,13 @@
-import { Tag, projectAddTag, throwIfResultWithDataError } from "testmatic";
+import { Tag, projectAddTag } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddNewTagFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const addNewTag: AddNewTagFn = async (newTag: Tag) => {
   const project = getProjectFromLocalStorage();
 
-  const { data: updatedProject } = throwIfResultWithDataError(
-    projectAddTag({ project, newTag }),
-  );
+  const result = projectAddTag({ project, newTag });
 
-  return saveProjectToLocalStorageOrForwardError(
-    updatedProject,
-    "Added new tag",
-  );
+  return saveResultProjectToLocalStorageOrForwardError(result, "Added new tag");
 };

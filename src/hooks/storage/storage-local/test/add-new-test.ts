@@ -1,18 +1,16 @@
-import { Test, projectAddNewTest, throwIfResultWithDataError } from "testmatic";
+import { Test, projectAddNewTest } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { AddNewTestFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const addNewTest: AddNewTestFn = async (newTest: Test) => {
   const project = getProjectFromLocalStorage();
 
-  const { data: projectAddTestResult } = throwIfResultWithDataError(
-    projectAddNewTest({ project, newTest }),
-  );
+  const result = projectAddNewTest({ project, newTest });
 
-  return saveProjectToLocalStorageOrForwardError(
-    projectAddTestResult,
+  return saveResultProjectToLocalStorageOrForwardError(
+    result,
     "Added new test",
   );
 };

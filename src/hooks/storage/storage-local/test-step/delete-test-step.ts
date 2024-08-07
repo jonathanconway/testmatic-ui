@@ -1,8 +1,8 @@
-import { projectDeleteTestStep, throwIfResultWithDataError } from "testmatic";
+import { projectDeleteTestStep } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { DeleteTestStepFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../project";
+import { saveResultProjectToLocalStorageOrForwardError } from "../project";
 
 export const deleteTestStep: DeleteTestStepFn = async (
   lookupTestName: string,
@@ -10,16 +10,14 @@ export const deleteTestStep: DeleteTestStepFn = async (
 ) => {
   const project = getProjectFromLocalStorage();
 
-  const { data: updatedProject } = throwIfResultWithDataError(
-    projectDeleteTestStep({
-      project,
-      lookupTestNameOrTitle: lookupTestName,
-      lookupStepIndex,
-    }),
-  );
+  const result = projectDeleteTestStep({
+    project,
+    lookupTestNameOrTitle: lookupTestName,
+    lookupStepIndex,
+  });
 
-  return saveProjectToLocalStorageOrForwardError(
-    updatedProject,
+  return saveResultProjectToLocalStorageOrForwardError(
+    result,
     "Deleted test step",
   );
 };

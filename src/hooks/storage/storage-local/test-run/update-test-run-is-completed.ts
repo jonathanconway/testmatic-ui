@@ -1,11 +1,8 @@
-import {
-  projectUpdateTestRunStepCompleted,
-  throwIfResultWithDataError,
-} from "testmatic";
+import { projectUpdateTestRunStepCompleted } from "testmatic";
 
 import { getProjectFromLocalStorage } from "../../../../shared";
 import { UpdateTestRunStepIsCompletedFn } from "../../../entities";
-import { saveProjectToLocalStorageOrForwardError } from "../../storage-local";
+import { saveResultProjectToLocalStorageOrForwardError } from "../../storage-local";
 
 export const updateTestRunStepIsCompleted: UpdateTestRunStepIsCompletedFn =
   async (
@@ -16,18 +13,16 @@ export const updateTestRunStepIsCompleted: UpdateTestRunStepIsCompletedFn =
   ) => {
     const project = getProjectFromLocalStorage();
 
-    const { data: updatedProject } = throwIfResultWithDataError(
-      projectUpdateTestRunStepCompleted({
-        project,
-        lookupTestNameOrTitle,
-        lookupRunDateTime,
-        lookupStepIndex,
-        updatedStepIsCompleted,
-      }),
-    );
+    const result = projectUpdateTestRunStepCompleted({
+      project,
+      lookupTestNameOrTitle,
+      lookupRunDateTime,
+      lookupStepIndex,
+      updatedStepIsCompleted,
+    });
 
-    return saveProjectToLocalStorageOrForwardError(
-      updatedProject,
+    return saveResultProjectToLocalStorageOrForwardError(
+      result,
       "Updated run step status",
     );
   };
